@@ -25,14 +25,16 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
     integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous" />
 
+<!-- Core CSS -->
+<link rel="stylesheet" href="/admin-lte/dist/css/adminlte.css" />
+
 <!-- Trix Editor -->
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
 <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 @vite([
-    'resources/css/app/custom.css', 
-    'resources/css/app/custom-trix.css', 
-    'resources/admin-lte/dist/css/adminlte.css', 
-    'resources/css/app/homepage.css',
-    'resources/js/app.js'
+'resources/css/app/custom.css',
+'resources/css/app/custom-trix.css',
+'resources/css/app/homepage.css',
+'resources/js/app.js'
 ])
 @stack('custom-styles')
