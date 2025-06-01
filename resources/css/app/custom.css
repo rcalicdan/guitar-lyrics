@@ -1,0 +1,20 @@
+.dropdown-item:hover {
+    background-color: green !important;
+    /* Light gray background on hover */
+    color: #007bff !important;
+    /* Bootstrap primary blue for text */
+    transform: scale(1.05);
+    /* Slightly enlarge the link on hover */
+    transition: all 0.3s ease;
+    /* Smooth transition for hover effects */
+}
+
+.dropdown-item i {
+    transition: transform 0.3s ease;
+    /* Smooth transition for icon movement */
+}
+
+.dropdown-item:hover i {
+    transform: translateX(5px);
+    /* Move the icon slightly to the right on hover */
+}

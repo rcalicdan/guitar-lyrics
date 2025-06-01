@@ -1,0 +1,20 @@
+{
+  "name": "guitar-lyrics",
+  "version": "1.0.0",
+  "description": "This repository contains a template for Laravel developers who want to use CodeIgniter 4 as their backend framework. It provides a seamless integration of Laravel-like features into CodeIgniter, allowing developers to leverage the strengths of both frameworks. This template provides a starting point for developers who want to leverage the power of both frameworks while maintaining a consistent development experience. Syntax is similar to Laravel, making it easy for developers to switch between frameworks.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}

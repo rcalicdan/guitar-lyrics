@@ -1,0 +1,26 @@
+.login-section {
+    background-image: url('/placeholder/homepage-background.png');
+    /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    padding-top: 300px;
+    /* To avoid overlapping with the fixed navbar */
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.9);
+    /* Semi-transparent white background */
+    margin-top: 70px;
+    /* Add this line to move the card further down */
+}
+
+.btn-custom {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.btn-custom:hover {
+    background-color: #34495e;
+}
