@@ -4,7 +4,7 @@ namespace App\Libraries;
 
 class ViteAssetManager
 {
-    private static ?array $manifest = null;
+    private static ?string $cachedBaseUrl = null;
     private string $devServerBaseUrl;
     private string $manifestPath;
     private string $distPath;
@@ -24,11 +24,26 @@ class ViteAssetManager
      */
     public function generateAssets($entrypoints, bool $includeViteClient = true): string
     {
+        $startTime = microtime(true);
+        
         $entrypoints = $this->normalizeEntrypoints($entrypoints);
 
-        return ENVIRONMENT === 'development'
+        $result = ENVIRONMENT === 'development'
             ? $this->buildDevelopmentAssets($entrypoints, $includeViteClient)
             : $this->buildProductionAssets($entrypoints);
+        
+        $endTime = microtime(true);
+        $executionTime = $endTime - $startTime;
+        
+        if ($executionTime > 0.1) { // Log if takes more than 100ms
+            log_message('debug', sprintf(
+                "ViteAssetManager: Total execution time=%.3fs for %d entrypoints",
+                $executionTime,
+                count($entrypoints)
+            ));
+        }
+
+        return $result;
     }
 
     /**
@@ -50,7 +65,7 @@ class ViteAssetManager
     }
 
     /**
-     * Build assets for production environment
+     * Build assets for production environment (optimized)
      */
     private function buildProductionAssets(array $entrypoints): string
     {
@@ -60,101 +75,131 @@ class ViteAssetManager
             return $this->createErrorComment('Vite Manifest Could Not Be Loaded');
         }
 
-        $output = '';
+        // Collect all assets first to avoid duplicates and reduce processing
+        $stylesheets = [];
+        $scripts = [];
+        $preloads = [];
+
         foreach ($entrypoints as $entry) {
-            $output .= $this->processManifestEntry($entry, $manifest);
-        }
+            if (!isset($manifest[$entry])) {
+                $this->logWarning("Vite entry point '{$entry}' not found in manifest.");
+                continue;
+            }
 
-        return $output;
-    }
+            $manifestEntry = $manifest[$entry];
 
-    /**
-     * Process a single manifest entry
-     */
-    private function processManifestEntry(string $entry, array $manifest): string
-    {
-        if (!isset($manifest[$entry])) {
-            $this->logWarning("Vite entry point '{$entry}' not found in manifest.");
-            return $this->createErrorComment("Vite Entry Point '{$entry}' Not Found in Manifest");
-        }
-
-        $manifestEntry = $manifest[$entry];
-
-        if ($this->isCssFile($manifestEntry['file'])) {
-            return $this->createStylesheetTag($manifestEntry['file']);
-        }
-
-        return $this->buildJavaScriptEntry($manifestEntry, $manifest);
-    }
-
-    /**
-     * Build JavaScript entry with associated CSS and imports
-     */
-    private function buildJavaScriptEntry(array $manifestEntry, array $manifest): string
-    {
-        $output = '';
-
-        // Add associated CSS files
-        if (!empty($manifestEntry['css'])) {
-            foreach ($manifestEntry['css'] as $cssFile) {
-                $output .= $this->createStylesheetTag($cssFile);
+            if ($this->isCssFile($manifestEntry['file'])) {
+                $stylesheets[] = $manifestEntry['file'];
+            } else {
+                // Add CSS files associated with this JS entry
+                if (!empty($manifestEntry['css'])) {
+                    $stylesheets = array_merge($stylesheets, $manifestEntry['css']);
+                }
+                
+                // Add the main script
+                $scripts[] = $manifestEntry['file'];
+                
+                // Add imports for preloading
+                if (!empty($manifestEntry['imports'])) {
+                    foreach ($manifestEntry['imports'] as $importName) {
+                        if (isset($manifest[$importName]['file'])) {
+                            $preloads[] = $manifest[$importName]['file'];
+                        }
+                    }
+                }
             }
         }
 
-        // Add the main script
-        $output .= $this->createScriptTag($manifestEntry['file']);
-
-        // Add module preloads
-        if (!empty($manifestEntry['imports'])) {
-            $output .= $this->buildModulePreloads($manifestEntry['imports'], $manifest);
-        }
-
-        return $output;
+        // Generate all tags at once (more efficient)
+        return $this->generateAssetTags($stylesheets, $scripts, $preloads);
     }
 
     /**
-     * Build module preload tags
+     * Generate all asset tags efficiently
      */
-    private function buildModulePreloads(array $imports, array $manifest): string
+    private function generateAssetTags(array $stylesheets, array $scripts, array $preloads): string
     {
+        $baseUrl = $this->getBaseUrl();
+        $distPath = $this->distPath;
         $output = '';
 
-        foreach ($imports as $importName) {
-            if (isset($manifest[$importName]['file'])) {
-                $output .= $this->createModulePreloadTag($manifest[$importName]['file']);
-            }
+        // Remove duplicates and generate stylesheet tags
+        foreach (array_unique($stylesheets) as $css) {
+            $output .= "<link rel=\"stylesheet\" href=\"{$baseUrl}/{$distPath}/{$css}\">\n";
+        }
+
+        // Generate script tags
+        foreach (array_unique($scripts) as $script) {
+            $output .= "<script type=\"module\" src=\"{$baseUrl}/{$distPath}/{$script}\"></script>\n";
+        }
+
+        // Generate preload tags
+        foreach (array_unique($preloads) as $preload) {
+            $output .= "<link rel=\"modulepreload\" href=\"{$baseUrl}/{$distPath}/{$preload}\">\n";
         }
 
         return $output;
     }
 
     /**
-     * Get and cache the Vite manifest
+     * Get and cache the Vite manifest with proper caching
      */
     private function getManifest(): ?array
     {
-        if (self::$manifest !== null) {
-            return self::$manifest;
+        // Use CodeIgniter's cache system for persistent caching
+        $cache = \Config\Services::cache();
+        $cacheKey = 'vite_manifest_' . md5($this->manifestPath);
+        
+        // Try to get from cache first
+        $manifest = $cache->get($cacheKey);
+        if ($manifest !== null) {
+            return $manifest;
         }
 
+        // Check if manifest file exists
         if (!file_exists($this->manifestPath)) {
             $this->logError("Vite manifest not found at: {$this->manifestPath}");
+            // Cache the null result for a short time to avoid repeated file checks
+            $cache->save($cacheKey, null, 60);
             return null;
         }
 
+        // Read and parse manifest
         $manifestContent = file_get_contents($this->manifestPath);
-        self::$manifest = json_decode($manifestContent, true);
-
-        if (self::$manifest === null) {
-            $this->logError("Vite manifest could not be parsed: " . json_last_error_msg());
+        if ($manifestContent === false) {
+            $this->logError("Could not read Vite manifest at: {$this->manifestPath}");
+            $cache->save($cacheKey, null, 60);
             return null;
         }
 
-        return self::$manifest;
+        $manifest = json_decode($manifestContent, true);
+
+        if ($manifest === null) {
+            $this->logError("Vite manifest could not be parsed: " . json_last_error_msg());
+            $cache->save($cacheKey, null, 60);
+            return null;
+        }
+
+        // Cache the manifest for 1 hour in production, 5 minutes in development
+        $cacheTime = ENVIRONMENT === 'production' ? 3600 : 300;
+        $cache->save($cacheKey, $manifest, $cacheTime);
+        
+        return $manifest;
     }
 
     /**
-     * Create HTML tags
+     * Get cached base URL to avoid repeated calls
+     */
+    private function getBaseUrl(): string
+    {
+        if (self::$cachedBaseUrl === null) {
+            self::$cachedBaseUrl = rtrim(base_url(), '/');
+        }
+        return self::$cachedBaseUrl;
+    }
+
+    /**
+     * Create HTML tags (optimized versions)
      */
     private function createViteClientScript(): string
     {
@@ -168,24 +213,6 @@ class ViteAssetManager
         return $this->isCssFile($entry)
             ? "<link rel=\"stylesheet\" href=\"{$url}\">\n"
             : "<script type=\"module\" src=\"{$url}\"></script>\n";
-    }
-
-    private function createStylesheetTag(string $file): string
-    {
-        $url = base_url("{$this->distPath}/{$file}");
-        return "<link rel=\"stylesheet\" href=\"{$url}\">\n";
-    }
-
-    private function createScriptTag(string $file): string
-    {
-        $url = base_url("{$this->distPath}/{$file}");
-        return "<script type=\"module\" src=\"{$url}\"></script>\n";
-    }
-
-    private function createModulePreloadTag(string $file): string
-    {
-        $url = base_url("{$this->distPath}/{$file}");
-        return "<link rel=\"modulepreload\" href=\"{$url}\">\n";
     }
 
     private function createErrorComment(string $message): string
@@ -226,5 +253,14 @@ class ViteAssetManager
             $config['manifestPath'] ?? null,
             $config['distPath'] ?? 'dist'
         );
+    }
+
+    /**
+     * Clear the manifest cache (useful for deployment)
+     */
+    public static function clearCache(): bool
+    {
+        $cache = \Config\Services::cache();
+        return $cache->deleteMatching('vite_manifest_*');
     }
 }

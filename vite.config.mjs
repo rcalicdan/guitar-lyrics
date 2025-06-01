@@ -11,13 +11,20 @@ export default defineConfig(({ command }) => {
     return {
         base: isProduction ? '/dist/' : '/',
         build: {
-            outDir: 'public/dist',
+            outDir: 'dist',
             emptyOutDir: true,
             manifest: true,
             rollupOptions: {
                 input: {
+                    // JavaScript
                     'resources/js/app.js': resolve(__dirname, 'resources/js/app.js'),
+                    
+                    // CSS Files - Add all the ones you're using
                     'resources/css/app.css': resolve(__dirname, 'resources/css/app.css'),
+                    'resources/css/app/custom.css': resolve(__dirname, 'resources/css/app/custom.css'),
+                    'resources/css/app/custom-trix.css': resolve(__dirname, 'resources/css/app/custom-trix.css'),
+                    'resources/admin-lte/dist/css/adminlte.css': resolve(__dirname, 'resources/admin-lte/dist/css/adminlte.css'),
+                    'resources/css/app/homepage.css': resolve(__dirname, 'resources/css/app/homepage.css'),
                 },
             },
         },
