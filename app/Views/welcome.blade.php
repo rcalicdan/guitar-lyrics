@@ -221,6 +221,7 @@
 
     <!-- Homepage Js -->
     <script src="js/homepage.js"></script>
+    @vite(['resources/js/app.js'])
 </body>
 
 </html>

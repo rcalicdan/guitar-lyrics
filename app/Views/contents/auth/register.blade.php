@@ -18,7 +18,8 @@
         rel="stylesheet">
 
     <!-- Custom CSS -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
+
     <link rel="preload" href="/placeholder/homepage-background.png" as="image">
 </head>
 
@@ -64,17 +65,17 @@
         <div class="container">
             <!-- Session Alert for Success/Error Messages -->
             @if (session()->has('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             @endif
 
             @if (session()->has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             @endif
 
             <div class="row justify-content-center">
@@ -92,7 +93,7 @@
                                         id="first_name" name="first_name" placeholder="Enter your full name"
                                         value="{{ old('first_name') }}">
                                     @error('first_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -102,7 +103,7 @@
                                         id="last_name" name="last_name" placeholder="Enter your full name"
                                         value="{{ old('last_name') }}">
                                     @error('last_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -113,7 +114,7 @@
                                         id="email" name="email" placeholder="Enter your email"
                                         value="{{ old('email') }}">
                                     @error('email')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -124,7 +125,7 @@
                                         id="password" name="password" value="{{ old('password') }}"
                                         placeholder="Enter your password">
                                     @error('password')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -136,7 +137,7 @@
                                         id="confirm-password" name="confirm_password"
                                         value="{{ old('confirm_password') }}" placeholder="Confirm your password">
                                     @error('confirm_password')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -159,6 +160,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    @vite(['resources/js/app.js'])
 </body>
 
 </html>

@@ -14,7 +14,7 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
     <!-- Custom CSS -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
     <link rel="preload" href="/placeholder/homepage-background.png" as="image">
 </head>
 
@@ -118,6 +118,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    @vite(['resources/js/app.js'])
 </body>
 
 </html>
