@@ -23,6 +23,7 @@ class User extends Model
         'email',
         'password',
         'email_verified_at',
+        'image_path'
     ];
 
     protected $hidden = [
