@@ -24,7 +24,7 @@ h6 {
 .hero-section {
     min-height: 100vh;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-        url('/placeholder/homepage-background.png') no-repeat center center/cover;
+        url('../../placeholder/homepage-background.png') no-repeat center center/cover;
     position: relative;
     overflow: hidden;
 }
@@ -265,9 +265,17 @@ h6 {
 }
 
 @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-    100% { transform: translateY(0px); }
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
 }
 
 @media (max-width: 991.98px) {
