@@ -7,6 +7,7 @@ use App\Controllers\Home;
 use App\Controllers\Api\ArtistOptionSearchController;
 use App\Controllers\SongCategoryController;
 use App\Controllers\SongController;
+use App\Controllers\Homepage\SongController as HomepageSongController;
 use App\Controllers\UserProfileController;
 use App\Controllers\UsersController;
 use CodeIgniter\Router\RouteCollection;
@@ -21,6 +22,9 @@ $routes->post('login', [AuthController::class, 'login'], ['as' => 'login.post'])
 $routes->get('register', [AuthController::class, 'showRegisterPage'], ['as' => 'register']);
 $routes->post('logout', [AuthController::class, 'logout'], ['as' => 'logout.post']);
 $routes->post('register', [AuthController::class, 'register'], ['as' => 'register.post']);
+
+$routes->get('songs', [HomepageSongController::class, 'index'], ['as' => 'home.songs.index']);
+$routes->get('songs/(:num)', [HomepageSongController::class, 'index'], ['as' => 'home.songs.show']);
 
 $routes->get('/dashboard', [DashboardController::class, 'index'], ['as' => 'dashboard', 'filter' => 'auth']);
 

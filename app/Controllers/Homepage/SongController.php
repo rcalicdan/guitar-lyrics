@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Homepage;
 
 use App\Models\Song;
 use App\Models\Artist;
 use App\Models\SongCategory;
+use App\Controllers\BaseController;
 
 class SongController extends BaseController
 {
@@ -75,7 +76,7 @@ class SongController extends BaseController
             'sort' => $sortBy
         ];
         
-        return blade_view('songs.index', compact(
+        return blade_view('contents.homepage.songs-index', compact(
             'songs', 
             'artists', 
             'categories', 

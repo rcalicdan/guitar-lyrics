@@ -9,11 +9,11 @@
 @section('content')
 <div x-data="songsFilter()" x-init="init()">
     @include('partials.header')
-    @include('songs-filter')
-    @include('songs-grid')
+    @include('contents.homepage.songs-filter')
+    @include('contents.homepage.songs-grid')
 </div>
 @endsection
 
 @push('scripts')
-@include('stacks.songs-scripts')
+@include('stacks.songs-script')
 @endpush

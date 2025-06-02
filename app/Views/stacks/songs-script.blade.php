@@ -1,5 +1,5 @@
 <script>
-function songsFilter() {
+    function songsFilter() {
     return {
         loading: false,
         filters: {
@@ -10,7 +10,6 @@ function songsFilter() {
         },
         
         init() {
-            // Initialize component
             console.log('Songs filter initialized');
         },
         
@@ -20,7 +19,6 @@ function songsFilter() {
         },
         
         autoSubmit() {
-            // Auto-submit after user stops typing
             if (this.filters.search.length > 2 || this.filters.search.length === 0) {
                 this.submitForm();
             }
@@ -49,9 +47,7 @@ function songsFilter() {
     }
 }
 
-// Handle page load states
 document.addEventListener('DOMContentLoaded', function() {
-    // Reset loading state when page loads
     Alpine.nextTick(() => {
         const component = Alpine.$data(document.querySelector('[x-data*="songsFilter"]'));
         if (component) {
@@ -60,10 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Handle browser back/forward navigation
 window.addEventListener('pageshow', function(event) {
     if (event.persisted) {
-        // Page was loaded from cache, reset loading state
         const component = Alpine.$data(document.querySelector('[x-data*="songsFilter"]'));
         if (component) {
             component.loading = false;

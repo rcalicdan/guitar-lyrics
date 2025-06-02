@@ -19,9 +19,9 @@
                             </div>
                         </div>
 
-                        <img src="{{ $song->image_path ?? '/placeholder/song-default.png' }}" alt="{{ $song->title }}"
+                        <img src="{{ $song->image_path }}" alt="{{ $song->title }}"
                             class="song-image" x-show="imageLoaded" @load="imageLoaded = true"
-                            @error="imageError = true; imageLoaded = true">
+                            imageLoaded = true">
                     </div>
 
                     <div class="song-content">
@@ -32,7 +32,7 @@
                         </p>
                         <span class="song-category">{{ $song->category_name }}</span>
                         <div class="d-grid">
-                            <a href="{{ route_to('songs.show', $song->id) }}" class="btn btn-custom"
+                            <a href="{{ route_to('home.songs.show', $song->id) }}" class="btn btn-custom"
                                 @click="$event.target.innerHTML = '<i class=\'fas fa-spinner fa-spin me-2\'></i>Loading...'">
                                 <i class="fas fa-music me-2"></i>View Chords
                             </a>
@@ -54,7 +54,7 @@
         <!-- Pagination -->
         <div class="pagination-wrapper" x-show="!loading" x-transition>
             <div class="d-flex justify-content-center">
-                {{ $songs->appends(request()->query())->links() }}
+                {!! $songs->links() !!}
             </div>
         </div>
         @else
