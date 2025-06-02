@@ -127,4 +127,5 @@ nb-configuration.xml
 .qodo
 
 public/null
+public/uploads
 node_modules/
