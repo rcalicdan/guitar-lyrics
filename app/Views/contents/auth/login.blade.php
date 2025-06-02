@@ -14,7 +14,7 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
     <!-- Custom CSS -->
-    @vite(['resources/css/app/login.css', 'resources/css/app/homepage.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preload" href="/placeholder/homepage-background.png" as="image">
 </head>
 

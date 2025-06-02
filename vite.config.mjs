@@ -9,21 +9,24 @@ export default defineConfig(({ command }) => {
     const isProduction = command === 'build';
 
     return {
-        base: isProduction ? '/dist/' : '/',
+        base: isProduction ? '/build/' : '/',
         build: {
-            outDir: 'dist',
+            outDir: 'public/build',
             emptyOutDir: true,
             manifest: true,
             rollupOptions: {
                 input: {
-                    'resources/js/app.js': resolve(__dirname, 'resources/js/app.js'),
-                    'resources/css/app.css': resolve(__dirname, 'resources/css/app.css'),
-                    'resources/css/app/custom.css': resolve(__dirname, 'resources/css/app/custom.css'),
-                    'resources/css/app/custom-trix.css': resolve(__dirname, 'resources/css/app/custom-trix.css'),
-                    'resources/css/app/homepage.css': resolve(__dirname, 'resources/css/app/homepage.css'),
+                    app: resolve(__dirname, 'resources/js/app.js'),
+                    styles: resolve(__dirname, 'resources/css/app.css'),
                 },
+                output: {
+                    assetFileNames: 'assets/[name]-[hash][extname]',
+                    chunkFileNames: 'assets/[name]-[hash].js',
+                    entryFileNames: 'assets/[name]-[hash].js',
+                }
             },
         },
+        publicDir: 'public/static',
         server: {
             host: 'localhost',
             port: 3000,

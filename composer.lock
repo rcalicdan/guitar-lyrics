@@ -2923,12 +2923,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rcalicdan/ci4-larabridge.git",
-                "reference": "892cc74c9e8026ae7ae5bf2e20227b22e932075a"
+                "reference": "8c7f3c5b476852361cf828fae0fd3c5c657e3dfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rcalicdan/ci4-larabridge/zipball/892cc74c9e8026ae7ae5bf2e20227b22e932075a",
-                "reference": "892cc74c9e8026ae7ae5bf2e20227b22e932075a",
+                "url": "https://api.github.com/repos/rcalicdan/ci4-larabridge/zipball/8c7f3c5b476852361cf828fae0fd3c5c657e3dfa",
+                "reference": "8c7f3c5b476852361cf828fae0fd3c5c657e3dfa",
                 "shasum": ""
             },
             "require": {
@@ -2964,7 +2964,8 @@
                     "src/Helpers/url_params.php",
                     "src/Helpers/bcrypt_helper.php",
                     "src/Helpers/session_redirect_helper.php",
-                    "src/Helpers/path_helper_constant.php"
+                    "src/Helpers/path_helper_constant.php",
+                    "src/Helpers/asset_helper.php"
                 ],
                 "psr-4": {
                     "Rcalicdan\\Ci4Larabridge\\": "src/"
@@ -2989,7 +2990,7 @@
                 "issues": "https://github.com/rcalicdan/ci4-larabridge/issues",
                 "source": "https://github.com/rcalicdan/ci4-larabridge"
             },
-            "time": "2025-06-01T17:30:20+00:00"
+            "time": "2025-06-02T04:29:59+00:00"
         },
         {
             "name": "symfony/clock",

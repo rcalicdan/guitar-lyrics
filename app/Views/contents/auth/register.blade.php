@@ -18,7 +18,7 @@
         rel="stylesheet">
 
     <!-- Custom CSS -->
-    @vite(['resources/css/app/register.css', 'resources/css/app/homepage.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preload" href="/placeholder/homepage-background.png" as="image">
 </head>
 

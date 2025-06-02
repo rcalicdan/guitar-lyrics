@@ -65,9 +65,5 @@ class Blade extends BaseConfig
             'switch',
             fn($expression) => "<?php switch ($expression): ?>"
         );
-
-        $blade->directive('vite', function ($expression) {
-            return "<?php echo vite_asset({$expression}); ?>";
-        });
     }
 }
