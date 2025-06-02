@@ -78,4 +78,9 @@ class User extends Model
     {
         return $this->role === 'user';
     }
+
+    public function songs()
+    {
+        return $this->hasMany(Song::class);
+    }
 }

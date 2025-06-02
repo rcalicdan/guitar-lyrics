@@ -73,13 +73,10 @@
 
                 <!-- Action buttons -->
                 <div class="header-actions">
-                    <button @click="toggleFavorite()" class="btn btn-light me-2"
+                    <button @click="toggleFavorite()" class="btn btn-light"
                         :class="{ 'btn-danger': isFavorite, 'btn-light': !isFavorite }">
                         <i :class="isFavorite ? 'fas fa-heart' : 'far fa-heart'" class="me-2"></i>
                         <span x-text="isFavorite ? 'Favorited' : 'Add to Favorites'"></span>
-                    </button>
-                    <button @click="shareContent()" class="btn btn-outline-light me-2">
-                        <i class="fas fa-share me-2"></i>Share
                     </button>
                 </div>
             </div>

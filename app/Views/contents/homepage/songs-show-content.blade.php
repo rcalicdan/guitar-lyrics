@@ -22,6 +22,10 @@
                                 <strong><i class="fas fa-tag me-2"></i>Category:</strong> 
                                 <span>{{ $song->category_name }}</span>
                             </div>
+                            <div class="detail-item">
+                                <strong><i class="fas fa-user-plus me-2"></i>By:</strong> 
+                                <span>{{ $song->user->full_name ?? 'Unknown User' }}</span>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="detail-item">
@@ -37,17 +41,15 @@
                 </div>
                 <div class="col-lg-4 text-lg-end">
                     <div class="action-buttons">
-                        <a href="{{ route_to('songs.index') }}" class="btn btn-outline-primary me-2">
+                        <a href="{{ route_to('songs.index') }}" class="btn btn-outline-primary">
                             <i class="fas fa-arrow-left me-2"></i>Back to Songs
                         </a>
-                        <button @click="printContent()" class="btn btn-custom">
-                            <i class="fas fa-print me-2"></i>Print
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
         
+        <!-- Rest of the content remains the same -->
         <!-- Content Controls -->
         <div class="content-controls mb-4"
              x-show="true"
@@ -117,7 +119,7 @@
             <div class="chord-content" 
                  :class="'font-size-' + fontSize"
                  x-ref="chordContent">
-                {{ $song->content }}
+                {!! $song->content !!}
             </div>
         </div>
         

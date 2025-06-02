@@ -1,57 +1,37 @@
 <script>
     function songShow() {
     return {
-        // State variables
         isFavorite: false,
-        viewCount: Math.floor(Math.random() * 1000) + 100, // Mock view count
+        viewCount: Math.floor(Math.random() * 1000) + 100,
         fontSize: 'medium',
         autoScrolling: false,
         isFullscreen: false,
         showFloatingActions: false,
         showScrollTop: false,
-        showShareModal: false,
-        copying: false,
-        copied: false,
         scrollInterval: null,
         relatedSongs: [],
         
-        // URLs and links
-        shareUrl: window.location.href,
-        socialLinks: {
-            facebook: '',
-            twitter: '',
-            whatsapp: ''
-        },
-        
         init() {
-            // Initialize component
-            this.setupSocialLinks();
             this.loadRelatedSongs();
             this.setupScrollListeners();
             this.loadUserPreferences();
             
-            // Show floating actions after a delay
             setTimeout(() => {
                 this.showFloatingActions = true;
             }, 1000);
         },
+
         
-        setupSocialLinks() {
-            const songTitle = '{{ $song->title }}';
-            const artistName = '{{ $song->artist_name }}';
-            const shareText = `Check out "${songTitle}" by ${artistName} - Guitar chords and lyrics`;
-            const encodedText = encodeURIComponent(shareText);
-            const encodedUrl = encodeURIComponent(this.shareUrl);
-            
-            this.socialLinks = {
-                facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-                twitter: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
-                whatsapp: `https://wa.me/?text=${encodedText} ${encodedUrl}`
-            };
+        formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
         },
         
         loadRelatedSongs() {
-            // Mock related songs - in real app, this would be an API call
             this.relatedSongs = [
                 {
                     id: 1,
@@ -68,12 +48,10 @@
             ].filter(song => song.id !== {{ $song->id }});
         },
         
-      setupScrollListeners() {
+        setupScrollListeners() {
             window.addEventListener('scroll', () => {
-                // Show scroll to top button when scrolled down
                 this.showScrollTop = window.pageYOffset > 300;
                 
-                // Auto-hide floating actions when scrolling
                 clearTimeout(this.scrollTimeout);
                 this.scrollTimeout = setTimeout(() => {
                     this.showFloatingActions = true;
@@ -152,40 +130,11 @@
             this.isFullscreen = !this.isFullscreen;
         },
         
-        openShareModal() {
-            this.showShareModal = true;
-        },
-        
-        closeShareModal() {
-            this.showShareModal = false;
-        },
-        
-        async copyToClipboard() {
-            this.copying = true;
-            
-            try {
-                await navigator.clipboard.writeText(this.shareUrl);
-                this.copied = true;
-                
-                setTimeout(() => {
-                    this.copied = false;
-                }, 2000);
-            } catch (err) {
-                console.error('Failed to copy: ', err);
-            } finally {
-                this.copying = false;
-            }
-        },
-        
         scrollToTop() {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
-        },
-        
-        printSong() {
-            window.print();
         },
         
         destroy() {
