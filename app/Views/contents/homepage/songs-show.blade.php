@@ -3,7 +3,7 @@
 @section('title', $song->title . ' - ' . $song->artist_name . ' | Guitar Lyrics & Chords')
 
 @push('styles')
-@include('songs-show-styles')
+@include('stacks.songs-show-styles')
 @endpush
 
 @section('content')
@@ -15,5 +15,5 @@
 @endsection
 
 @push('scripts')
-@include('songs-show-script')
+@include('stacks.songs-show-script')
 @endpush

@@ -135,7 +135,7 @@
                     <div class="col-md-6 col-lg-4">
                         <a :href="'/songs/' + song.id" class="related-song-link">
                             <div class="related-song-card">
-                                <img :src="song.image_path || '/placeholder/song-default.png'" 
+                                <img :src="song.image_path || '/placeholder/no-image.png'" 
                                      :alt="song.title" 
                                      class="related-song-image">
                                 <div class="related-song-info">

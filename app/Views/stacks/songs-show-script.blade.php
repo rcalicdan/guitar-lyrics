@@ -57,13 +57,13 @@
                     id: 1,
                     title: 'Sample Song 1',
                     artist_name: '{{ $song->artist_name }}',
-                    image_path: '/placeholder/song1.png'
+                    image_path:  '{{ $song->image_path }}'
                 },
                 {
                     id: 2,
                     title: 'Sample Song 2',
                     artist_name: '{{ $song->artist_name }}',
-                    image_path: '/placeholder/song2.png'
+                    image_path: '{{ $song->image_path }}'
                 }
             ].filter(song => song.id !== {{ $song->id }});
         },
