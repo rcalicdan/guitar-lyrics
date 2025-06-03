@@ -15,9 +15,9 @@ class AuthController extends BaseController
         return blade_view('contents.auth.login');
     }
 
-    public function showLoginCommentPage()
+    public function showLoginCommentPage(string $slug)
     {
-        return blade_view('contents.auth.login-comment');
+        return blade_view('contents.auth.login-comment', ['slug' => $slug]);
     }
 
     public function showRegisterPage()
@@ -42,12 +42,12 @@ class AuthController extends BaseController
         return redirect()->back()->withInput()->with('error', 'Invalid Email or Password');
     }
 
-    public function loginComment()
+    public function loginComment(string $slug)
     {
         $credentials = LoginRequest::validateRequest();
 
         if (Auth::attempt($credentials)) {
-            return redirect()->back();
+            return redirect()->route('home.songs.show', [$slug]);
         }
 
         return redirect()->back()->withInput()->with('error', 'Invalid Email or Password');

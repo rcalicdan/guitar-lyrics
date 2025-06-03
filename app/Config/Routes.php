@@ -20,8 +20,8 @@ $routes->get('/about-us', [Home::class, 'showAboutUsPage'], ['as' => 'about-us']
 
 $routes->group('', ['filter' => 'guest'], function (RouteCollection $routes) {
     $routes->get('login', [AuthController::class, 'showLoginPage'], ['as' => 'login']);
-    $routes->get('login/comment', [AuthController::class, 'showLoginCommentPage'], ['as' => 'login.comment']);
-    $routes->post('login/comment', [AuthController::class, 'loginComment'], ['as' => 'login.comment.post']);
+    $routes->get('login/comment/(:segment)', [AuthController::class, 'showLoginCommentPage'], ['as' => 'login.comment']);
+    $routes->post('login/comment/(:segment)', [AuthController::class, 'loginComment'], ['as' => 'login.comment.post']);
     $routes->post('login', [AuthController::class, 'login'], ['as' => 'login.post']);
     $routes->get('register', [AuthController::class, 'showRegisterPage'], ['as' => 'register']);
     $routes->post('register', [AuthController::class, 'register'], ['as' => 'register.post']);

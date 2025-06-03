@@ -79,7 +79,7 @@
                             </div>
                             @endif
 
-                            <form method="POST" action="{{ route_to('login.comment.post') }}">
+                            <form method="POST" action="{{ route_to('login.comment.post', $slug) }}">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>

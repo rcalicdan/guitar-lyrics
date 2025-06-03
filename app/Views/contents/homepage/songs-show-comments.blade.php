@@ -39,7 +39,7 @@
             <!-- Login Prompt -->
             <div class="alert alert-info" x-show="!isAuthenticated">
                 <i class="fas fa-info-circle me-2"></i>
-                <a href="{{ route_to('login.comment') }}" class="alert-link">Login</a> to post a comment.
+                <a href="{{ route_to('login.comment', $song->slug) }}" class="alert-link">Login</a> to post a comment.
             </div>
 
             <!-- Comments List -->
