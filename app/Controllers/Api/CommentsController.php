@@ -19,7 +19,9 @@ class CommentsController extends BaseController
 
         $page = $this->request->getVar('page') ?? 1;
         $perPage = 10;
-
+        $totalCount = Comments::where('song_id', $song->id)
+            ->rootComments()
+            ->count();
         $comments = Comments::with(['user', 'replies.user'])
             ->where('song_id', $song->id)
             ->rootComments()
@@ -35,6 +37,7 @@ class CommentsController extends BaseController
                 'next_page_url' => $comments->nextPageUrl(),
                 'prev_page_url' => $comments->previousPageUrl(),
                 'path' => $comments->path(),
+                'total' => $totalCount, 
             ]
         ]);
     }
@@ -73,12 +76,15 @@ class CommentsController extends BaseController
         }
 
         $comment = Comments::where('id', $commentId)
-            ->where('user_id', auth()->user()->id)
             ->where('song_id', $song->id)
             ->first();
 
         if (!$comment) {
-            return $this->respondNotFound('Comment not found or unauthorized');
+            return $this->respondNotFound('Comment not found');
+        }
+
+        if ($this->cannot('update', $comment)) {
+            return $this->respondUnauthorized('You are not authorized to update this comment');
         }
 
         if (!$this->validateCommentData()) {
@@ -103,12 +109,15 @@ class CommentsController extends BaseController
         }
 
         $comment = Comments::where('id', $commentId)
-            ->where('user_id', auth()->user()->id)
             ->where('song_id', $song->id)
             ->first();
 
         if (!$comment) {
-            return $this->respondNotFound('Comment not found or unauthorized');
+            return $this->respondNotFound('Comment not found');
+        }
+
+        if ($this->cannot('delete', $comment)) {
+            return $this->respondUnauthorized('You are not authorized to delete this comment');
         }
 
         $comment->delete();
@@ -162,12 +171,16 @@ class CommentsController extends BaseController
                 'content' => $comment->content,
                 'created_at' => $comment->created_at->diffForHumans(),
                 'user' => $this->formatUserData($comment->user),
+                'can_edit' => auth()->check() ? $this->can('update', $comment) : false,
+                'can_delete' => auth()->check() ? $this->can('delete', $comment) : false,
                 'replies' => $comment->replies->map(function ($reply) {
                     return [
                         'id' => $reply->id,
                         'content' => $reply->content,
                         'created_at' => $reply->created_at->diffForHumans(),
-                        'user' => $this->formatUserData($reply->user)
+                        'user' => $this->formatUserData($reply->user),
+                        'can_edit' => auth()->check() ? $this->can('update', $reply) : false,
+                        'can_delete' => auth()->check() ? $this->can('delete', $reply) : false,
                     ];
                 })
             ];
@@ -181,6 +194,8 @@ class CommentsController extends BaseController
             'content' => $comment->content,
             'created_at' => $comment->created_at->diffForHumans(),
             'user' => $this->formatUserData($comment->user),
+            'can_edit' => auth()->check() ? $this->can('update', $comment) : false,
+            'can_delete' => auth()->check() ? $this->can('delete', $comment) : false,
             'replies' => []
         ];
     }
@@ -215,6 +230,14 @@ class CommentsController extends BaseController
             'success' => false,
             'message' => $message
         ])->setStatusCode(404);
+    }
+
+    private function respondUnauthorized($message = 'Unauthorized')
+    {
+        return $this->response->setJSON([
+            'success' => false,
+            'message' => $message
+        ])->setStatusCode(403);
     }
 
     private function respondValidationError()

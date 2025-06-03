@@ -55,13 +55,14 @@
                                     <strong x-text="comment.user.name"></strong>
                                     <small class="text-muted" x-text="comment.created_at"></small>
                                 </div>
-                                <div class="comment-actions" x-show="comment.user.id === currentUserId">
+                                <!-- Updated: Use permission-based showing instead of user ID comparison -->
+                                <div class="comment-actions" x-show="comment.can_edit || comment.can_delete">
                                     <button @click="editComment(comment)" class="btn btn-sm btn-outline-secondary me-1"
-                                        title="Edit comment">
+                                        title="Edit comment" x-show="comment.can_edit">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button @click="deleteComment(comment.id)" class="btn btn-sm btn-outline-danger"
-                                        title="Delete comment">
+                                        title="Delete comment" x-show="comment.can_delete">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -129,7 +130,7 @@
 
                         <!-- Replies -->
                         <div class="replies mt-3" x-show="comment.replies && comment.replies.length > 0">
-                            <template x-for="reply in comment.replies" :key="reply.id">
+                            <template x-for="reply in comment.replies || []" :key="'reply-' + reply.id">
                                 <div class="reply-item">
                                     <div class="comment-header">
                                         <img :src="reply.user.image" :alt="reply.user.name" class="comment-avatar">
@@ -137,15 +138,48 @@
                                             <strong x-text="reply.user.name"></strong>
                                             <small class="text-muted" x-text="reply.created_at"></small>
                                         </div>
-                                        <div class="comment-actions" x-show="reply.user.id === currentUserId">
+                                        <!-- Updated: Use permission-based showing for replies -->
+                                        <div class="comment-actions" x-show="reply.can_edit || reply.can_delete">
+                                            <button @click="editComment(reply)"
+                                                class="btn btn-sm btn-outline-secondary me-1" title="Edit reply"
+                                                x-show="reply.can_edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
                                             <button @click="deleteComment(reply.id)"
-                                                class="btn btn-sm btn-outline-danger" title="Delete reply">
+                                                class="btn btn-sm btn-outline-danger" title="Delete reply"
+                                                x-show="reply.can_delete">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="comment-text">
+
+                                    <!-- Reply Text (when not editing) -->
+                                    <div class="comment-text" x-show="editingCommentId !== reply.id">
                                         <p x-text="reply.content" class="mb-0"></p>
+                                    </div>
+
+                                    <!-- Edit Form for Replies -->
+                                    <div class="edit-comment-form mt-2" x-show="editingCommentId === reply.id">
+                                        <form @submit.prevent="updateComment(reply)">
+                                            <div class="mb-2">
+                                                <textarea x-model="editCommentContent" class="form-control" rows="3"
+                                                    maxlength="1000" required></textarea>
+                                                <small class="text-muted d-block mt-1"
+                                                    :class="{'text-danger': editCommentContent.length > 950}">
+                                                    <span x-text="editCommentContent.length"></span>/1000 characters
+                                                </small>
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                <button type="submit" class="btn btn-sm btn-primary"
+                                                    :disabled="!editCommentContent.trim() || editCommentContent.length > 1000">
+                                                    <i class="fas fa-save me-1"></i>Save
+                                                </button>
+                                                <button type="button" @click="cancelEdit()"
+                                                    class="btn btn-sm btn-secondary">
+                                                    <i class="fas fa-times me-1"></i>Cancel
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </template>

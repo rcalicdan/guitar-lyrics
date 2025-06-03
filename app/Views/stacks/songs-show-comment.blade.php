@@ -17,9 +17,11 @@
             hasMorePages: false,
             loadingMore: false,
             totalComments: 0,
-            
+
             init() {
-                this.loadComments();
+                this.$nextTick(() => {
+                    this.loadComments();
+                });
             },
 
             async loadComments(page = 1) {
@@ -44,7 +46,7 @@
                         
                         this.currentPage = responseData.pagination.current_page;
                         this.hasMorePages = responseData.pagination.has_more_pages;
-                        this.totalComments = this.comments.length;
+                        this.totalComments = responseData.pagination.total;
                         
                     } else {
                         this.showNotification(response.data.message || 'Error loading comments', 'error');
@@ -83,9 +85,9 @@
                     });
                     
                     if (response.data.success) {
-                        // Add new comment to the beginning of the list
                         this.comments.unshift(response.data.data);
-                        this.totalComments = this.comments.length;
+                        this.totalComments++;
+                        
                         this.newComment.content = '';
                         this.showNotification(response.data.message || 'Comment posted successfully!', 'success');
                     } else {
@@ -122,6 +124,9 @@
                             parentComment.replies.push(response.data.data);
                         }
                         
+                        // Fix: Increment total count for replies too
+                        this.totalComments++;
+                        
                         this.replyContent = '';
                         this.replyingToId = null;
                         this.showNotification(response.data.message || 'Reply posted successfully!', 'success');
@@ -154,7 +159,8 @@
                     
                     if (response.data.success) {
                         comment.content = this.editCommentContent;
-                        comment.updated_at = new Date().toISOString(); 
+                        comment.updated_at = new Date().toISOString();
+                        
                         this.cancelEdit();
                         this.showNotification(response.data.message || 'Comment updated successfully!', 'success');
                     } else {
@@ -177,15 +183,31 @@
                     });
                     
                     if (response.data.success) {
+                        let deletedCount = 0;
+                        
                         this.comments = this.comments.filter(c => {
-                            if (c.id === commentId) return false;
+                            if (c.id === commentId) {
+                                deletedCount = 1 + (c.replies ? c.replies.length : 0);
+                                return false;
+                            }
                             if (c.replies) {
-                                c.replies = c.replies.filter(r => r.id !== commentId);
+                                const originalReplyCount = c.replies.length;
+                                c.replies = c.replies.filter(r => {
+                                    if (r.id === commentId) {
+                                        deletedCount = 1;
+                                        return false;
+                                    }
+                                    return true;
+                                });
+                                if (originalReplyCount > c.replies.length && deletedCount === 0) {
+                                    deletedCount = 1;
+                                }
                             }
                             return true;
                         });
                         
-                        this.totalComments = this.comments.length;
+                        this.totalComments -= deletedCount;
+                        
                         this.showNotification(response.data.message || 'Comment deleted successfully!', 'success');
                     } else {
                         this.showNotification(response.data.message || 'Error deleting comment', 'error');
@@ -209,6 +231,14 @@
             cancelEdit() {
                 this.editingCommentId = null;
                 this.editCommentContent = '';
+            },
+
+            canEditComment(comment) {
+                return comment.can_edit || false;
+            },
+
+            canDeleteComment(comment) {
+                return comment.can_delete || false;
             },
 
             validateComment(content) {
