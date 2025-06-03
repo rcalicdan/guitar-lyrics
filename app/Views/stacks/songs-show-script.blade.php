@@ -5,7 +5,8 @@
             songId: songId,
             songSlug: songSlug,
             isFavorite: false,
-            viewCount: Math.floor(Math.random() * 1000) + 100,
+            viewCount: {{ $song->views_count ?? 0 }},
+            formattedViewCount: '{{ $song->formatted_views ?? "0" }}',
             fontSize: 'medium',
             autoScrolling: false,
             isFullscreen: false,
@@ -13,15 +14,42 @@
             showScrollTop: false,
             scrollInterval: null,
             relatedSongs: [],
+            viewCounted: false,
             
             init() {
                 this.loadRelatedSongs();
                 this.setupScrollListeners();
                 this.loadUserPreferences();
+                this.trackView();
                 
                 setTimeout(() => {
                     this.showFloatingActions = true;
                 }, 1000);
+            },
+
+            async trackView() {
+                setTimeout(async () => {
+                    if (!this.viewCounted) {
+                        try {
+                            const response = await axios.post(`/api/songs/${this.songId}/increment-view`, {}, {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                }
+                            });
+                            
+                            if (response.data.success) {
+                                this.viewCount = response.data.views_count;
+                                this.formattedViewCount = response.data.formatted_views;
+                                this.viewCounted = true;
+                                console.log('View count updated:', this.formattedViewCount);
+                            }
+                        } catch (error) {
+                            console.error('Error tracking view:', error);
+                        }
+                    }
+                }, 3000); 
             },
 
             formatNumber(num) {

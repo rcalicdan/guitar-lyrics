@@ -32,6 +32,14 @@
                                 <small class="text-muted">Image unavailable</small>
                             </div>
                         </div>
+
+                        <!-- Views overlay badge -->
+                        <div class="views-overlay-badge" x-show="imageLoaded && !imageError">
+                            <span class="badge bg-dark bg-opacity-75">
+                                <i class="fas fa-eye me-1"></i>
+                                {{ number_format($song->views_count ?? 0) }}
+                            </span>
+                        </div>
                     </div>
 
                     <div class="song-content">
@@ -40,7 +48,31 @@
                             <i class="fas fa-user me-1"></i>
                             {{ $song->artist_name }}
                         </p>
-                        <span class="song-category">{{ $song->category_name }}</span>
+                        <div class="song-meta-info">
+                            <span class="song-category">{{ $song->category_name }}</span>
+
+                            <!-- Stats row -->
+                            <div class="song-stats">
+                                <small class="text-muted d-flex align-items-center justify-content-between">
+                                    <span>
+                                        <i class="fas fa-eye me-1"></i>
+                                        @if(($song->views_count ?? 0) >= 1000000)
+                                        {{ number_format(($song->views_count ?? 0) / 1000000, 1) }}M
+                                        @elseif(($song->views_count ?? 0) >= 1000)
+                                        {{ number_format(($song->views_count ?? 0) / 1000, 1) }}K
+                                        @else
+                                        {{ number_format($song->views_count ?? 0) }}
+                                        @endif
+                                        {{ ($song->views_count ?? 0) === 1 ? 'view' : 'views' }}
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-clock me-1"></i>
+                                        {{ $song->created_at->diffForHumans() }}
+                                    </span>
+                                </small>
+                            </div>
+                        </div>
+
                         <div class="d-grid">
                             <a href="{{ route_to('home.songs.show', $song->slug) }}" class="btn btn-custom"
                                 @click="$event.target.innerHTML = '<i class=\'fas fa-spinner fa-spin me-2\'></i>Loading...'">

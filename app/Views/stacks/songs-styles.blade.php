@@ -159,4 +159,126 @@
 .fade-enter, .fade-leave-to {
     opacity: 0;
 }
+
+/* Views overlay badge on image */
+.views-overlay-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.song-card:hover .views-overlay-badge {
+    opacity: 1;
+}
+
+.views-overlay-badge .badge {
+    font-size: 0.75rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+/* Song stats styling */
+.song-stats {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #e9ecef;
+}
+
+.song-stats small {
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+.song-meta-info {
+    margin-bottom: 15px;
+}
+
+.song-category {
+    display: inline-block;
+    background: #f8f9fa;
+    color: #495057;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Enhanced song card styling */
+.song-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.song-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.song-image-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.song-content {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.song-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #212529;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.song-artist {
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-bottom: 8px;
+}
+
+.btn-custom {
+    margin-top: auto;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .song-stats small {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .views-overlay-badge {
+        opacity: 1; /* Always show on mobile */
+    }
+}
 </style>

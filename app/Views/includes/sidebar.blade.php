@@ -20,43 +20,40 @@
                     </a>
                 </li>
 
-                <!-- Songs -->
+                <!-- Link for All Songs -->
                 <li class="nav-item mb-1">
-                    <a href="#"
-                        class="nav-link rounded {{ active_class(['songs', 'songs/categories*', 'songs/artist*', 'songs/view*']) }}">
+                    <a href="{{ route_to('songs.index') }}"
+                        class="nav-link rounded {{ active_class(['song', 'song/edit*', 'song/create*', 'song/view*']) }}">
                         <i class="nav-icon bi bi-music-note-list me-2"></i>
-                        <p>
-                            Songs
-                            <i class="right bi bi-chevron-down ms-auto"></i>
-                        </p>
+                        <p>All Songs</p>
                     </a>
+                </li>
 
-                    <!-- Submenu -->
-                    <ul class="nav nav-treeview ps-3 mt-1">
-                        <li class="nav-item mb-1">
-                            <a href="{{ route_to('songs.index') }}"
-                                class="nav-link rounded {{ active_class(['songs', 'songs/edit*', 'songs/create*', 'songs/view*']) }}">
-                                <i class="nav-icon bi bi-dot me-2"></i>
-                                <p>All Songs</p>
-                            </a>
-                        </li>
+                <!-- Link for My Published Songs -->
+                <li class="nav-item mb-1">
+                    <a href="{{ route_to('songs.my_published') }}"
+                        class="nav-link rounded {{ active_class('songs/my-published*') }}">
+                        <i class="nav-icon bi bi-file-earmark-music me-2"></i>
+                        <p>My Published Songs</p>
+                    </a>
+                </li>
 
-                        <li class="nav-item mb-1">
-                            <a href="{{ route_to('songs.categories.index') }}"
-                                class="nav-link rounded {{ active_class('songs/categories*') }}">
-                                <i class="nav-icon bi bi-dot me-2"></i>
-                                <p>Song Category</p>
-                            </a>
-                        </li>
+                <!-- Link for Song Categories -->
+                <li class="nav-item mb-1">
+                    <a href="{{ route_to('songs.categories.index') }}"
+                        class="nav-link rounded {{ active_class('song/categories*') }}">
+                        <i class="nav-icon bi bi-tags me-2"></i>
+                        <p>Song Category</p>
+                    </a>
+                </li>
 
-                        <li class="nav-item mb-1">
-                            <a href="{{ route_to('songs.artists.index') }}"
-                                class="nav-link rounded {{ active_class('songs/artists*') }}">
-                                <i class="nav-icon bi bi-dot me-2"></i>
-                                <p>Song Artist</p>
-                            </a>
-                        </li>
-                    </ul>
+                <!-- Link for Song Artists -->
+                <li class="nav-item mb-1">
+                    <a href="{{ route_to('songs.artists.index') }}"
+                        class="nav-link rounded {{ active_class('song/artists*') }}">
+                        <i class="nav-icon bi bi-person-badge me-2"></i>
+                        <p>Song Artist</p>
+                    </a>
                 </li>
 
                 <!-- Users -->
@@ -69,8 +66,7 @@
 
                 <!-- Settings -->
                 <li class="nav-item mb-1">
-                    <a href="{{ route_to('settings.index') }}"
-                        class="nav-link rounded {{ active_class('settings*') }}">
+                    <a href="{{ route_to('settings.index') }}" class="nav-link rounded {{ active_class('settings*') }}">
                         <i class="nav-icon bi bi-gear me-2"></i>
                         <p>Audit Logs</p>
                     </a>

@@ -26,9 +26,24 @@ class Song extends Model
         return $this->belongsTo(SongCategory::class);
     }
 
-    /**
-     * Song belongs to many users through comments
-     */
+    public function incrementViews()
+    {
+        $this->increment('views_count');
+    }
+
+    public function getFormattedViewsAttribute(): string
+    {
+        $count = $this->views_count;
+
+        if ($count >= 1000000) {
+            return number_format($count / 1000000, 1) . 'M';
+        } elseif ($count >= 1000) {
+            return number_format($count / 1000, 1) . 'K';
+        }
+
+        return number_format($count);
+    }
+
     public function commenters(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'comments')
@@ -47,9 +62,6 @@ class Song extends Model
         return $this->hasMany(Comments::class);
     }
 
-    /**
-     * Get comments collection
-     */
     public function getCommentsAttribute()
     {
         return Comments::where('song_id', $this->id)->with('user')->get();
@@ -65,9 +77,6 @@ class Song extends Model
         return $this->artist->name ?? 'Unknown';
     }
 
-    /**
-     * Get comments count
-     */
     public function getCommentsCountAttribute(): int
     {
         return Comments::where('song_id', $this->id)->count();
