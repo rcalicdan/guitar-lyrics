@@ -47,7 +47,7 @@ $routes->group('users', ['filter' => 'auth'], function (RouteCollection $routes)
     $routes->put('update/(:num)', [UsersController::class, 'update'], ['as' => 'users.update']);
 });
 
-$routes->group('songs', ['filter' => 'auth'], function (RouteCollection $routes) {
+$routes->group('song', ['filter' => 'auth'], function (RouteCollection $routes) {
     $routes->get('', [SongController::class, 'index'], ['as' => 'songs.index']);
     $routes->get('create', [SongController::class, 'create'], ['as' => 'songs.create']);
     $routes->post('store', [SongController::class, 'store'], ['as' => 'songs.store']);
@@ -73,6 +73,13 @@ $routes->group('songs', ['filter' => 'auth'], function (RouteCollection $routes)
     $routes->get('view/(:segment)', [SongController::class, 'show'], ['as' => 'songs.show']);
 });
 
-$routes->group('api/', ['filter' => 'auth'], function (RouteCollection $routes) {
+$routes->group('api/', function (RouteCollection $routes) {
     $routes->get('songs/artists/search', [ArtistOptionSearchController::class, 'search'], ['as' => 'songs.artists.search']);
+});
+
+$routes->group('api/songs/(:segment)', ['filter' => 'auth'], function (RouteCollection $routes) {
+    $routes->get('comments', [App\Controllers\Api\CommentsController::class, 'index'], ['as' => 'api.songs.comments.index']);
+    $routes->post('comments', [App\Controllers\Api\CommentsController::class, 'store'], ['as' => 'api.songs.comments.store']);
+    $routes->patch('comments/(:num)', [App\Controllers\Api\CommentsController::class, 'update'], ['as' => 'api.songs.comments.update']);
+    $routes->delete('comments/(:num)', [App\Controllers\Api\CommentsController::class, 'delete'], ['as' => 'api.songs.comments.delete']);
 });

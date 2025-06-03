@@ -1,4 +1,173 @@
 <style>
+/* Comments Section Styles */
+.comments-section {
+    background: #f8f9fa;
+    padding: 3rem 0;
+}
+
+.comments-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.comment-form textarea {
+    border-radius: 12px;
+    border: 2px solid #e9ecef;
+    transition: border-color 0.3s ease;
+}
+
+.comment-form textarea:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.comment-item {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 1.5rem 0;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.comment-content {
+    margin-bottom: 1rem;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.comment-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.comment-meta {
+    flex: 1;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.comment-text {
+    margin-left: 3rem;
+    margin-bottom: 1rem;
+}
+
+.comment-footer {
+    margin-left: 3rem;
+}
+
+.reply-form {
+    margin-left: 3rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.edit-comment-form {
+    margin-left: 3rem;
+    margin-bottom: 1rem;
+}
+
+.replies {
+    margin-left: 3rem;
+    margin-top: 1rem;
+    border-left: 3px solid #e9ecef;
+    padding-left: 1rem;
+}
+
+.reply-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.reply-item:last-child {
+    border-bottom: none;
+}
+
+.reply-item .comment-header {
+    margin-bottom: 0.5rem;
+}
+
+.reply-item .comment-avatar {
+    width: 32px;
+    height: 32px;
+}
+
+.reply-item .comment-text {
+    margin-left: 2.5rem;
+    margin-bottom: 0;
+}
+
+.reply-item .comment-actions {
+    margin-left: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .comment-text,
+    .comment-footer,
+    .reply-form,
+    .edit-comment-form {
+        margin-left: 0;
+    }
+    
+    .replies {
+        margin-left: 1rem;
+        padding-left: 0.5rem;
+    }
+    
+    .reply-item .comment-text {
+        margin-left: 0;
+    }
+}
+.artist-dropdown {
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    background: white;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.artist-option {
+    transition: background-color 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.artist-option:hover,
+.artist-option.highlighted {
+    background-color: #f8f9fa;
+}
+
+.artist-option.selected {
+    background-color: #e7f3ff;
+    color: #0066cc;
+}
+
+.artist-option:not(:last-child) {
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Style the search input when an artist is selected */
+.artist-selected {
+    background-color: #e7f3ff;
+    border-color: #0066cc;
+}
 .song-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;

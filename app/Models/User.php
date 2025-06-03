@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Rcalicdan\Ci4Larabridge\Models\Model;
-
 use Rcalicdan\Ci4Larabridge\Traits\Authentication\HasEmailVerification;
 use Rcalicdan\Ci4Larabridge\Traits\Authentication\HasPasswordReset;
 use Rcalicdan\Ci4Larabridge\Traits\Authentication\HasRememberToken;
@@ -33,9 +34,6 @@ class User extends Model
         'password_reset_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     */
     protected function casts(): array
     {
         return [
@@ -79,8 +77,26 @@ class User extends Model
         return $this->role === 'user';
     }
 
-    public function songs()
+    public function songs(): HasMany
     {
         return $this->hasMany(Song::class);
+    }
+
+    public function commentedSongs(): BelongsToMany
+    {
+        return $this->belongsToMany(Song::class, 'comments')
+            ->using(Comments::class)
+            ->withPivot(['id', 'content', 'created_at', 'updated_at'])
+            ->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return Comments::where('user_id', $this->id);
+    }
+
+    public function getCommentsAttribute()
+    {
+        return Comments::where('user_id', $this->id)->with('song')->get();
     }
 }

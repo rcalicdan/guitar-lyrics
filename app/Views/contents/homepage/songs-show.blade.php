@@ -7,9 +7,10 @@
 @endpush
 
 @section('content')
-<div x-data="songShow()" x-init="init()">
+<div x-data="songShow({{ $song->id }}, '{{ $song->slug }}')" x-init="init()">
     @include('contents.homepage.songs-show-header')
     @include('contents.homepage.songs-show-content')
+    @include('contents.homepage.songs-show-comments')
     @include('contents.homepage.songs-show-actions')
 </div>
 @endsection
