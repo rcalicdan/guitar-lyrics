@@ -67,8 +67,8 @@ export default defineConfig(({ command }) => {
                 usePolling: true,
                 interval: 100,
                 include: [
-                    'app/Views/**/*.php',
-                    'app/Views/**/*.blade.php',
+                    'app/Views/**',
+                    'app/Routes/**',
                     '**/*.html'
                 ],
                 ignored: [

@@ -2,7 +2,7 @@
 <section class="song-header">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-4 text-center mb-4 mb-lg-0">
+            <div class="col-lg-4 text-center mb-4 mt-5 mb-lg-0">
                 <div class="song-image-wrapper" x-data="{ imageLoaded: false, imageError: false }">
                     <!-- Loading placeholder -->
                     <div x-show="!imageLoaded && !imageError" class="image-loading-placeholder">

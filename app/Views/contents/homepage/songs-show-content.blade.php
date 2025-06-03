@@ -135,7 +135,7 @@
             <div class="row g-3">
                 <template x-for="song in relatedSongs" :key="song.id">
                     <div class="col-md-6 col-lg-4">
-                        <a :href="'/songs/' + song.id" class="related-song-link">
+                        <a :href="'/songs/' + song.slug" class="related-song-link">
                             <div class="related-song-card">
                                 <img :src="song.image_path || '/placeholder/no-image.png'" 
                                      :alt="song.title" 

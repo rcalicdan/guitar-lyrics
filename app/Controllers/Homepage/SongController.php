@@ -84,14 +84,15 @@ class SongController extends BaseController
         ));
     }
 
-    public function show($id)
+    public function show($slug)
     {
         $song = Song::with(['artist', 'songCategory'])
+            ->where('slug', $slug)
             ->where('is_published', true)
-            ->findOrFail($id);
+            ->first();
 
         $relatedSongs = Song::with(['artist'])
-            ->where('artist_id', $song->artist_id)
+            ->where('title', 'LIKE', $song->title)
             ->where('id', '!=', $song->id)
             ->where('is_published', true)
             ->orderBy('created_at', 'desc')

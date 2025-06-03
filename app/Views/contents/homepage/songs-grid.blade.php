@@ -32,7 +32,7 @@
                         </p>
                         <span class="song-category">{{ $song->category_name }}</span>
                         <div class="d-grid">
-                            <a href="{{ route_to('home.songs.show', $song->id) }}" class="btn btn-custom"
+                            <a href="{{ route_to('home.songs.show', $song->slug) }}" class="btn btn-custom"
                                 @click="$event.target.innerHTML = '<i class=\'fas fa-spinner fa-spin me-2\'></i>Loading...'">
                                 <i class="fas fa-music me-2"></i>View Chords
                             </a>

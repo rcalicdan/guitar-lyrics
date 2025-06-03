@@ -24,7 +24,7 @@ $routes->post('logout', [AuthController::class, 'logout'], ['as' => 'logout.post
 $routes->post('register', [AuthController::class, 'register'], ['as' => 'register.post']);
 
 $routes->get('songs', [HomepageSongController::class, 'index'], ['as' => 'home.songs.index']);
-$routes->get('songs/(:num)', [HomepageSongController::class, 'show'], ['as' => 'home.songs.show']);
+$routes->get('songs/(:segment)', [HomepageSongController::class, 'show'], ['as' => 'home.songs.show']);
 
 $routes->get('/dashboard', [DashboardController::class, 'index'], ['as' => 'dashboard', 'filter' => 'auth']);
 
