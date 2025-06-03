@@ -7,7 +7,7 @@
         <div class="comments-card">
             <h4 class="mb-4">
                 <i class="fas fa-comments me-2 text-primary"></i>
-                Comments (<span x-text="comments.length"></span>)
+                Comments (<span x-text="totalComments"></span>)
             </h4>
 
             <!-- Comment Form -->
@@ -154,8 +154,24 @@
                 </template>
             </div>
 
+            <!-- Load More Button -->
+            <div class="text-center mt-4" x-show="hasMorePages && !loadingMore">
+                <button @click="loadMoreComments()" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-down me-1"></i>
+                    Load More Comments
+                </button>
+            </div>
+
+            <!-- Loading More Indicator -->
+            <div class="text-center mt-4" x-show="loadingMore">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2 text-muted">Loading more comments...</p>
+            </div>
+
             <!-- No Comments -->
-            <div class="text-center py-5" x-show="comments.length === 0">
+            <div class="text-center py-5" x-show="comments.length === 0 && !loadingMore">
                 <i class="fas fa-comments fa-3x text-muted mb-3"></i>
                 <p class="text-muted mb-0">No comments yet. Be the first to share your thoughts!</p>
             </div>

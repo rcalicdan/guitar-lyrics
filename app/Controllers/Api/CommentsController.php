@@ -17,13 +17,31 @@ class CommentsController extends BaseController
             return $this->respondNotFound('Song not found');
         }
 
+        $page = $this->request->getVar('page') ?? 1;
+        $perPage = 10;
+
         $comments = Comments::with(['user', 'replies.user'])
             ->where('song_id', $song->id)
             ->rootComments()
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->simplePaginate($perPage, ['*'], 'page', $page);
 
-        return $this->respondSuccess($this->formatCommentsData($comments));
+        return $this->respondSuccess([
+            'data' => $this->formatCommentsData($comments->items()),
+            'pagination' => [
+                'current_page' => $comments->currentPage(),
+                'per_page' => $comments->perPage(),
+                'has_more_pages' => $comments->hasMorePages(),
+                'next_page_url' => $comments->nextPageUrl(),
+                'prev_page_url' => $comments->previousPageUrl(),
+                'path' => $comments->path(),
+            ]
+        ]);
+    }
+
+    public function loadMore($songSlug)
+    {
+        return $this->index($songSlug);
     }
 
     public function store($songSlug)
@@ -105,13 +123,6 @@ class CommentsController extends BaseController
             ->first();
     }
 
-    private function findUserComment($commentId)
-    {
-        return Comments::where('id', $commentId)
-            ->where('user_id', auth()->user()->id)
-            ->first();
-    }
-
     private function validateCommentData(): bool
     {
         $rules = [
@@ -145,7 +156,7 @@ class CommentsController extends BaseController
 
     private function formatCommentsData($comments)
     {
-        return $comments->map(function ($comment) {
+        return collect($comments)->map(function ($comment) {
             return [
                 'id' => $comment->id,
                 'content' => $comment->content,

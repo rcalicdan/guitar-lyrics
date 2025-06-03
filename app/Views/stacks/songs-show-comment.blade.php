@@ -13,17 +13,39 @@
             editCommentContent: '',
             isAuthenticated: {{ auth()->check() ? 'true' : 'false' }},
             currentUserId: {{ auth()->check() ? auth()->user()->id : 'null' }},
+            currentPage: 1,
+            hasMorePages: false,
+            loadingMore: false,
+            totalComments: 0,
             
             init() {
                 this.loadComments();
             },
 
-            async loadComments() {
+            async loadComments(page = 1) {
+                if (page === 1) {
+                    this.comments = [];
+                    this.currentPage = 1;
+                }
+                
+                this.loadingMore = page > 1;
+                
                 try {
-                    const response = await axios.get(`/api/songs/${this.songSlug}/comments`);
+                    const response = await axios.get(`/api/songs/${this.songSlug}/comments?page=${page}`);
                     
                     if (response.data.success) {
-                        this.comments = response.data.data;
+                        const responseData = response.data.data;
+                        
+                        if (page === 1) {
+                            this.comments = responseData.data;
+                        } else {
+                            this.comments.push(...responseData.data);
+                        }
+                        
+                        this.currentPage = responseData.pagination.current_page;
+                        this.hasMorePages = responseData.pagination.has_more_pages;
+                        this.totalComments = this.comments.length;
+                        
                     } else {
                         this.showNotification(response.data.message || 'Error loading comments', 'error');
                     }
@@ -34,6 +56,14 @@
                     } else {
                         this.showNotification('Error loading comments', 'error');
                     }
+                } finally {
+                    this.loadingMore = false;
+                }
+            },
+
+            async loadMoreComments() {
+                if (this.hasMorePages && !this.loadingMore) {
+                    await this.loadComments(this.currentPage + 1);
                 }
             },
 
@@ -53,7 +83,9 @@
                     });
                     
                     if (response.data.success) {
+                        // Add new comment to the beginning of the list
                         this.comments.unshift(response.data.data);
+                        this.totalComments = this.comments.length;
                         this.newComment.content = '';
                         this.showNotification(response.data.message || 'Comment posted successfully!', 'success');
                     } else {
@@ -153,6 +185,7 @@
                             return true;
                         });
                         
+                        this.totalComments = this.comments.length;
                         this.showNotification(response.data.message || 'Comment deleted successfully!', 'success');
                     } else {
                         this.showNotification(response.data.message || 'Error deleting comment', 'error');
