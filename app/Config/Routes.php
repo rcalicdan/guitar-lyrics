@@ -5,6 +5,7 @@ use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\Home;
 use App\Controllers\Api\ArtistOptionSearchController;
+use App\Controllers\Api\CommentsController;
 use App\Controllers\SongCategoryController;
 use App\Controllers\SongController;
 use App\Controllers\Homepage\SongController as HomepageSongController;
@@ -81,12 +82,13 @@ $routes->group('song', ['filter' => 'auth'], function (RouteCollection $routes) 
 
 $routes->group('api/', function (RouteCollection $routes) {
     $routes->get('songs/artists/search', [ArtistOptionSearchController::class, 'search'], ['as' => 'songs.artists.search']);
-    $routes->get('songs/(:segment)/comments', [App\Controllers\Api\CommentsController::class, 'index'], ['as' => 'api.songs.comments.index']);
-    $routes->get('songs/(:segment)/comments/load-more', [App\Controllers\Api\CommentsController::class, 'loadMore'], ['as' => 'api.songs.comments.load-more']);
+    $routes->get('songs/(:segment)/comments', [CommentsController::class, 'index'], ['as' => 'api.songs.comments.index']);
+    $routes->get('songs/(:segment)/comments/load-more', [CommentsController::class, 'loadMore'], ['as' => 'api.songs.comments.load-more']);
+    $routes->post('songs/(:num)/increment-view', [CommentsController::class, 'incrimentView'], ['as' => 'api.songs.increment-view']);
 });
 
 $routes->group('api/songs/(:segment)', ['filter' => 'auth'], function (RouteCollection $routes) {
-    $routes->post('comments', [App\Controllers\Api\CommentsController::class, 'store'], ['as' => 'api.songs.comments.store']);
-    $routes->patch('comments/(:num)', [App\Controllers\Api\CommentsController::class, 'update'], ['as' => 'api.songs.comments.update']);
-    $routes->delete('comments/(:num)', [App\Controllers\Api\CommentsController::class, 'delete'], ['as' => 'api.songs.comments.delete']);
+    $routes->post('comments', [CommentsController::class, 'store'], ['as' => 'api.songs.comments.store']);
+    $routes->patch('comments/(:num)', [CommentsController::class, 'update'], ['as' => 'api.songs.comments.update']);
+    $routes->delete('comments/(:num)', [CommentsController::class, 'delete'], ['as' => 'api.songs.comments.delete']);
 });

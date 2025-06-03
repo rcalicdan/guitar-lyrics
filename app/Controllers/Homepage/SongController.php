@@ -6,6 +6,7 @@ use App\Models\Song;
 use App\Models\Artist;
 use App\Models\SongCategory;
 use App\Controllers\BaseController;
+use Illuminate\Database\Eloquent\Collection;
 
 class SongController extends BaseController
 {
@@ -92,6 +93,7 @@ class SongController extends BaseController
             ->first();
 
         $this->redirectBack404IfNotFound($song);
+        $this->incrementViewIfUnique($song);
 
         $relatedSongs = Song::with(['artist'])
             ->where('id', '!=', $song->id)
@@ -115,5 +117,50 @@ class SongController extends BaseController
             ->get();
 
         return blade_view('contents.homepage.songs-show', compact('song', 'relatedSongs'));
+    }
+
+    /**
+     * API endpoint to increment view count via AJAX
+     */
+    public function incrementView($id)
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Invalid request']);
+        }
+
+        $song = Song::find($id);
+
+        if (!$song || !$song->is_published) {
+            return $this->response->setStatusCode(404)->setJSON(['error' => 'Song not found']);
+        }
+
+        if ($this->incrementViewIfUnique($song)) {
+            return $this->response->setJSON([
+                'success' => true,
+                'views_count' => $song->views_count,
+                'formatted_views' => $song->formatted_views
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'success' => false,
+            'message' => 'View already counted for this session'
+        ]);
+    }
+
+    /**
+     * Increment view count only if unique (prevent spam)
+     */
+    private function incrementViewIfUnique(Song|Collection $song): bool
+    {
+        $sessionKey = "viewed_song_{$song->id}";
+
+        if (!session($sessionKey)) {
+            $song->incrementViews();
+            session()->set($sessionKey, true);
+            return true;
+        }
+
+        return false;
     }
 }
