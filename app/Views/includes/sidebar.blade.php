@@ -13,12 +13,14 @@
         <nav class="mt-2">
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <!-- Dashboard -->
+                @can('view-dashboard')
                 <li class="nav-item mb-1">
                     <a href="{{ route_to('dashboard') }}" class="nav-link rounded {{ active_class('dashboard*') }}">
                         <i class="nav-icon bi bi-speedometer me-2"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
+                @endcan
 
                 <!-- Link for All Songs -->
                 <li class="nav-item mb-1">

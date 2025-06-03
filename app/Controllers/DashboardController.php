@@ -17,6 +17,8 @@ class DashboardController extends BaseController
      */
     public function index()
     {
+        $this->authorizeOrNotFound('view-dashboard');
+
         $dashboardData = [
             'totalSongs' => Song::count(),
             'totalArtists' => Artist::count(),
