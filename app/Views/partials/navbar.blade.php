@@ -4,7 +4,7 @@
         <!-- Brand -->
         <a class="navbar-brand" href="{{ route_to('home') }}">
             <i class="fas fa-guitar me-2"></i>
-            GuicstarLyrics
+            GuitarLyrics
         </a>
 
         <!-- Mobile Toggle Button -->
@@ -19,7 +19,7 @@
                     <a class="nav-link" href="{{ route_to('home.songs.index') }}">Songs</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#contact">Contact Us</a>
+                    <a class="nav-link" href="{{ route_to('about-us') }}">About Us</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#feedback">Send Feedback</a>

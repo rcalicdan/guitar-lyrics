@@ -12,16 +12,26 @@
                     @mouseleave="$el.classList.remove('hover')">
 
                     <!-- Image with loading state -->
-                    <div class="song-image-container">
+                    <div class="song-image-container"
+                        x-data="imageLoader('{{ $song->image_path ?? '/placeholder/no-image.png' }}')">
+                        <!-- Loading placeholder -->
                         <div x-show="!imageLoaded && !imageError" class="image-placeholder">
                             <div class="placeholder-content">
                                 <i class="fas fa-image fa-2x text-muted"></i>
                             </div>
                         </div>
 
-                        <img src="{{ $song->image_path }}" alt="{{ $song->title }}"
-                            class="song-image" x-show="imageLoaded" @load="imageLoaded = true"
-                            imageLoaded = true">
+                        <!-- Main image with preloading -->
+                        <img :src="imageSrc" alt="{{ $song->title }}" class="song-image"
+                            x-show="imageLoaded && !imageError">
+
+                        <!-- Error fallback -->
+                        <div x-show="imageError" class="image-placeholder">
+                            <div class="placeholder-content">
+                                <i class="fas fa-exclamation-triangle fa-2x text-warning"></i>
+                                <small class="text-muted">Image unavailable</small>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="song-content">

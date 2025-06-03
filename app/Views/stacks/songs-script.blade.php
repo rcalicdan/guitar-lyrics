@@ -210,6 +210,66 @@
         }
     }
 
+    function imageLoader(imagePath) {
+    return {
+        imageSrc: imagePath,
+        imageLoaded: false,
+        imageError: false,
+        retryCount: 0,
+        maxRetries: 3,
+        
+        init() {
+            this.preloadImage();
+        },
+        
+        preloadImage() {
+            console.log('Attempting to load image:', this.imageSrc, 'Attempt:', this.retryCount + 1);
+            
+            const img = new Image();
+            
+            img.onload = () => {
+                console.log('Image loaded successfully:', this.imageSrc);
+                this.imageLoaded = true;
+                this.imageError = false;
+            };
+            
+            img.onerror = () => {
+                console.log('Image failed to load:', this.imageSrc, 'Retry:', this.retryCount);
+                
+                if (this.retryCount < this.maxRetries) {
+                    this.retryCount++;
+                    // Retry after a short delay with exponential backoff
+                    setTimeout(() => {
+                        this.preloadImage();
+                    }, 1000 * this.retryCount);
+                } else {
+                    // All retries failed, show error state
+                    this.imageError = true;
+                    this.imageLoaded = false;
+                    this.imageSrc = '/placeholder/no-image.png';
+                    
+                    // Try loading the fallback image
+                    const fallbackImg = new Image();
+                    fallbackImg.onload = () => {
+                        this.imageLoaded = true;
+                        this.imageError = false;
+                    };
+                    fallbackImg.onerror = () => {
+                        // Even fallback failed, just show error state
+                        this.imageError = true;
+                        this.imageLoaded = false;
+                    };
+                    fallbackImg.src = this.imageSrc;
+                }
+            };
+            
+            // Add cache busting for retries to avoid cached failures
+            const cacheBuster = this.retryCount > 0 ? `?v=${Date.now()}` : '';
+            img.src = this.imageSrc + cacheBuster;
+        }
+    }
+}
+
     // Initialize components when DOM is ready
     document.addEventListener('DOMContentLoaded', function() {
         console.log('DOM loaded, initializing components');

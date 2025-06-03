@@ -14,7 +14,7 @@
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ $song['title'] }}</h5>
                                 <p class="card-text">{{ $song['artist'] }}</p>
-                                <a href="{{ route_to('song.show', $song['id'] ?? '#') }}" class="btn btn-custom">View Chords</a>
+                                <a href="{{ route_to('home.songs.show', $song['slug'] ?? '#') }}" class="btn btn-custom">View Chords</a>
                             </div>
                         </div>
                     </div>

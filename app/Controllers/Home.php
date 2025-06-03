@@ -19,6 +19,7 @@ class Home extends BaseController
                     'id' => $song->id,
                     'title' => $song->title,
                     'artist' => $song->artist_name,
+                    'slug' => $song->slug,
                     'image' => $song->image_path ?? '/placeholder/no-image.png'
                 ];
             })
@@ -31,6 +32,11 @@ class Home extends BaseController
         return blade_view('welcome', compact('featuredSongs', 'songsCount', 'artistsCount', 'usersCount'));
     }
 
+    public function showAboutUsPage()
+    {
+        return blade_view('contents.homepage.about-us');
+    }
+
     /**
      * Format count numbers for display (e.g., 1000 -> 1K)
      */
@@ -41,7 +47,7 @@ class Home extends BaseController
         } elseif ($count >= 1000) {
             return number_format($count / 1000, 1) . 'K+';
         }
-        
+
         return (string) $count;
     }
 }

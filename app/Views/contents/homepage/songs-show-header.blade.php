@@ -3,7 +3,8 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-4 text-center mb-4 mt-5 mb-lg-0">
-                <div class="song-image-wrapper" x-data="{ imageLoaded: false, imageError: false }">
+                <div class="song-image-wrapper"
+                    x-data="imageLoader('{{ $song->image_path ?? '/placeholder/no-image.png' }}')">
                     <!-- Loading placeholder -->
                     <div x-show="!imageLoaded && !imageError" class="image-loading-placeholder">
                         <div class="placeholder-shimmer">
@@ -12,17 +13,14 @@
                     </div>
 
                     <!-- Main image -->
-                    <img src="{{ $song->image_path ?? '/placeholder/no-image.png' }}" alt="{{ $song->title }}"
-                        class="song-image" x-show="imageLoaded" x-transition:enter="transition ease-out duration-300"
+                    <img x-show="imageLoaded && !imageError" :src="imageSrc" alt="{{ $song->title }}" class="song-image"
+                        x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 transform scale-95"
-                        x-transition:enter-end="opacity-100 transform scale-100" @load="imageLoaded = true"
-                        @@error="imageError = true; $el.src='/placeholder/no-image.png'">
+                        x-transition:enter-end="opacity-100 transform scale-100">
 
-                    <!-- Favorite/Like button overlay -->
-                    <div class=" image-overlay" x-show="imageLoaded" x-transition>
-                        <button @click="toggleFavorite()" class="btn-favorite" :class="{ 'active': isFavorite }">
-                            <i :class="isFavorite ? 'fas fa-heart' : 'far fa-heart'"></i>
-                        </button>
+                    <!-- Error fallback -->
+                    <div x-show="imageError" class="image-error-placeholder">
+                        <img src="/placeholder/no-image.png" alt="No image available" class="song-image">
                     </div>
                 </div>
             </div>
@@ -69,15 +67,6 @@
                                 <span x-text="formatNumber(viewCount)"></span> views
                             </span>
                         </div>
-                    </div>
-
-                    <!-- Action buttons -->
-                    <div class="header-actions">
-                        <button @click="toggleFavorite()" class="btn btn-light"
-                            :class="{ 'btn-danger': isFavorite, 'btn-light': !isFavorite }">
-                            <i :class="isFavorite ? 'fas fa-heart' : 'far fa-heart'" class="me-2"></i>
-                            <span x-text="isFavorite ? 'Favorited' : 'Add to Favorites'"></span>
-                        </button>
                     </div>
                 </div>
             </div>

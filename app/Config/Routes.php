@@ -16,11 +16,12 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', [Home::class, 'index'], ['as' => 'home']);
+$routes->get('/about-us', [Home::class, 'showAboutUsPage'], ['as' => 'about-us']);
 
 $routes->group('', ['filter' => 'guest'], function (RouteCollection $routes) {
     $routes->get('login', [AuthController::class, 'showLoginPage'], ['as' => 'login']);
     $routes->get('login/comment', [AuthController::class, 'showLoginCommentPage'], ['as' => 'login.comment']);
-    $routes->post('login/comment', [AuthController::class, 'loginComment'], ['as' => 'login.comment.post']); 
+    $routes->post('login/comment', [AuthController::class, 'loginComment'], ['as' => 'login.comment.post']);
     $routes->post('login', [AuthController::class, 'login'], ['as' => 'login.post']);
     $routes->get('register', [AuthController::class, 'showRegisterPage'], ['as' => 'register']);
     $routes->post('register', [AuthController::class, 'register'], ['as' => 'register.post']);
@@ -80,10 +81,10 @@ $routes->group('song', ['filter' => 'auth'], function (RouteCollection $routes) 
 
 $routes->group('api/', function (RouteCollection $routes) {
     $routes->get('songs/artists/search', [ArtistOptionSearchController::class, 'search'], ['as' => 'songs.artists.search']);
+    $routes->get('songs/(:segment)/comments', [App\Controllers\Api\CommentsController::class, 'index'], ['as' => 'api.songs.comments.index']);
 });
 
 $routes->group('api/songs/(:segment)', ['filter' => 'auth'], function (RouteCollection $routes) {
-    $routes->get('comments', [App\Controllers\Api\CommentsController::class, 'index'], ['as' => 'api.songs.comments.index']);
     $routes->post('comments', [App\Controllers\Api\CommentsController::class, 'store'], ['as' => 'api.songs.comments.store']);
     $routes->patch('comments/(:num)', [App\Controllers\Api\CommentsController::class, 'update'], ['as' => 'api.songs.comments.update']);
     $routes->delete('comments/(:num)', [App\Controllers\Api\CommentsController::class, 'delete'], ['as' => 'api.songs.comments.delete']);

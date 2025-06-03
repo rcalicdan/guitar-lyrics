@@ -378,4 +378,48 @@
             }
         }
     }
+
+    function imageLoader(imagePath) {
+    return {
+        imageSrc: imagePath,
+        imageLoaded: false,
+        imageError: false,
+        retryCount: 0,
+        maxRetries: 3,
+        
+        init() {
+            this.preloadImage();
+        },
+        
+        preloadImage() {
+            const img = new Image();
+            
+            img.onload = () => {
+                console.log('Image loaded successfully:', this.imageSrc);
+                this.imageLoaded = true;
+                this.imageError = false;
+            };
+            
+            img.onerror = () => {
+                console.log('Image failed to load:', this.imageSrc, 'Retry:', this.retryCount);
+                
+                if (this.retryCount < this.maxRetries) {
+                    this.retryCount++;
+                    // Retry after a short delay
+                    setTimeout(() => {
+                        this.preloadImage();
+                    }, 1000 * this.retryCount); // Exponential backoff
+                } else {
+                    this.imageError = true;
+                    this.imageLoaded = false;
+                    this.imageSrc = '/placeholder/no-image.png';
+                }
+            };
+            
+            // Add cache busting for problematic images
+            const cacheBuster = this.retryCount > 0 ? `?v=${Date.now()}` : '';
+            img.src = this.imageSrc + cacheBuster;
+        }
+    }
+}
 </script>
