@@ -15,7 +15,9 @@
     <!-- Card Body -->
     <div class="card-body">
         @if ($feedbacks->isEmpty())
-            <p class="text-center">No feedback found.</p>
+            <p class="text-center">
+                {{ $hasActiveFilters ? 'No feedback found matching your search criteria.' : 'No feedback found.' }}
+            </p>
         @else
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -68,44 +70,46 @@
     </div>
 </div>
 
-@component('x-modals.search-modal', ['modal_title' => 'Search Feedback', 'url' => 'feedback'])
+@component('x-modals.search-modal', ['modal_title' => 'Search Feedback', 'url' => 'user-feedbacks'])
     <div class="mb-3">
         <label for="searchName" class="form-label">Name</label>
-        <input type="text" class="form-control" id="searchName" name="name" value="{{ get('name') }}"
+        <input type="text" class="form-control" id="searchName" name="name" value="{{ $filters['name'] ?? '' }}"
             placeholder="Enter name">
     </div>
 
     <div class="mb-3">
         <label for="searchEmail" class="form-label">Email</label>
-        <input type="email" class="form-control" id="searchEmail" name="email" value="{{ get('email') }}"
+        <input type="email" class="form-control" id="searchEmail" name="email" value="{{ $filters['email'] ?? '' }}"
             placeholder="Enter email">
     </div>
 
     <div class="mb-3">
         <label for="searchContent" class="form-label">Content</label>
-        <input type="text" class="form-control" id="searchContent" name="content" value="{{ get('content') }}"
+        <input type="text" class="form-control" id="searchContent" name="content" value="{{ $filters['content'] ?? '' }}"
             placeholder="Search in content">
     </div>
 
     <div class="mb-3">
         <label for="searchDateFrom" class="form-label">Date From</label>
-        <input type="date" class="form-control" id="searchDateFrom" name="date_from" value="{{ get('date_from') }}">
+        <input type="date" class="form-control" id="searchDateFrom" name="date_from"
+            value="{{ $filters['date_from'] ?? '' }}">
     </div>
 
     <div class="mb-3">
         <label for="searchDateTo" class="form-label">Date To</label>
-        <input type="date" class="form-control" id="searchDateTo" name="date_to" value="{{ get('date_to') }}">
+        <input type="date" class="form-control" id="searchDateTo" name="date_to"
+            value="{{ $filters['date_to'] ?? '' }}">
     </div>
 @endcomponent
 
 @push('custom-styles')
-<style>
-    .cursor-pointer {
-        cursor: pointer;
-    }
+    <style>
+        .cursor-pointer {
+            cursor: pointer;
+        }
 
-    .hover-bg-light:hover {
-        background-color: #f8f9fa !important;
-    }
-</style>
+        .hover-bg-light:hover {
+            background-color: #f8f9fa !important;
+        }
+    </style>
 @endpush

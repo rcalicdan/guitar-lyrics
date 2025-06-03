@@ -2,8 +2,8 @@
     <!-- Brand Logo -->
     <div class="sidebar-brand mb-3 pt-3">
         <a href="{{ route_to('home') }}" class="brand-link d-flex align-items-center text-decoration-none">
-            <img src="/admin-lte/dist/assets/img/AdminLTELogo.png" alt="AdminLTE Logo"
-                class="brand-image img-circle elevation-3 opacity-75 shadow me-2" width="40" height="40" />
+            <i class="fas fa-guitar me-2"
+                style="font-size: 2.5rem; background: linear-gradient(45deg, #8B5CF6, #A78BFA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
             <span class="brand-text fw-light fs-4 text-white">Guitar Lyrics</span>
         </a>
     </div>
@@ -56,20 +56,25 @@
                 </li>
 
                 <!-- Users -->
+                @can('viewAny', App\Models\User::class)
                 <li class="nav-item mb-1">
                     <a href="{{ route_to('users.index') }}" class="nav-link rounded {{ active_class('users*') }}">
                         <i class="nav-icon bi bi-people me-2"></i>
                         <p>Users</p>
                     </a>
                 </li>
+                @endcan
 
+                @can('viewAny', App\Models\Feedback::class)
                 <!-- Feedbacks -->
                 <li class="nav-item mb-1">
-                    <a href="{{ route_to('feedbacks.index') }}" class="nav-link rounded {{ active_class('user-feedbacks*') }}">
+                    <a href="{{ route_to('feedbacks.index') }}"
+                        class="nav-link rounded {{ active_class('user-feedbacks*') }}">
                         <i class="nav-icon bi bi-chat-dots me-2"></i>
                         <p>Feedbacks</p>
                     </a>
                 </li>
+                @endcan
 
                 <!-- Settings -->
                 <li class="nav-item mb-1">

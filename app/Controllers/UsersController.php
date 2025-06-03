@@ -20,7 +20,7 @@ class UsersController extends BaseController
 
     public function index()
     {
-        $this->authorize('viewAny', User::class);
+        $this->authorizeOrNotFound('viewAny', User::class);
         $users = $this->userService->getUsers()->paginateWithQueryString(20);
 
         return blade_view('contents.user.index', ['users' => $users,]);
@@ -29,7 +29,7 @@ class UsersController extends BaseController
     public function editPage($id)
     {
         $user = User::findOrFail($id);
-        $this->authorize('update', $user);
+        $this->authorizeOrNotFound('update', $user);
 
         return blade_view('contents.user.index', [
             'user' => $user,
@@ -47,7 +47,7 @@ class UsersController extends BaseController
 
     public function create()
     {
-        $this->authorize('create', User::class);
+        $this->authorizeOrNotFound('create', User::class);
         $addingUser = true;
         $validRoles = UserRoles::getRolesExcept([UserRoles::ADMIN->value]);
 

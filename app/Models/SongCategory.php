@@ -19,6 +19,6 @@ class SongCategory extends Model
 
     public function songs()
     {
-        $this->hasMany(Song::class);
+        return $this->hasMany(Song::class); 
     }
 }
