@@ -1,4 +1,4 @@
-<div class="card shadow-sm">
+<div class="card shadow-sm mt-4">
     <div class="card-header d-flex justify-content-between align-items-center bg-gradient-light">
         <h4 class="mb-0">Song Details</h4>
         <span class="badge {{ $song->is_published ? 'bg-success' : 'bg-warning' ?? '' }}">

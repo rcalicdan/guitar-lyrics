@@ -6,11 +6,13 @@ use App\Controllers\DashboardController;
 use App\Controllers\Home;
 use App\Controllers\Api\ArtistOptionSearchController;
 use App\Controllers\Api\CommentsController;
+use App\Controllers\Api\SongCategoryOptionSearchController;
 use App\Controllers\SongCategoryController;
 use App\Controllers\SongController;
 use App\Controllers\Homepage\SongController as HomepageSongController;
 use App\Controllers\UserProfileController;
 use App\Controllers\UsersController;
+use App\Controllers\UserSongController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -80,8 +82,14 @@ $routes->group('song', ['filter' => 'auth'], function (RouteCollection $routes) 
     $routes->get('view/(:segment)', [SongController::class, 'show'], ['as' => 'songs.show']);
 });
 
+$routes->group('my-songs', ['filter' => 'auth'], function (RouteCollection $routes) {
+    $routes->get('', [UserSongController::class, 'index'], ['as' =>'my-songs.index']);
+    $routes->get('create', [SongController::class, 'create'], ['as' =>'my-songs.create']);
+});
+
 $routes->group('api/', function (RouteCollection $routes) {
     $routes->get('songs/artists/search', [ArtistOptionSearchController::class, 'search'], ['as' => 'songs.artists.search']);
+    $routes->get('songs/categories/search', [SongCategoryOptionSearchController::class, 'search'], ['as' => 'songs.categories.search']);
     $routes->get('songs/(:segment)/comments', [CommentsController::class, 'index'], ['as' => 'api.songs.comments.index']);
     $routes->get('songs/(:segment)/comments/load-more', [CommentsController::class, 'loadMore'], ['as' => 'api.songs.comments.load-more']);
     $routes->post('songs/(:num)/increment-view', [HomepageSongController::class, 'incrimentView'], ['as' => 'api.songs.increment-view']);

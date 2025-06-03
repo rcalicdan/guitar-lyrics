@@ -1,4 +1,4 @@
-<div class="card-body">
+<div class="card-body mt-0 pt-0">
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Edit Song</h3>

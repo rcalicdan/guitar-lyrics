@@ -31,8 +31,8 @@
 
                 <!-- Link for My Published Songs -->
                 <li class="nav-item mb-1">
-                    <a href="{{ route_to('songs.my_published') }}"
-                        class="nav-link rounded {{ active_class('songs/my-published*') }}">
+                    <a href="{{ route_to('my-songs.index') }}"
+                        class="nav-link rounded {{ active_class('my-songs*') }}">
                         <i class="nav-icon bi bi-file-earmark-music me-2"></i>
                         <p>My Published Songs</p>
                     </a>

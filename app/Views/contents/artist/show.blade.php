@@ -1,4 +1,4 @@
-<div class="card shadow-sm">
+<div class="card shadow-sm mt-0 pt-0">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h4 class="mb-0">Artist Profile</h4>
     </div>

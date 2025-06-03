@@ -21,6 +21,7 @@ class SongService
                 'songs.id',
                 'songs.title',
                 'songs.slug',
+                'songs.views_count',
                 'songs.is_published',
                 'songs.song_category_id',
                 'songs.artist_id'

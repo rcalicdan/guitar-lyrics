@@ -70,7 +70,7 @@
     </div>
 </div>
 
-@component('x-modals.search-modal', ['modal_title' => 'Search Category', 'url' => 'songs/categories'])
+@component('x-modals.search-modal', ['modal_title' => 'Search Category', 'url' => 'song/categories'])
     <div class="mb-3">
         <label for="searchId" class="form-label">Artist ID</label>
         <input type="number" class="form-control" id="searchId" name="id" value="{{ get('id') }}"

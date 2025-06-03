@@ -22,7 +22,7 @@ class UserSongController extends BaseController
     {
         $songs = $this->songService->getSongs()->paginateWithQueryString(20);
 
-        return blade_view('contents.song.index', ['songs' => $songs]);
+        return blade_view('contents.user-song.index', ['songs' => $songs]);
     }
 
     public function show(string $slug)
@@ -35,7 +35,7 @@ class UserSongController extends BaseController
 
         $this->redirectBack404IfNotFound($song);
 
-        return blade_view('contents.song.index', ['song' => $song, 'isShowing' => $isShowing]);
+        return blade_view('contents.user-song.index', ['song' => $song, 'isShowing' => $isShowing]);
     }
 
     public function create()
@@ -43,7 +43,7 @@ class UserSongController extends BaseController
         $isCreating = true;
         $categories = SongCategory::get(['id', 'name']);
 
-        return blade_view('contents.song.index', [
+        return blade_view('contents.user-song.index', [
             'isCreating' => $isCreating,
             'categories' => $categories,
         ]);
@@ -70,7 +70,7 @@ class UserSongController extends BaseController
         $isEditing = true;
         $categories = SongCategory::get(['id', 'name']);
 
-        return blade_view('contents.song.index', [
+        return blade_view('contents.user-song.index', [
             'isEditing' => $isEditing,
             'song' => $song,
             'categories' => $categories,
