@@ -1,5 +1,6 @@
 <!-- Comments Section -->
-<section class="comments-section mt-5" x-show="true" x-transition:enter="transition ease-out duration-500 delay-400"
+<section class="comments-section mt-5" x-data="commentManager('{{ $song->slug }}')" x-show="true"
+    x-transition:enter="transition ease-out duration-500 delay-400"
     x-transition:enter-start="opacity-0 transform translate-y-4"
     x-transition:enter-end="opacity-100 transform translate-y-0">
     <div class="container">

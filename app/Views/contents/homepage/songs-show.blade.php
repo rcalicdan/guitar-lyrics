@@ -17,4 +17,5 @@
 
 @push('scripts')
 @include('stacks.songs-show-script')
+@include('stacks.songs-show-comment')
 @endpush
