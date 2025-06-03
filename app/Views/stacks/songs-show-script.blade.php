@@ -31,22 +31,17 @@
             return num.toString();
         },
         
-        loadRelatedSongs() {
-            this.relatedSongs = [
-                {
-                    id: 1,
-                    title: 'Sample Song 1',
-                    artist_name: '{{ $song->artist_name }}',
-                    image_path:  '{{ $song->image_path }}'
-                },
-                {
-                    id: 2,
-                    title: 'Sample Song 2',
-                    artist_name: '{{ $song->artist_name }}',
-                    image_path: '{{ $song->image_path }}'
-                }
-            ].filter(song => song.id !== {{ $song->id }});
-        },
+      loadRelatedSongs() {
+      const serverRelatedSongs = @json($relatedSongs);
+
+      this.relatedSongs = serverRelatedSongs.map(song => ({
+        id: song.id,
+        title: song.title,
+        slug: song.slug,
+        artist_name: song.artist ? song.artist.name : 'Unknown Artist',
+        image_path: song.image_path || '/placeholder/no-image.png'
+       }));
+       },
         
         setupScrollListeners() {
             window.addEventListener('scroll', () => {

@@ -91,11 +91,26 @@ class SongController extends BaseController
             ->where('is_published', true)
             ->first();
 
+        $this->redirectBack404IfNotFound($song);
+
         $relatedSongs = Song::with(['artist'])
-            ->where('title', 'LIKE', $song->title)
             ->where('id', '!=', $song->id)
             ->where('is_published', true)
-            ->orderBy('created_at', 'desc')
+            ->where(function ($query) use ($song) {
+                if ($song->artist_id) {
+                    $query->where('artist_id', $song->artist_id)
+                        ->orWhere('title', 'LIKE', "%$song->title%");
+                } else {
+                    $query->where('title', 'LIKE', "%$song->title%");
+                }
+            })
+            ->orderByRaw('
+            CASE 
+                WHEN artist_id = ? THEN 1 
+                WHEN title LIKE ? THEN 2 
+                ELSE 3 
+            END, created_at DESC
+        ', [$song->artist_id ?? 0, "%$song->title%"])
             ->limit(6)
             ->get();
 

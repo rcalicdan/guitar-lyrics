@@ -61,11 +61,23 @@ h6 {
     background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
     border: none;
     color: white;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
 }
 
 .btn-custom:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-custom:focus {
+    color: white;
+    text-decoration: none;
 }
 
 .section-title {
