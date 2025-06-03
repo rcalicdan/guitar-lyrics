@@ -22,7 +22,7 @@
                     <a class="nav-link" href="{{ route_to('about-us') }}">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#feedback">Send Feedback</a>
+                    <a class="nav-link" href="{{ route_to('feedback') }}">Send Feedback</a>
                 </li>
                 @auth
                 <li class="nav-item ms-lg-3">
