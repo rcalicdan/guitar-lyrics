@@ -31,8 +31,7 @@
 
                 <!-- Link for My Published Songs -->
                 <li class="nav-item mb-1">
-                    <a href="{{ route_to('my-songs.index') }}"
-                        class="nav-link rounded {{ active_class('my-songs*') }}">
+                    <a href="{{ route_to('my-songs.index') }}" class="nav-link rounded {{ active_class('my-songs*') }}">
                         <i class="nav-icon bi bi-file-earmark-music me-2"></i>
                         <p>My Published Songs</p>
                     </a>
@@ -61,6 +60,14 @@
                     <a href="{{ route_to('users.index') }}" class="nav-link rounded {{ active_class('users*') }}">
                         <i class="nav-icon bi bi-people me-2"></i>
                         <p>Users</p>
+                    </a>
+                </li>
+
+                <!-- Feedbacks -->
+                <li class="nav-item mb-1">
+                    <a href="{{ route_to('feedbacks.index') }}" class="nav-link rounded {{ active_class('feedbacks*') }}">
+                        <i class="nav-icon bi bi-people me-2"></i>
+                        <p>Feedbacks</p>
                     </a>
                 </li>
 

@@ -7,6 +7,7 @@ use App\Controllers\Home;
 use App\Controllers\Api\ArtistOptionSearchController;
 use App\Controllers\Api\CommentsController;
 use App\Controllers\Api\SongCategoryOptionSearchController;
+use App\Controllers\FeedbackController as ControllersFeedbackController;
 use App\Controllers\Homepage\FeedbackController;
 use App\Controllers\SongCategoryController;
 use App\Controllers\SongController;
@@ -90,8 +91,14 @@ $routes->group('song', ['filter' => 'auth'], function (RouteCollection $routes) 
 });
 
 $routes->group('my-songs', ['filter' => 'auth'], function (RouteCollection $routes) {
-    $routes->get('', [UserSongController::class, 'index'], ['as' =>'my-songs.index']);
-    $routes->get('create', [SongController::class, 'create'], ['as' =>'my-songs.create']);
+    $routes->get('', [UserSongController::class, 'index'], ['as' => 'my-songs.index']);
+    $routes->get('create', [SongController::class, 'create'], ['as' => 'my-songs.create']);
+});
+
+$routes->group('user-feedbacks', ['filter' => 'auth'], function (RouteCollection $routes) {
+    $routes->get('', [ControllersFeedbackController::class, 'index'], ['as' => 'feedbacks.index']);
+    $routes->get('show/(:num)', [ControllersFeedbackController::class, 'show'], ['as' => 'feedbacks.show']);
+    $routes->delete('delete/(:num)', [ControllersFeedbackController::class, 'destroy'], ['as' => 'feedbacks.delete']);
 });
 
 

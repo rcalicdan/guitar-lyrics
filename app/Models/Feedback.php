@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Rcalicdan\Ci4Larabridge\Models\Model;
 
 class Feedback extends Model
 {

@@ -4,12 +4,14 @@ namespace App\Libraries\Authorization;
 
 use App\Models\Artist;
 use App\Models\Comments;
+use App\Models\Feedback;
 use App\Models\Song;
 use App\Models\SongCategory;
 use App\Models\User;
 use App\Policies\ArtistPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\CommentPolicy;
+use App\Policies\FeedbackPolicy;
 use App\Policies\SongPolicy;
 use App\Policies\UserPolicy;
 
@@ -36,6 +38,7 @@ class AuthServiceProvider
         Artist::class => ArtistPolicy::class,
         Song::class => SongPolicy::class,
         Comments::class => CommentPolicy::class,
+        Feedback::class => FeedbackPolicy::class,
     ];
 
     /**
