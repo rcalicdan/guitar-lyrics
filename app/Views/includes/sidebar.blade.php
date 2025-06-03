@@ -65,8 +65,8 @@
 
                 <!-- Feedbacks -->
                 <li class="nav-item mb-1">
-                    <a href="{{ route_to('feedbacks.index') }}" class="nav-link rounded {{ active_class('feedbacks*') }}">
-                        <i class="nav-icon bi bi-people me-2"></i>
+                    <a href="{{ route_to('feedbacks.index') }}" class="nav-link rounded {{ active_class('user-feedbacks*') }}">
+                        <i class="nav-icon bi bi-chat-dots me-2"></i>
                         <p>Feedbacks</p>
                     </a>
                 </li>

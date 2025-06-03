@@ -59,20 +59,15 @@
 
                 <!-- Additional Actions -->
                 <div class="mt-4">
-                    <div class="row g-3">
+                    <div class="row g-3 justify-content-center">
                         @if ($feedback->email)
-                            <div class="col-md-6">
+                            <div class="col-md-6 text-center">
                                 <a href="mailto:{{ $feedback->email }}?subject=Re: Your Feedback"
                                     class="btn btn-outline-primary w-100">
                                     <i class="fas fa-reply me-2"></i>Reply via Email
                                 </a>
                             </div>
                         @endif
-                        <div class="col-md-6">
-                            <button class="btn btn-outline-secondary w-100" onclick="window.print()">
-                                <i class="fas fa-print me-2"></i>Print Feedback
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>

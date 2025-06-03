@@ -19,7 +19,7 @@ class FeedbackController extends BaseController
     {
         $feedback = Feedback::findOrFail($id);
 
-        return blade_view('contents.feedback.index', ['feedback' => $feedback]);
+        return blade_view('contents.feedback.index', ['feedback' => $feedback, 'isShowing' => true]);
     }
 
     public function delete($id)
