@@ -58,6 +58,9 @@ class AuthServiceProvider
     public function register(): void
     {
         // Define your gate here
+        gate()->define('view-dashboard', function ($user) {
+            return $user->isAdmin() || $user->isModerator();
+        });
         $this->registerPolicies(); //Do not delete this line, this is required for policies to work
     }
 
