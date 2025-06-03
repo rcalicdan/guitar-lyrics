@@ -15,6 +15,11 @@ class AuthController extends BaseController
         return blade_view('contents.auth.login');
     }
 
+    public function showLoginCommentPage()
+    {
+        return blade_view('contents.auth.login-comment');
+    }
+
     public function showRegisterPage()
     {
         return blade_view('contents.auth.register');
@@ -31,7 +36,18 @@ class AuthController extends BaseController
         $credentials = LoginRequest::validateRequest();
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('dashboard');
+            return redirect()->to('/');
+        }
+
+        return redirect()->back()->withInput()->with('error', 'Invalid Email or Password');
+    }
+
+    public function loginComment()
+    {
+        $credentials = LoginRequest::validateRequest();
+
+        if (Auth::attempt($credentials)) {
+            return redirect()->back();
         }
 
         return redirect()->back()->withInput()->with('error', 'Invalid Email or Password');

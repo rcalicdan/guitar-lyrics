@@ -11,15 +11,10 @@ class CommentsController extends BaseController
 {
     public function index($songSlug)
     {
-        $song = Song::where('slug', $songSlug)
-            ->where('is_published', true)
-            ->first();
+        $song = $this->findPublishedSong($songSlug);
 
         if (!$song) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Song not found'
-            ])->setStatusCode(404);
+            return $this->respondNotFound('Song not found');
         }
 
         $comments = Comments::with(['user', 'replies.user'])
@@ -28,141 +23,195 @@ class CommentsController extends BaseController
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return $this->response->setJSON([
-            'success' => true,
-            'data' => $comments->map(function ($comment) {
-                return [
-                    'id' => $comment->id,
-                    'content' => $comment->content,
-                    'created_at' => $comment->created_at->diffForHumans(),
-                    'user' => [
-                        'id' => $comment->user->id,
-                        'name' => $comment->user->full_name,
-                        'image' => $comment->user->image_path ?? '/placeholder/avatar.png'
-                    ],
-                    'replies' => $comment->replies->map(function ($reply) {
-                        return [
-                            'id' => $reply->id,
-                            'content' => $reply->content,
-                            'created_at' => $reply->created_at->diffForHumans(),
-                            'user' => [
-                                'id' => $reply->user->id,
-                                'name' => $reply->user->full_name,
-                                'image' => $reply->user->image_path ?? '/placeholder/avatar.png'
-                            ]
-                        ];
-                    })
-                ];
-            })
-        ]);
+        return $this->respondSuccess($this->formatCommentsData($comments));
     }
 
     public function store($songSlug)
     {
-        $song = Song::where('slug', $songSlug)
-            ->where('is_published', true)
-            ->first();
+        $song = $this->findPublishedSong($songSlug);
 
         if (!$song) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Song not found'
-            ])->setStatusCode(404);
+            return $this->respondNotFound('Song not found');
         }
 
+        if (!$this->validateCommentData()) {
+            return $this->respondValidationError();
+        }
+
+        $comment = $this->createComment($song);
+
+        return $this->respondSuccess(
+            $this->formatSingleCommentData($comment),
+            'Comment posted successfully'
+        );
+    }
+
+    public function update($songSlug, $commentId)
+    {
+        $song = $this->findPublishedSong($songSlug);
+
+        if (!$song) {
+            return $this->respondNotFound('Song not found');
+        }
+
+        $comment = Comments::where('id', $commentId)
+            ->where('user_id', auth()->user()->id)
+            ->where('song_id', $song->id)
+            ->first();
+
+        if (!$comment) {
+            return $this->respondNotFound('Comment not found or unauthorized');
+        }
+
+        if (!$this->validateCommentData()) {
+            return $this->respondValidationError();
+        }
+
+        $content = $this->request->getJSON(true)['content'] ?? $this->request->getPost('content');
+
+        $comment->update([
+            'content' => $content
+        ]);
+
+        return $this->respondSuccess(null, 'Comment updated successfully');
+    }
+
+    public function delete($songSlug, $commentId)
+    {
+        $song = $this->findPublishedSong($songSlug);
+
+        if (!$song) {
+            return $this->respondNotFound('Song not found');
+        }
+
+        $comment = Comments::where('id', $commentId)
+            ->where('user_id', auth()->user()->id)
+            ->where('song_id', $song->id)
+            ->first();
+
+        if (!$comment) {
+            return $this->respondNotFound('Comment not found or unauthorized');
+        }
+
+        $comment->delete();
+
+        return $this->respondSuccess(null, 'Comment deleted successfully');
+    }
+
+    private function findPublishedSong($slug)
+    {
+        return Song::where('slug', $slug)
+            ->where('is_published', true)
+            ->first();
+    }
+
+    private function findUserComment($commentId)
+    {
+        return Comments::where('id', $commentId)
+            ->where('user_id', auth()->user()->id)
+            ->first();
+    }
+
+    private function validateCommentData(): bool
+    {
         $rules = [
-            'content' => 'required|min_length[3]|max_length[1000]',
-            'parent_id' => 'permit_empty|integer'
+            'content' => [
+                'rules' => 'required|min_length[3]|max_length[1000]',
+                'errors' => [
+                    'required' => 'Comment content is required.',
+                    'min_length' => 'Comment must be at least 3 characters long.',
+                    'max_length' => 'Comment cannot exceed 1000 characters.'
+                ]
+            ]
         ];
 
-        if (!$this->validate($rules)) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $this->validator->getErrors()
-            ])->setStatusCode(400);
-        }
+        return $this->validate($rules);
+    }
 
+    private function createComment($song)
+    {
         $data = [
-            'content' => $this->request->getPost('content'),
+            'content' => $this->request->getJSON(true)['content'] ?? $this->request->getPost('content'),
             'user_id' => auth()->user()->id,
             'song_id' => $song->id,
-            'parent_id' => $this->request->getPost('parent_id')
+            'parent_id' => $this->request->getJSON(true)['parent_id'] ?? $this->request->getPost('parent_id')
         ];
 
         $comment = Comments::create($data);
         $comment->load('user');
 
-        return $this->response->setJSON([
-            'success' => true,
-            'message' => 'Comment posted successfully',
-            'data' => [
+        return $comment;
+    }
+
+    private function formatCommentsData($comments)
+    {
+        return $comments->map(function ($comment) {
+            return [
                 'id' => $comment->id,
                 'content' => $comment->content,
                 'created_at' => $comment->created_at->diffForHumans(),
-                'user' => [
-                    'id' => $comment->user->id,
-                    'name' => $comment->user->full_name,
-                    'image' => $comment->user->image_path ?? '/placeholder/avatar.png'
-                ],
-                'replies' => []
-            ]
-        ]);
+                'user' => $this->formatUserData($comment->user),
+                'replies' => $comment->replies->map(function ($reply) {
+                    return [
+                        'id' => $reply->id,
+                        'content' => $reply->content,
+                        'created_at' => $reply->created_at->diffForHumans(),
+                        'user' => $this->formatUserData($reply->user)
+                    ];
+                })
+            ];
+        });
     }
 
-    public function update($commentId)
+    private function formatSingleCommentData($comment)
     {
-        $comment = Comments::where('id', $commentId)
-            ->where('user_id', auth()->user()->id)
-            ->first();
-
-        if (!$comment) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Comment not found or unauthorized'
-            ])->setStatusCode(404);
-        }
-
-        $rules = [
-            'content' => 'required|min_length[3]|max_length[1000]'
+        return [
+            'id' => $comment->id,
+            'content' => $comment->content,
+            'created_at' => $comment->created_at->diffForHumans(),
+            'user' => $this->formatUserData($comment->user),
+            'replies' => []
         ];
-
-        if (!$this->validate($rules)) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $this->validator->getErrors()
-            ])->setStatusCode(400);
-        }
-
-        $comment->update([
-            'content' => $this->request->getRawInput()['content']
-        ]);
-
-        return $this->response->setJSON([
-            'success' => true,
-            'message' => 'Comment updated successfully'
-        ]);
     }
 
-    public function delete($commentId)
+    private function formatUserData($user)
     {
-        $comment = Comments::where('id', $commentId)
-            ->where('user_id', auth()->user()->id)
-            ->first();
+        return [
+            'id' => $user->id,
+            'name' => $user->full_name,
+            'image' => $user->image_path ?? '/placeholder/no-profile.png'
+        ];
+    }
 
-        if (!$comment) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Comment not found or unauthorized'
-            ])->setStatusCode(404);
+    private function respondSuccess($data = null, $message = null)
+    {
+        $response = ['success' => true];
+
+        if ($message) {
+            $response['message'] = $message;
         }
 
-        $comment->delete();
+        if ($data !== null) {
+            $response['data'] = $data;
+        }
 
+        return $this->response->setJSON($response);
+    }
+
+    private function respondNotFound($message = 'Resource not found')
+    {
         return $this->response->setJSON([
-            'success' => true,
-            'message' => 'Comment deleted successfully'
-        ]);
+            'success' => false,
+            'message' => $message
+        ])->setStatusCode(404);
+    }
+
+    private function respondValidationError()
+    {
+        return $this->response->setJSON([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => $this->validator->getErrors()
+        ])->setStatusCode(400);
     }
 }

@@ -17,11 +17,16 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', [Home::class, 'index'], ['as' => 'home']);
 
-$routes->get('login', [AuthController::class, 'showLoginPage'], ['as' => 'login']);
-$routes->post('login', [AuthController::class, 'login'], ['as' => 'login.post']);
-$routes->get('register', [AuthController::class, 'showRegisterPage'], ['as' => 'register']);
+$routes->group('', ['filter' => 'guest'], function (RouteCollection $routes) {
+    $routes->get('login', [AuthController::class, 'showLoginPage'], ['as' => 'login']);
+    $routes->get('login/comment', [AuthController::class, 'showLoginCommentPage'], ['as' => 'login.comment']);
+    $routes->post('login/comment', [AuthController::class, 'loginComment'], ['as' => 'login.comment.post']); 
+    $routes->post('login', [AuthController::class, 'login'], ['as' => 'login.post']);
+    $routes->get('register', [AuthController::class, 'showRegisterPage'], ['as' => 'register']);
+    $routes->post('register', [AuthController::class, 'register'], ['as' => 'register.post']);
+});
+
 $routes->post('logout', [AuthController::class, 'logout'], ['as' => 'logout.post']);
-$routes->post('register', [AuthController::class, 'register'], ['as' => 'register.post']);
 
 $routes->get('songs', [HomepageSongController::class, 'index'], ['as' => 'home.songs.index']);
 $routes->get('songs/(:segment)', [HomepageSongController::class, 'show'], ['as' => 'home.songs.show']);

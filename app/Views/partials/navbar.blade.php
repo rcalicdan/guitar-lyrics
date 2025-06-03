@@ -24,11 +24,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#feedback">Send Feedback</a>
                 </li>
+                @auth
+                <li class="nav-item ms-lg-3">
+                    <a class="btn btn-outline-light" href="{{ route_to('dashboard') }}">
+                        <i class="fas fa-user me-2"></i>Go to Dashboard
+                    </a>
+                </li>
+                @endauth
+                @guest
                 <li class="nav-item ms-lg-3">
                     <a class="btn btn-outline-light" href="{{ route_to('login') }}">
                         <i class="fas fa-user me-2"></i>Login
                     </a>
                 </li>
+                @endguest
             </ul>
         </div>
     </div>
