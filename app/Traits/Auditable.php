@@ -1,65 +1,71 @@
 <?php
+// app/Traits/Auditable.php
 
 namespace App\Traits;
 
-use CodeIgniter\Events\Events;
-use App\Events\ModelAuditEvent;
+use App\Models\AuditLog;
+use CodeIgniter\HTTP\RequestInterface;
 
 trait Auditable
 {
-    protected static function bootAuditable()
+    protected static $auditEvents = ['created', 'updated', 'deleted'];
+    
+    public function initializeAuditable()
     {
-        // Listen to created event
-        static::created(function ($model) {
-            $event = new ModelAuditEvent(
-                $model,
-                'created',
-                [],
-                $model->getAttributes(),
-                $model->getAuditMetadata()
-            );
-            Events::trigger('model_audit', $event);
-        });
-
-        // Listen to updated event
-        static::updated(function ($model) {
-            $event = new ModelAuditEvent(
-                $model,
-                'updated',
-                $model->getOriginal(),
-                $model->getAttributes(),
-                $model->getAuditMetadata()
-            );
-            Events::trigger('model_audit', $event);
-        });
-
-        // Listen to deleted event
-        static::deleted(function ($model) {
-            $event = new ModelAuditEvent(
-                $model,
-                'deleted',
-                $model->getAttributes(),
-                [],
-                $model->getAuditMetadata()
-            );
-            Events::trigger('model_audit', $event);
-        });
+        $this->addObservableEvents(static::$auditEvents);
+        
+        foreach (static::$auditEvents as $event) {
+            static::registerModelEvent($event, function ($model) use ($event) {
+                $model->logAudit($event);
+            });
+        }
     }
 
-    /**
-     * Get additional metadata for the audit log
-     * Override this method in your models to add custom metadata
-     */
-    protected function getAuditMetadata(): array
+    protected function logAudit(string $event)
     {
-        return [];
+        $oldValues = [];
+        $newValues = [];
+
+        switch ($event) {
+            case 'created':
+                $newValues = $this->getAttributes();
+                break;
+            case 'updated':
+                $oldValues = $this->getOriginal();
+                $newValues = $this->getDirty();
+                break;
+            case 'deleted':
+                $oldValues = $this->getOriginal();
+                break;
+        }
+
+        AuditLog::create([
+            'auditable_type' => get_class($this),
+            'auditable_id' => $this->getKey(),
+            'event' => $event,
+            'old_values' => $oldValues,
+            'new_values' => $newValues,
+            'user_id' => $this->getCurrentUserId(),
+            'ip_address' => $this->getClientIpAddress(),
+            'user_agent' => $this->getUserAgent(),
+        ]);
     }
 
-    /**
-     * Get audit logs for this model
-     */
-    public function auditLogs()
+    protected function getCurrentUserId()
     {
-        return $this->morphMany(\App\Models\AuditLog::class, 'auditable');
+        $session = session();
+        return $session->get('auth_user_id') ?? null;
+    }
+
+    protected function getClientIpAddress()
+    {
+        $request = service('request');
+        return $request->getIPAddress();
+    }
+
+    protected function getUserAgent()
+    {
+        $request = service('request');
+        return $request->getUserAgent()->getAgentString();
     }
 }
