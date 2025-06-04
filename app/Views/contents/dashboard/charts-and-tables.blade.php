@@ -8,10 +8,6 @@
                 Songs by Category
             </div>
             <div id="categoryChart">
-                <div class="chart-loading">
-                    <div class="loading-spinner"></div>
-                    Loading chart data...
-                </div>
             </div>
         </div>
     </div>
@@ -24,10 +20,6 @@
                 Monthly Song Creation
             </div>
             <div id="monthlyChart">
-                <div class="chart-loading">
-                    <div class="loading-spinner"></div>
-                    Loading chart data...
-                </div>
             </div>
         </div>
     </div>
@@ -42,10 +34,6 @@
                 Top Artists by Song Count
             </div>
             <div id="artistChart">
-                <div class="chart-loading">
-                    <div class="loading-spinner"></div>
-                    Loading chart data...
-                </div>
             </div>
         </div>
     </div>

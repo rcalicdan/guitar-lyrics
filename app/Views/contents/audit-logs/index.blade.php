@@ -26,7 +26,7 @@
                                     <th>Event</th>
                                     <th>User Id</th>
                                     <th>Date</th>
-                                    <th>Actions</th>
+                                    <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -51,11 +51,13 @@
                                         </td>
                                         <td>{{ $log->user->id ?? 'System' }}</td>
                                         <td>{{ $log->created_at->format('M d, Y H:i:s') }}</td>
-                                        <td>
-                                            @include('components.utils.view-button', [
-                                                'route' => 'audit-logs.show',
-                                                'id' => $log->id,
-                                            ])
+                                        <td class="text center">
+                                            <div class="d-flex justify-content-center gap-1">
+                                                @include('components.utils.view-button', [
+                                                    'route' => 'audit-logs.show',
+                                                    'id' => $log->id,
+                                                ])
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty

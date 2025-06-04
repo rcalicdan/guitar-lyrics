@@ -10,6 +10,8 @@ class AuditLogController extends BaseController
 {
     public function index()
     {
+        $this->authorizeOrNotFound('viewAny', AuditLog::class);
+
         $auditLogs = AuditLog::with('user')
             ->when(get('search'), fn($q) => $this->applySearchFilter($q, get('search')))
             ->when(get('event'), fn($q) => $q->where('event', get('event')))
@@ -31,6 +33,7 @@ class AuditLogController extends BaseController
     public function show($id)
     {
         $auditLog = AuditLog::with('user')->findOrFail($id);
+        $this->authorizeOrNotFound('view', $auditLog);
 
         return blade_view('contents.audit-logs.show', compact('auditLog'));
     }

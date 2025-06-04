@@ -79,12 +79,15 @@
                 @endcan
 
                 <!-- Audit Logs -->
+                @can('viewAny', App\Models\AuditLog::class)
                 <li class="nav-item mb-1">
-                    <a href="{{ route_to('audit-logs.index') }}" class="nav-link rounded {{ active_class('audit-log*') }}">
+                    <a href="{{ route_to('audit-logs.index') }}"
+                        class="nav-link rounded {{ active_class('audit-log*') }}">
                         <i class="nav-icon bi bi-gear me-2"></i>
                         <p>Audit Logs</p>
                     </a>
                 </li>
+                @endcan
             </ul>
         </nav>
     </div>
