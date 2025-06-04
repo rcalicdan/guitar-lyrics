@@ -21,7 +21,7 @@ class AuditLogController extends BaseController
             ->paginate(20)
             ->appends($this->request->getGet());
 
-        return blade_view('audit-logs.index', [
+        return blade_view('contents.audit-logs.index', [
             'auditLogs' => $auditLogs,
             'events' => AuditLog::distinct()->pluck('event'),
             'auditableTypes' => AuditLog::distinct()->pluck('auditable_type'),
@@ -33,7 +33,7 @@ class AuditLogController extends BaseController
     {
         $auditLog = AuditLog::with('user')->findOrFail($id);
 
-        return blade_view('audit-logs.show', compact('auditLog'));
+        return blade_view('contents.audit-logs.show', compact('auditLog'));
     }
 
     private function applySearchFilter($query, $search)
