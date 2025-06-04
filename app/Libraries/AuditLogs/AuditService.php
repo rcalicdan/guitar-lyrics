@@ -1,7 +1,6 @@
 <?php
-// app/Services/AuditService.php
 
-namespace App\Services;
+namespace App\Libraries\AuditLogs;
 
 use App\Models\AuditLog;
 use Illuminate\Database\Eloquent\Model;

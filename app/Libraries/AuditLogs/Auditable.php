@@ -3,7 +3,7 @@
 namespace App\Libraries\AuditLogs;
 
 use App\Models\AuditLog;
-use App\Services\AuditService;
+use App\Libraries\AuditLogs\AuditService;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

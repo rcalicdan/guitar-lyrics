@@ -2,7 +2,7 @@
 
 namespace App\Libraries\AuditLogs;
 
-use App\Services\AuditService;
+use App\Libraries\AuditLogs\AuditService;
 
 trait AuditablePivot
 {
@@ -30,9 +30,8 @@ trait AuditablePivot
     protected function auditPivotCreated(): void
     {
         if ($this->shouldAuditPivot('created')) {
-            // For Comments model, get the parent model (Song or User)
             $parentModel = $this->getAuditableParent();
-            
+
             if ($parentModel) {
                 AuditService::log(
                     $parentModel,
@@ -56,19 +55,19 @@ trait AuditablePivot
     {
         if ($this->shouldAuditPivot('updated')) {
             $changes = $this->getChanges();
-            
+
             if (!empty($changes)) {
                 $parentModel = $this->getAuditableParent();
-                
+
                 if ($parentModel) {
                     $oldValues = [];
                     $newValues = [];
-                    
+
                     foreach ($changes as $key => $newValue) {
                         $oldValues[$key] = $this->getOriginal($key);
                         $newValues[$key] = $newValue;
                     }
-                    
+
                     AuditService::log(
                         $parentModel,
                         'pivot_updated',
@@ -96,7 +95,7 @@ trait AuditablePivot
     {
         if ($this->shouldAuditPivot('deleted')) {
             $parentModel = $this->getAuditableParent();
-            
+
             if ($parentModel) {
                 AuditService::log(
                     $parentModel,
@@ -119,16 +118,14 @@ trait AuditablePivot
      */
     protected function getAuditableParent()
     {
-        // For Comments, we'll use the Song as the main auditable parent
         if (method_exists($this, 'song')) {
             return $this->song;
         }
-        
-        // Fallback to user if no song
+
         if (method_exists($this, 'user')) {
             return $this->user;
         }
-        
+
         return null;
     }
 
@@ -138,8 +135,7 @@ trait AuditablePivot
     protected function getRelatedModelsInfo(): array
     {
         $info = [];
-        
-        // For Comments model
+
         if (method_exists($this, 'user') && $this->user) {
             $info['user'] = [
                 'id' => $this->user->id,
@@ -147,7 +143,7 @@ trait AuditablePivot
                 'email' => $this->user->email
             ];
         }
-        
+
         if (method_exists($this, 'song') && $this->song) {
             $info['song'] = [
                 'id' => $this->song->id,
@@ -155,14 +151,14 @@ trait AuditablePivot
                 'slug' => $this->song->slug
             ];
         }
-        
+
         if (method_exists($this, 'parent') && $this->parent) {
             $info['parent_comment'] = [
                 'id' => $this->parent->id,
                 'content' => substr($this->parent->content, 0, 50) . '...'
             ];
         }
-        
+
         return $info;
     }
 
@@ -174,11 +170,11 @@ trait AuditablePivot
         if (property_exists($this, 'auditPivotEvents')) {
             return in_array($event, $this->auditPivotEvents);
         }
-        
+
         if (property_exists($this, 'auditPivotExclude')) {
             return !in_array($event, $this->auditPivotExclude);
         }
-        
+
         return true;
     }
 
