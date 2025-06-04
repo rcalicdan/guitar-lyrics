@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Facades\Auth;
+use App\Helpers\AuditHelper;
+use App\Models\User;
 use App\Requests\UserProfile\UpdateImageRequest;
 use App\Requests\UserProfile\UpdatePasswordRequest;
 use App\Requests\UserProfile\UpdateProfileRequest;
@@ -72,6 +74,7 @@ class UserProfileController extends BaseController
     public function updateUserInformation()
     {
         auth()->user()->update(UpdateProfileRequest::validateRequest());
+        AuditHelper::logUpdated(User::class, auth()->user()->getOriginal());
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
     }
@@ -89,6 +92,8 @@ class UserProfileController extends BaseController
             'password' => $validatedData['new_password'],
         ]);
 
+        AuditHelper::logUpdated(User::class, $user->getOriginal());
+
         return redirect()->back()->with('success', 'Password updated successfully.');
     }
 
@@ -101,6 +106,8 @@ class UserProfileController extends BaseController
         auth()->user()->update([
             'image_path' => $imagePath,
         ]);
+
+        AuditHelper::logUpdated(User::class, auth()->user()->getOriginal());
 
         return redirect()->back()->with('success', 'Profile image updated successfully.');
     }

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Helpers\AuditHelper;
 use App\Models\Feedback;
 use App\Services\FeedbackService;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -51,6 +52,7 @@ class FeedbackController extends BaseController
         $feedback = Feedback::findOrFail($id);
         $this->authorize('delete', $feedback);
         $feedback->delete();
+        AuditHelper::logDeleted($feedback);
 
         return redirect()->back()->with('error', 'Failed to delete feedback.');
     }

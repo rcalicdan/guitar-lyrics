@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\AuditHelper;
 use App\Models\Song;
 use App\Requests\Song\StoreSongRequest;
 use App\Requests\Song\UpdateSongRequest;
@@ -51,7 +52,7 @@ class SongService
     {
         $imagePath = $this->handleFileUpload($request, 'uploads/songs');
 
-        Song::create([
+        $song = Song::create([
             'title' => purify_html($request->title),
             'content' => purify_html($request->content),
             'is_published' => true,
@@ -61,6 +62,8 @@ class SongService
             'user_id' => auth()->user()->id,
             'image_path' => $imagePath
         ]);
+
+        AuditHelper::logCreated($song);
     }
 
     public function update(UpdateSongRequest $request, string $slug)
@@ -79,5 +82,7 @@ class SongService
             'user_id' => auth()->user()->id,
             'image_path' => $imagePath
         ]);
+
+        AuditHelper::logUpdated($song, $song->getOriginal());
     }
 }

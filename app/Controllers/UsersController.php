@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Enums\UserRoles;
+use App\Helpers\AuditHelper;
 use App\Models\User;
 use App\Requests\User\StoreUserRequest;
 use App\Requests\User\UpdateUserRequest;
@@ -41,6 +42,7 @@ class UsersController extends BaseController
         $user = User::findOrFail($id);
         $this->authorize('update', $user);
         $user->update(UpdateUserRequest::validateRequest());
+        AuditHelper::logUpdated($user, $user->getOriginal());
 
         return redirect()->back()->with('success', 'User updated successfully');
     }
@@ -61,7 +63,8 @@ class UsersController extends BaseController
     public function store()
     {
         $this->authorize('create', User::class);
-        User::create(StoreUserRequest::validateRequest());
+        $user = User::create(StoreUserRequest::validateRequest());
+        AuditHelper::logCreated($user);
 
         return redirect()->route('users.index')->with('success', 'User created successfully');
     }
@@ -71,6 +74,7 @@ class UsersController extends BaseController
         $user = User::findOrFail($id);
         $this->authorize('delete', $user);
         $user->delete();
+        AuditHelper::logDeleted($user);
 
         return redirect()->back()
             ->with('success', 'User deleted successfully');

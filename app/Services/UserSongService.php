@@ -48,42 +48,4 @@ class UserSongService
 
         return $songs;
     }
-
-    public function store(StoreSongRequest $request)
-    {
-        $imagePath = $this->handleFileUpload($request, 'uploads/songs');
-
-        Song::create([
-            'title' => purify_html($request->title),
-            'content' => purify_html($request->content),
-            'is_published' => true,
-            'slug' => Str::slug($request->title) . '-' . time(),
-            'song_category_id' => $request->category_id ?: null,
-            'artist_id' => $request->artist_id ?: null,
-            'user_id' => auth()->user()->id,
-            'image_path' => $imagePath
-        ]);
-    }
-
-    public function update(UpdateSongRequest $request, string $slug)
-    {
-        $song = Song::where('slug', $slug)
-            ->where('user_id', auth()->user()->id) 
-            ->first();
-            
-        $this->redirectBack404IfNotFound($song);
-        authorize('update', $song);
-        $imagePath = $this->handleFileUpload($request, 'uploads/songs', $song);
-
-        $song->update([
-            'title' => purify_html($request->title),
-            'content' => purify_html($request->content),
-            'is_published' => true,
-            'slug' => Str::slug($request->title) . '-' . time(),
-            'song_category_id' => $request->category_id ?: null,
-            'artist_id' => $request->artist_id ?: null,
-            'user_id' => auth()->user()->id,
-            'image_path' => $imagePath
-        ]);
-    }
 }

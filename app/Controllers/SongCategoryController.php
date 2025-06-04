@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Helpers\AuditHelper;
 use App\Models\SongCategory;
 use App\Requests\SongCategory\StoreCategoryRequest;
 use App\Requests\SongCategory\UpdateCategoryRequest;
@@ -39,7 +40,9 @@ class SongCategoryController extends BaseController
     public function store()
     {
         $this->authorize('create', SongCategory::class);
-        SongCategory::create(StoreCategoryRequest::validateRequest());
+        $category = SongCategory::create(StoreCategoryRequest::validateRequest());
+
+        AuditHelper::logCreated($category);
 
         return redirect()->route('songs.categories.index')->with('success', 'Song Category created successfully.');
     }
@@ -58,6 +61,7 @@ class SongCategoryController extends BaseController
         $songCategory = SongCategory::findOrFail($id);
         $this->authorize('update', $songCategory);
         $songCategory->update(UpdateCategoryRequest::validateRequest());
+        AuditHelper::logUpdated($songCategory, $songCategory->getOriginal());
 
         return redirect()->back()->with('success', 'Song Category updated successfully.');
     }
@@ -67,6 +71,7 @@ class SongCategoryController extends BaseController
         $songCategory = SongCategory::findOrFail($id);
         $this->authorize('delete', $songCategory);
         $songCategory->delete();
+        AuditHelper::logDeleted($songCategory);
 
         return redirect()->back()->with('success', 'Song Category deleted successfully.');
     }

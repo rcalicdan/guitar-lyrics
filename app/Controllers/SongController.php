@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Helpers\AuditHelper;
 use App\Models\Song;
 use App\Models\SongCategory;
 use App\Requests\Song\StoreSongRequest;
@@ -80,6 +81,7 @@ class SongController extends BaseController
     {
         $song = Song::where('slug', $slug)->firstOrFail();
         $song->delete();
+        AuditHelper::logDeleted($song);
 
         return redirect()->route('songs.index')->with('success', 'Song deleted successfully');
     }
