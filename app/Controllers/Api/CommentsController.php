@@ -164,6 +164,7 @@ class CommentsController extends BaseController
         ];
 
         $comment = Comments::create($data);
+        $comment->refresh();
         $comment->load('user');
 
         return $comment;
