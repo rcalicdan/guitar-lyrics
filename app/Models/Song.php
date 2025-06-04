@@ -11,6 +11,12 @@ class Song extends Model
 {
     use Auditable;
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::bootAuditable();
+    }
+
     protected $table = 'songs';
     protected $fillable = ['title', 'content', 'song_category_id', 'artist_id', 'user_id', 'slug', 'image_path', 'is_published'];
 
