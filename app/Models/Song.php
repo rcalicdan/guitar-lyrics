@@ -14,6 +14,12 @@ class Song extends Model
     protected $table = 'songs';
     protected $fillable = ['title', 'content', 'song_category_id', 'artist_id', 'user_id', 'slug', 'image_path', 'is_published'];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->initializeAuditable();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

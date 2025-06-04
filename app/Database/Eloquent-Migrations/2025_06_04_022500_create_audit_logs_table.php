@@ -1,5 +1,4 @@
 <?php
-// app/Database/Eloquent-Migrations/create_audit_logs_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

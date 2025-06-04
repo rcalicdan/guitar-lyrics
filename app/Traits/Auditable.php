@@ -1,10 +1,8 @@
 <?php
-// app/Traits/Auditable.php
 
 namespace App\Traits;
 
 use App\Models\AuditLog;
-use CodeIgniter\HTTP\RequestInterface;
 
 trait Auditable
 {
