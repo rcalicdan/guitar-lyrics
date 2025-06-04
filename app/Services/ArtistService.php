@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\AuditHelper;
 use App\Models\Artist;
 use App\Requests\Artist\StoreArtistRequest;
 use App\Requests\Artist\UpdateArtistRequest;
@@ -29,11 +30,13 @@ class ArtistService
     {
         $imagePath = $this->handleFileUpload($data, $filePath, $imageUploadService);
 
-        Artist::create([
+        $artist = Artist::create([
             'name' => $data->name,
             'about' => $data->about,
             'image_path' => $imagePath,
         ]);
+
+        AuditHelper::logCreated($artist);
     }
 
     public function update(Artist|Collection $artist, UpdateArtistRequest $data, ImageUploadService $imageUploadService, string $filePath = 'uploads/artists')
@@ -49,6 +52,8 @@ class ArtistService
             'about' => $data->about,
             'image_path' => $imagePath,
         ]);
+
+        AuditHelper::logUpdated($artist, $artist->getOriginal());
     }
 
     private function handleFileUpload($data, string $filePath, ImageUploadService $imageUploadService, ?Artist $artist = null)

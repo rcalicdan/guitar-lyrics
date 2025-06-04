@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Helpers\AuditHelper;
 use App\Models\User;
 use App\Requests\Auth\LoginRequest;
 use App\Requests\Auth\RegisterRequest;
@@ -27,7 +28,8 @@ class AuthController extends BaseController
 
     public function register()
     {
-        User::create(RegisterRequest::validateRequest());
+        $user = User::create(RegisterRequest::validateRequest());
+        AuditHelper::log($user, 'user-registered');
         return redirect()->route('login')->with('success', 'Registration successful. Please login.');
     }
 

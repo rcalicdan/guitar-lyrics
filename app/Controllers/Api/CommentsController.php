@@ -3,6 +3,8 @@
 namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
+use App\Helpers\AuditHelper;
+use App\Models\AuditLog;
 use App\Models\Comments;
 use App\Models\Song;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -37,7 +39,7 @@ class CommentsController extends BaseController
                 'next_page_url' => $comments->nextPageUrl(),
                 'prev_page_url' => $comments->previousPageUrl(),
                 'path' => $comments->path(),
-                'total' => $totalCount, 
+                'total' => $totalCount,
             ]
         ]);
     }
@@ -60,6 +62,8 @@ class CommentsController extends BaseController
         }
 
         $comment = $this->createComment($song);
+
+        AuditHelper::logCreated($comment);
 
         return $this->respondSuccess(
             $this->formatSingleCommentData($comment),
@@ -96,6 +100,8 @@ class CommentsController extends BaseController
         $comment->update([
             'content' => $content
         ]);
+
+        AuditHelper::logUpdated($comment, $comment->getOriginal());
 
         return $this->respondSuccess(null, 'Comment updated successfully');
     }

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Helpers\AuditHelper;
 use App\Models\Artist;
 use App\Requests\Artist\StoreArtistRequest;
 use App\Requests\Artist\UpdateArtistRequest;
@@ -86,6 +87,7 @@ class ArtistController extends BaseController
         $artist = Artist::findOrFail($id);
         $this->authorize('delete', $artist);
         $artist->delete();
+        AuditHelper::logDeleted($artist);
 
         return redirect()->to(back_url())->with('success', 'Artist deleted successfully');
     }
