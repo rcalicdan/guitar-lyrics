@@ -4,8 +4,8 @@ namespace App\Libraries\AuditLogs;
 
 use App\Models\AuditLog;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
+use Rcalicdan\Ci4Larabridge\Facades\Auth;
 
 class AuditService
 {
@@ -20,7 +20,7 @@ class AuditService
         array $metadata = []
     ): AuditLog {
         $changes = static::calculateChanges($oldValues, $newValues);
-        
+        $request = service('request');
         return AuditLog::create([
             'auditable_type' => get_class($model),
             'auditable_id' => $model->getKey(),
@@ -28,10 +28,10 @@ class AuditService
             'old_values' => $oldValues ?: null,
             'new_values' => $newValues ?: null,
             'changes' => $changes ?: null,
-            'user_id' => Auth::id(),
-            'user_type' => Auth::user() ? get_class(Auth::user()) : null,
-            'ip_address' => Request::ip(),
-            'user_agent' => Request::userAgent(),
+            'user_id' => auth()->user()->id,
+            'user_type' => auth()->user() ? get_class(Auth::user()) : null,
+            'ip_address' => $request->getIPAddress(),
+            'user_agent' => $request->getUserAgent()->__toString(),
             'metadata' => $metadata ?: null,
         ]);
     }
@@ -68,16 +68,16 @@ class AuditService
     private static function calculateChanges(array $oldValues, array $newValues): array
     {
         $changes = [];
-        
+
         // For pivot operations, handle specially
         if (isset($newValues['relation']) || isset($oldValues['relation'])) {
             return static::calculatePivotChanges($oldValues, $newValues);
         }
-        
+
         // Check for new or changed values
         foreach ($newValues as $key => $newValue) {
             $oldValue = $oldValues[$key] ?? null;
-            
+
             if ($oldValue !== $newValue) {
                 $changes[$key] = [
                     'old' => $oldValue,
@@ -85,7 +85,7 @@ class AuditService
                 ];
             }
         }
-        
+
         // Check for removed values
         foreach ($oldValues as $key => $oldValue) {
             if (!array_key_exists($key, $newValues) && $oldValue !== null) {
@@ -95,7 +95,7 @@ class AuditService
                 ];
             }
         }
-        
+
         return $changes;
     }
 
@@ -105,28 +105,28 @@ class AuditService
     private static function calculatePivotChanges(array $oldValues, array $newValues): array
     {
         $changes = [];
-        
+
         if (!empty($newValues['relation'])) {
             $changes['relationship'] = [
                 'old' => $oldValues['relation'] ?? null,
                 'new' => $newValues['relation']
             ];
         }
-        
+
         if (!empty($newValues['related_id'])) {
             $changes['related_record'] = [
                 'old' => $oldValues['related_id'] ?? null,
                 'new' => $newValues['related_id']
             ];
         }
-        
+
         if (!empty($newValues['pivot_attributes'])) {
             $changes['pivot_attributes'] = [
                 'old' => $oldValues['pivot_attributes'] ?? [],
                 'new' => $newValues['pivot_attributes']
             ];
         }
-        
+
         return $changes;
     }
 
@@ -136,7 +136,7 @@ class AuditService
     public static function getFilteredAttributes(Model $model, ?array $attributes = null): array
     {
         $attributes = $attributes ?? $model->getAttributes();
-        
+
         $hidden = $model->getHidden();
         $defaultExcluded = [
             'password',
@@ -144,13 +144,13 @@ class AuditService
             'email_verification_token',
             'password_reset_token',
         ];
-        
+
         $excluded = array_merge($hidden, $defaultExcluded);
-        
+
         foreach ($excluded as $field) {
             unset($attributes[$field]);
         }
-        
+
         return $attributes;
     }
 }
