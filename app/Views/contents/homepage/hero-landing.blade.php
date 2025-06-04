@@ -9,8 +9,8 @@
                     <p class="lead mb-4">Discover thousands of guitar chords and lyrics. Start your musical
                         journey today with our comprehensive collection.</p>
                     <div class="landing-cta">
-                        <a href="#featured" class="btn btn-custom me-3">Get Started</a>
-                        <a href="#" class="btn btn-outline-light">Learn More</a>
+                        <a href="{{ route_to('home.songs.index') }}" class="btn btn-custom me-3">Get Started</a>
+                        <a href="{{ route_to('about-us') }}" class="btn btn-outline-light">Learn More</a>
                     </div>
                     <div class="landing-stats mt-5">
                         <div class="row g-4">

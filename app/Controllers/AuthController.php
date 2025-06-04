@@ -29,7 +29,7 @@ class AuthController extends BaseController
     public function register()
     {
         $user = User::create(RegisterRequest::validateRequest());
-        AuditHelper::log($user, 'user-registered');
+        AuditHelper::log($user, 'user-registered', newValues: $user->toArray());
         return redirect()->route('login')->with('success', 'Registration successful. Please login.');
     }
 
