@@ -20,7 +20,14 @@ class AuditService
         array $metadata = []
     ): AuditLog {
         $changes = static::calculateChanges($oldValues, $newValues);
-        $request = service('request');
+        $request = \Config\Services::request();
+        $currentUser = null;
+        try {
+            $currentUser = auth()->user();
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+        }
+
         return AuditLog::create([
             'auditable_type' => get_class($model),
             'auditable_id' => $model->getKey(),
@@ -28,10 +35,10 @@ class AuditService
             'old_values' => $oldValues ?: null,
             'new_values' => $newValues ?: null,
             'changes' => $changes ?: null,
-            'user_id' => auth()->user()->id,
-            'user_type' => auth()->user() ? get_class(Auth::user()) : null,
+            'user_id' => $currentUser ? $currentUser->id : null,
+            'user_type' => $currentUser ? get_class($currentUser) : null,
             'ip_address' => $request->getIPAddress(),
-            'user_agent' => $request->getUserAgent()->__toString(),
+            'user_agent' => $request->getUserAgent(),
             'metadata' => $metadata ?: null,
         ]);
     }
@@ -69,12 +76,10 @@ class AuditService
     {
         $changes = [];
 
-        // For pivot operations, handle specially
         if (isset($newValues['relation']) || isset($oldValues['relation'])) {
             return static::calculatePivotChanges($oldValues, $newValues);
         }
 
-        // Check for new or changed values
         foreach ($newValues as $key => $newValue) {
             $oldValue = $oldValues[$key] ?? null;
 

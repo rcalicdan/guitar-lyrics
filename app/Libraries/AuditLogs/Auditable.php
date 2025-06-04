@@ -19,20 +19,25 @@ trait Auditable
      */
     protected static function bootAuditable(): void
     {
+        // Add debugging
+        error_log('Auditable trait booted for: ' . static::class);
+        
         // Listen for model events
         static::created(function ($model) {
+            error_log('Model created event triggered for: ' . get_class($model));
             $model->auditCreated();
         });
 
         static::updated(function ($model) {
+            error_log('Model updated event triggered for: ' . get_class($model));
             $model->auditUpdated();
         });
 
         static::deleted(function ($model) {
+            error_log('Model deleted event triggered for: ' . get_class($model));
             $model->auditDeleted();
         });
 
-        // Listen for pivot events if available
         if (method_exists(static::class, 'pivotAttached')) {
             static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
                 $model->auditPivotAttached($relationName, $pivotIds, $pivotIdsAttributes);
@@ -69,21 +74,31 @@ trait Auditable
         return $this->auditLogs()->limit($limit);
     }
 
-    /**
+   /**
      * Handle created event
      */
     protected function auditCreated(): void
     {
+        error_log('auditCreated called for: ' . get_class($this));
+        
         if ($this->shouldAudit('created')) {
+            error_log('Should audit created - proceeding with audit log');
             $newValues = AuditService::getFilteredAttributes($this);
 
-            AuditService::log(
-                $this,
-                'created',
-                [],
-                $newValues,
-                $this->getAuditMetadata('created')
-            );
+            try {
+                $auditLog = AuditService::log(
+                    $this,
+                    'created',
+                    [],
+                    $newValues,
+                    $this->getAuditMetadata('created')
+                );
+                error_log('Audit log created with ID: ' . $auditLog->id);
+            } catch (\Exception $e) {
+                error_log('Error creating audit log: ' . $e->getMessage());
+            }
+        } else {
+            error_log('Should not audit created event');
         }
     }
 
