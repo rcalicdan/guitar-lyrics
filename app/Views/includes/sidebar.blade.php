@@ -78,9 +78,9 @@
                 </li>
                 @endcan
 
-                <!-- Settings -->
+                <!-- Audit Logs -->
                 <li class="nav-item mb-1">
-                    <a href="{{ route_to('settings.index') }}" class="nav-link rounded {{ active_class('settings*') }}">
+                    <a href="{{ route_to('audit-logs.index') }}" class="nav-link rounded {{ active_class('audit-log*') }}">
                         <i class="nav-icon bi bi-gear me-2"></i>
                         <p>Audit Logs</p>
                     </a>

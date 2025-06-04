@@ -15,6 +15,7 @@ use App\Controllers\Homepage\SongController as HomepageSongController;
 use App\Controllers\UserProfileController;
 use App\Controllers\UsersController;
 use App\Controllers\UserSongController;
+use App\Http\Controllers\AuditLogController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -99,6 +100,11 @@ $routes->group('user-feedbacks', ['filter' => 'auth'], function (RouteCollection
     $routes->get('', [ControllersFeedbackController::class, 'index'], ['as' => 'feedbacks.index']);
     $routes->get('show/(:num)', [ControllersFeedbackController::class, 'show'], ['as' => 'feedbacks.show']);
     $routes->delete('delete/(:num)', [ControllersFeedbackController::class, 'destroy'], ['as' => 'feedbacks.delete']);
+});
+
+$routes->group('audit-logs', ['filter' => 'auth'], function (RouteCollection $routes) {
+    $routes->get('', [AuditLogController::class, 'index'], ['as' => 'audit-logs.index']);
+    $routes->get('show/(:num)', [AuditLogController::class, 'show'], ['as' => 'audit-logs.show']);
 });
 
 
