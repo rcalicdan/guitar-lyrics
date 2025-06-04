@@ -74,9 +74,9 @@ class UserProfileController extends BaseController
     public function updateUserInformation()
     {
         $user = auth()->user();
-        $originalData = $user->getOriginal(); 
+        $originalData = $user->getOriginal();
         $user->update(UpdateProfileRequest::validateRequest());
-        AuditHelper::logUpdated($user, $originalData); 
+        AuditHelper::logUpdated($user, $originalData);
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
     }
@@ -85,12 +85,12 @@ class UserProfileController extends BaseController
     {
         $validatedData = UpdatePasswordRequest::validateRequest();
         $user = auth()->user();
-
+        $originalData = $user->getOriginal();
+        
         if (!password_verify($validatedData['old_password'], $user->password)) {
             return redirect()->back()->with('error', 'Old password is incorrect.');
         }
 
-        $originalData = $user->getOriginal();
         $user->update([
             'password' => $validatedData['new_password'],
         ]);
@@ -107,7 +107,6 @@ class UserProfileController extends BaseController
         $imagePath = $this->imageUploadService->uploadProfile($image);
         $user = auth()->user();
         $originalData = $user->getOriginal();
-
         $user->update([
             'image_path' => $imagePath,
         ]);

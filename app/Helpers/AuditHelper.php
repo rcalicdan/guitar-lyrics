@@ -27,7 +27,16 @@ class AuditHelper
 
     public static function logUpdated($model, array $originalData)
     {
-        self::log($model, 'updated', $originalData, $model->getDirty());
+        $newValues = $model->getAttributes();
+        $changedValues = [];
+
+        foreach ($newValues as $key => $value) {
+            if (isset($originalData[$key]) && $originalData[$key] !== $value) {
+                $changedValues[$key] = $value;
+            }
+        }
+
+        self::log($model, 'updated', $originalData, $changedValues);
     }
 
     public static function logDeleted($model)
