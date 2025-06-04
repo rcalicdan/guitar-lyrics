@@ -15,7 +15,7 @@ use App\Controllers\Homepage\SongController as HomepageSongController;
 use App\Controllers\UserProfileController;
 use App\Controllers\UsersController;
 use App\Controllers\UserSongController;
-use App\Http\Controllers\AuditLogController;
+use App\Controllers\AuditLogController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
