@@ -2,7 +2,6 @@
 
 namespace Config;
 
-use App\Models\Song;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
 use CodeIgniter\HotReloader\HotReloader;
@@ -27,7 +26,6 @@ use CodeIgniter\HotReloader\HotReloader;
 Events::on('pre_system', static function (): void {
     service('eloquent');
     service('authorization');
-    Song::class;
 });
 
 Events::on('model_audit', [\App\Listeners\AuditLogListener::class, 'handleModelAudit']);
