@@ -108,7 +108,7 @@ $routes->group('api/', function (RouteCollection $routes) {
     $routes->get('songs/categories/search', [SongCategoryOptionSearchController::class, 'search'], ['as' => 'songs.categories.search']);
     $routes->get('songs/(:segment)/comments', [CommentsController::class, 'index'], ['as' => 'api.songs.comments.index']);
     $routes->get('songs/(:segment)/comments/load-more', [CommentsController::class, 'loadMore'], ['as' => 'api.songs.comments.load-more']);
-    $routes->post('songs/(:num)/increment-view', [HomepageSongController::class, 'incrimentView'], ['as' => 'api.songs.increment-view']);
+    $routes->post('songs/(:segment)/increment-view', [HomepageSongController::class, 'incrementView'], ['as' => 'api.songs.increment-view']);
 });
 
 $routes->group('api/songs/(:segment)', ['filter' => 'auth'], function (RouteCollection $routes) {

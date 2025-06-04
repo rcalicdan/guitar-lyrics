@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-lg-4 text-lg-end">
                     <div class="action-buttons">
-                        <a href="{{ route_to('songs.index') }}" class="btn btn-outline-primary">
+                        <a href="{{ route_to('home.songs.index') }}" class="btn btn-outline-primary">
                             <i class="fas fa-arrow-left me-2"></i>Back to Songs
                         </a>
                     </div>
@@ -47,7 +47,6 @@
             </div>
         </div>
 
-        <!-- Rest of the content remains the same -->
         <!-- Content Controls -->
         <div class="content-controls mb-4" x-show="true" x-transition:enter="transition ease-out duration-500 delay-100"
             x-transition:enter-start="opacity-0 transform translate-y-4"
