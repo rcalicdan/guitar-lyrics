@@ -22,6 +22,7 @@ class AuditService
         $changes = static::calculateChanges($oldValues, $newValues);
         $request = \Config\Services::request();
         $currentUser = null;
+
         try {
             $currentUser = auth()->user();
         } catch (\Exception $e) {

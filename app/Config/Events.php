@@ -28,6 +28,11 @@ Events::on('pre_system', static function (): void {
     service('authorization');
 });
 
+Events::on('model_audit', [\App\Listeners\AuditLogListener::class, 'handleModelAudit']);
+Events::on('pivot_attached', [\App\Listeners\AuditLogListener::class, 'handlePivotAttach']);
+Events::on('pivot_detached', [\App\Listeners\AuditLogListener::class, 'handlePivotDetach']);
+Events::on('pivot_updated', [\App\Listeners\AuditLogListener::class, 'handlePivotUpdate']);
+
 Events::on('pre_system', static function (): void {
 
     if (ENVIRONMENT !== 'testing') {
