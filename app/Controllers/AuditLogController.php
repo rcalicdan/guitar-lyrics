@@ -24,8 +24,7 @@ class AuditLogController extends BaseController
         return blade_view('contents.audit-logs.index', [
             'auditLogs' => $auditLogs,
             'events' => AuditLog::distinct()->pluck('event'),
-            'auditableTypes' => AuditLog::distinct()->pluck('auditable_type'),
-            'users' => User::select('id', 'name')->get()
+            'auditableTypes' => AuditLog::distinct()->pluck('auditable_type')
         ]);
     }
 
@@ -40,10 +39,7 @@ class AuditLogController extends BaseController
     {
         return $query->where(function ($q) use ($search) {
             $q->where('auditable_type', 'like', "%{$search}%")
-                ->orWhere('event', 'like', "%{$search}%")
-                ->orWhereHas('user', function ($userQuery) use ($search) {
-                    $userQuery->where('name', 'like', "%{$search}%");
-                });
+                ->orWhere('event', 'like', "%{$search}%");
         });
     }
 }
