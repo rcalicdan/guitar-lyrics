@@ -51,7 +51,7 @@ return new class extends Migration
             'password' => bcrypt('admin1234'),
             'role' => 'admin',
             'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+            'updated_at' => Carbon::now(),
         ]);
     }
 

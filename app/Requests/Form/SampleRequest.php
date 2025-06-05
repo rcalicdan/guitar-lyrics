@@ -12,14 +12,14 @@ class SampleRequest extends FormRequest
             // Define your validation rules here
         ];
     }
-    
+
     public function messages()
     {
         return [
             // Define your custom messages here (optional)
         ];
     }
-    
+
     public function attributes()
     {
         return [

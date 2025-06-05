@@ -3,8 +3,6 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseService;
-use App\Libraries\MyExceptions;
-use CodeIgniter\Debug\ExceptionHandlerInterface;
 
 /**
  * Services Configuration file.
@@ -21,6 +19,5 @@ use CodeIgniter\Debug\ExceptionHandlerInterface;
  */
 class Services extends BaseService
 {
-  //
+    //
 }
-

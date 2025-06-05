@@ -15,9 +15,9 @@ class StoreArtistRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => ["required", "string", "max:50", Rule::unique('artists', 'name')],
-            "about" => ["nullable", "string", "min:10", "max:500", ],
-            "image" => ["nullable", "ci_image", "ci_file_size:2048"],
+            'name' => ['required', 'string', 'max:50', Rule::unique('artists', 'name')],
+            'about' => ['nullable', 'string', 'min:10', 'max:500'],
+            'image' => ['nullable', 'ci_image', 'ci_file_size:2048'],
         ];
     }
 
@@ -41,7 +41,7 @@ class StoreArtistRequest extends FormRequest
     public function attributes()
     {
         return [
-            "name" => "artist name"
+            'name' => 'artist name',
         ];
     }
 }

@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Filters;
 
+use App\Facades\Auth;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use App\Facades\Auth;
 
 class GuestFilter implements FilterInterface
 {
@@ -14,7 +15,7 @@ class GuestFilter implements FilterInterface
             return redirect()->to('/dashboard');
         }
     }
-    
+
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
         // Do nothing after

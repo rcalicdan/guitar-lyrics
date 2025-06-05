@@ -31,8 +31,8 @@ class FeedbackService
             ->when($this->hasDateRange($filters), function ($query) use ($filters) {
                 // Additional logic if both dates are provided
                 return $query->whereBetween('created_at', [
-                    $filters['date_from'] . ' 00:00:00',
-                    $filters['date_to'] . ' 23:59:59'
+                    $filters['date_from'].' 00:00:00',
+                    $filters['date_to'].' 23:59:59',
                 ]);
             })
             ->when($filters['status'] ?? null, function ($query, $status) {
@@ -95,6 +95,7 @@ class FeedbackService
             })
             ->when($filters['sort_by'] ?? null, function ($query, $sortBy) use ($filters) {
                 $direction = $filters['sort_direction'] ?? 'desc';
+
                 return $query->orderBy($sortBy, $direction);
             }, function ($query) {
                 return $query->latest('created_at');
@@ -154,7 +155,7 @@ class FeedbackService
      */
     public function hasActiveFilters(array $filters): bool
     {
-        return !empty($filters);
+        return ! empty($filters);
     }
 
     /**
@@ -162,7 +163,7 @@ class FeedbackService
      */
     protected function hasDateRange(array $filters): bool
     {
-        return !empty($filters['date_from']) && !empty($filters['date_to']);
+        return ! empty($filters['date_from']) && ! empty($filters['date_to']);
     }
 
     /**

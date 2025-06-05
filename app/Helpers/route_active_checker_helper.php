@@ -5,7 +5,6 @@
  * Works whether getMatchedRoute() returns an array or a Route object.
  *
  * @param  string|string[]  $patterns
- * @return bool
  */
 function is_route_active($patterns): bool
 {
@@ -39,7 +38,6 @@ function is_route_active($patterns): bool
  *
  * @param  string  $subject  Route name or URI path
  * @param  string  $pattern  Pattern with '*' wildcard
- * @return bool
  */
 function check_pattern(string $subject, string $pattern): bool
 {
@@ -48,7 +46,7 @@ function check_pattern(string $subject, string $pattern): bool
     }
 
     $escaped = preg_quote($pattern, '/');
-    $regex   = '/^' . str_replace('\*', '.*', $escaped) . '$/';
+    $regex = '/^'.str_replace('\*', '.*', $escaped).'$/';
 
     return (bool) preg_match($regex, $subject);
 }
@@ -57,7 +55,6 @@ function check_pattern(string $subject, string $pattern): bool
  * Blade helper: returns 'active' if matched, else empty string.
  *
  * @param  string|string[]  $patterns
- * @return string
  */
 function active_class($patterns): string
 {

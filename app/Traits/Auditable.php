@@ -7,11 +7,11 @@ use App\Models\AuditLog;
 trait Auditable
 {
     protected static $auditEvents = ['created', 'updated', 'deleted'];
-    
+
     public function initializeAuditable()
     {
         $this->addObservableEvents(static::$auditEvents);
-        
+
         foreach (static::$auditEvents as $event) {
             static::registerModelEvent($event, function ($model) use ($event) {
                 $model->logAudit($event);
@@ -52,18 +52,21 @@ trait Auditable
     protected function getCurrentUserId()
     {
         $session = session();
+
         return $session->get('auth_user_id') ?? null;
     }
 
     protected function getClientIpAddress()
     {
         $request = service('request');
+
         return $request->getIPAddress();
     }
 
     protected function getUserAgent()
     {
         $request = service('request');
+
         return $request->getUserAgent()->getAgentString();
     }
 }

@@ -11,14 +11,13 @@ trait ModelFileUpload
     public function handleFileUpload($data, string $filePath, Model|Collection|null $model = null)
     {
         try {
-            $imageUploadService = new ImageUploadService();
+            $imageUploadService = new ImageUploadService;
             $imagePath = null;
 
             if ($data->hasFile('image')) {
                 $oldImagePath = $model?->image_path;
                 $image = $data->file('image');
                 $imagePath = $imageUploadService->uploadImage($image, $filePath);
-
 
                 if ($oldImagePath) {
                     $this->handleFileDelete($oldImagePath, $imageUploadService);

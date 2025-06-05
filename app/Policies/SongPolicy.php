@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Song;
+use App\Models\User;
 
 class SongPolicy
 {

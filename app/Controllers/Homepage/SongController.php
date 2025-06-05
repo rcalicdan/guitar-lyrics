@@ -2,20 +2,21 @@
 
 namespace App\Controllers\Homepage;
 
+use App\Controllers\BaseController;
 use App\Models\Song;
 use App\Services\HomepageSongService;
 use App\Services\ViewTrackingService;
-use App\Controllers\BaseController;
 
 class SongController extends BaseController
 {
     private HomepageSongService $songService;
+
     private ViewTrackingService $viewTrackingService;
 
     public function __construct()
     {
-        $this->songService = new HomepageSongService();
-        $this->viewTrackingService = new ViewTrackingService();
+        $this->songService = new HomepageSongService;
+        $this->viewTrackingService = new ViewTrackingService;
     }
 
     public function index()
@@ -28,7 +29,7 @@ class SongController extends BaseController
             'songs' => $songs,
             'artists' => $filterOptions['artists'],
             'categories' => $filterOptions['categories'],
-            'currentFilters' => $filters
+            'currentFilters' => $filters,
         ]);
     }
 
@@ -45,13 +46,13 @@ class SongController extends BaseController
 
     public function incrementView($id)
     {
-        if (!$this->request->isAJAX()) {
+        if (! $this->request->isAJAX()) {
             return $this->response->setStatusCode(400)->setJSON(['error' => 'Invalid request']);
         }
 
         $song = Song::find($id);
 
-        if (!$song || !$song->is_published) {
+        if (! $song || ! $song->is_published) {
             return $this->response->setStatusCode(404)->setJSON(['error' => 'Song not found']);
         }
 
@@ -60,13 +61,13 @@ class SongController extends BaseController
         if ($viewIncremented) {
             return $this->response->setJSON([
                 'success' => true,
-                ...$this->viewTrackingService->getViewData($song)
+                ...$this->viewTrackingService->getViewData($song),
             ]);
         }
 
         return $this->response->setJSON([
             'success' => false,
-            'message' => 'View already counted for this session'
+            'message' => 'View already counted for this session',
         ]);
     }
 
@@ -76,7 +77,7 @@ class SongController extends BaseController
             'search' => $this->request->getGet('search'),
             'artist' => $this->request->getGet('artist'),
             'category' => $this->request->getGet('category'),
-            'sort' => $this->request->getGet('sort') ?? 'latest'
+            'sort' => $this->request->getGet('sort') ?? 'latest',
         ];
     }
 }

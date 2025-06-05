@@ -6,8 +6,8 @@ use App\Helpers\AuditHelper;
 use App\Models\Artist;
 use App\Requests\Artist\StoreArtistRequest;
 use App\Requests\Artist\UpdateArtistRequest;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class ArtistService
 {
@@ -65,7 +65,6 @@ class ArtistService
                 $oldImagePath = $artist?->image_path;
                 $image = $data->file('image');
                 $imagePath = $imageUploadService->uploadImage($image, $filePath);
-
 
                 if ($oldImagePath) {
                     $this->handleFileDelete($oldImagePath, $imageUploadService);

@@ -2,14 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Helpers\AuditHelper;
 use App\Models\SongCategory;
 use App\Requests\SongCategory\StoreCategoryRequest;
 use App\Requests\SongCategory\UpdateCategoryRequest;
 use App\Services\SongCategoryService;
 use App\Traits\SearchPaginationTrait;
-use CodeIgniter\HTTP\ResponseInterface;
 
 class SongCategoryController extends BaseController
 {
@@ -19,7 +17,7 @@ class SongCategoryController extends BaseController
 
     public function __construct()
     {
-        $this->songCategoryService = new SongCategoryService();
+        $this->songCategoryService = new SongCategoryService;
     }
 
     public function index()

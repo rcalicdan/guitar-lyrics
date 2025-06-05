@@ -3,8 +3,8 @@
 namespace App\Requests\User;
 
 use App\Enums\UserRoles;
-use Rcalicdan\Ci4Larabridge\Validation\FormRequest;
 use Illuminate\Validation\Rule;
+use Rcalicdan\Ci4Larabridge\Validation\FormRequest;
 
 class StoreUserRequest extends FormRequest
 {

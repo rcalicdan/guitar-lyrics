@@ -2,10 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
-use App\Facades\Auth;
 use App\Helpers\AuditHelper;
-use App\Models\User;
 use App\Requests\UserProfile\UpdateImageRequest;
 use App\Requests\UserProfile\UpdatePasswordRequest;
 use App\Requests\UserProfile\UpdateProfileRequest;
@@ -40,7 +37,7 @@ class UserProfileController extends BaseController
 
         return blade_view('contents.user-toggle.index', [
             'isUpdatingPassword' => $isUpdatingPassword,
-            'contentTitle' => $contentTitle
+            'contentTitle' => $contentTitle,
         ]);
     }
 
@@ -86,8 +83,8 @@ class UserProfileController extends BaseController
         $validatedData = UpdatePasswordRequest::validateRequest();
         $user = auth()->user();
         $originalData = $user->getOriginal();
-        
-        if (!password_verify($validatedData['old_password'], $user->password)) {
+
+        if (! password_verify($validatedData['old_password'], $user->password)) {
             return redirect()->back()->with('error', 'Old password is incorrect.');
         }
 

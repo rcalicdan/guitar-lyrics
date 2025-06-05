@@ -6,7 +6,6 @@ use App\Controllers\BaseController;
 use App\Helpers\AuditHelper;
 use App\Models\Feedback;
 use App\Requests\Feedback\StoreFeedbackRequest;
-use CodeIgniter\HTTP\ResponseInterface;
 
 class FeedbackController extends BaseController
 {

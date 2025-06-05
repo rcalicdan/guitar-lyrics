@@ -12,6 +12,7 @@ class Song extends Model
     use Auditable;
 
     protected $table = 'songs';
+
     protected $fillable = ['title', 'content', 'song_category_id', 'artist_id', 'user_id', 'slug', 'image_path', 'is_published'];
 
     public function __construct(array $attributes = [])
@@ -45,9 +46,9 @@ class Song extends Model
         $count = $this->views_count;
 
         if ($count >= 1000000) {
-            return number_format($count / 1000000, 1) . 'M';
+            return number_format($count / 1000000, 1).'M';
         } elseif ($count >= 1000) {
-            return number_format($count / 1000, 1) . 'K';
+            return number_format($count / 1000, 1).'K';
         }
 
         return number_format($count);

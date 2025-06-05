@@ -24,10 +24,10 @@
  */
 
 // Load the paths config file
-require __DIR__ . '/app/Config/Paths.php';
+require __DIR__.'/app/Config/Paths.php';
 
 // Path to the front controller
-define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR);
+define('FCPATH', __DIR__.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR);
 
 class preload
 {
@@ -36,7 +36,7 @@ class preload
      */
     private array $paths = [
         [
-            'include' => __DIR__ . '/vendor/codeigniter4/framework/system', // Change this path if using manual installation
+            'include' => __DIR__.'/vendor/codeigniter4/framework/system', // Change this path if using manual installation
             'exclude' => [
                 // Not needed if you don't use them.
                 '/system/Database/OCI8/',
@@ -69,8 +69,8 @@ class preload
 
     private function loadAutoloader(): void
     {
-        $paths = new Config\Paths();
-        require rtrim($paths->systemDirectory, '\\/ ') . DIRECTORY_SEPARATOR . 'Boot.php';
+        $paths = new Config\Paths;
+        require rtrim($paths->systemDirectory, '\\/ ').DIRECTORY_SEPARATOR.'Boot.php';
 
         CodeIgniter\Boot::preload($paths);
     }
@@ -82,8 +82,8 @@ class preload
     {
         foreach ($this->paths as $path) {
             $directory = new RecursiveDirectoryIterator($path['include']);
-            $fullTree  = new RecursiveIteratorIterator($directory);
-            $phpFiles  = new RegexIterator(
+            $fullTree = new RecursiveIteratorIterator($directory);
+            $phpFiles = new RegexIterator(
                 $fullTree,
                 '/.+((?<!Test)+\.php$)/i',
                 RecursiveRegexIterator::GET_MATCH,
@@ -97,10 +97,10 @@ class preload
                 }
 
                 require_once $file[0];
-                echo 'Loaded: ' . $file[0] . "\n";
+                echo 'Loaded: '.$file[0]."\n";
             }
         }
     }
 }
 
-(new preload())->load();
+(new preload)->load();

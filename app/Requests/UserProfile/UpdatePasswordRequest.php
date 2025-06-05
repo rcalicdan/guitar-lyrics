@@ -14,14 +14,14 @@ class UpdatePasswordRequest extends FormRequest
             'confirm_password' => ['required', 'string', 'same:new_password'],
         ];
     }
-    
+
     public function messages()
     {
         return [
             // Define your custom messages here (optional)
         ];
     }
-    
+
     public function attributes()
     {
         return [

@@ -15,12 +15,12 @@ class UpdateSongRequest extends FormRequest
     public function rules()
     {
         return [
-            "title" => ["required", "string", "max:50"],
-            "content" => ["required", "string", "max:5000"],
-            "is_published" => ["boolean"],
-            "image" => ["nullable", "ci_image", "ci_file_size:2048"],
-            "category_id" => ["nullable", "integer", Rule::exists('song_categories', 'id')],
-            "artist_id" => ["nullable", "integer", Rule::exists('artists', 'id')],
+            'title' => ['required', 'string', 'max:50'],
+            'content' => ['required', 'string', 'max:5000'],
+            'is_published' => ['boolean'],
+            'image' => ['nullable', 'ci_image', 'ci_file_size:2048'],
+            'category_id' => ['nullable', 'integer', Rule::exists('song_categories', 'id')],
+            'artist_id' => ['nullable', 'integer', Rule::exists('artists', 'id')],
         ];
     }
 

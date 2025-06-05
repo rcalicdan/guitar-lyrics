@@ -4,10 +4,8 @@ namespace Config;
 
 use App\Libraries\CustomHandler;
 use CodeIgniter\Config\BaseConfig;
-use CodeIgniter\Debug\ExceptionHandler;
 use CodeIgniter\Debug\ExceptionHandlerInterface;
 use CodeIgniter\Exceptions\PageNotFoundException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Psr\Log\LogLevel;
 use Throwable;
 
@@ -47,7 +45,7 @@ class Exceptions extends BaseConfig
      *
      * Default: APPPATH.'Views/errors'
      */
-    public string $errorViewPath = APPPATH . 'Views/errors';
+    public string $errorViewPath = APPPATH.'Views/errors';
 
     /**
      * --------------------------------------------------------------------------

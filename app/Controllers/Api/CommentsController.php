@@ -4,10 +4,8 @@ namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
 use App\Helpers\AuditHelper;
-use App\Models\AuditLog;
 use App\Models\Comments;
 use App\Models\Song;
-use CodeIgniter\HTTP\ResponseInterface;
 
 class CommentsController extends BaseController
 {
@@ -15,7 +13,7 @@ class CommentsController extends BaseController
     {
         $song = $this->findPublishedSong($songSlug);
 
-        if (!$song) {
+        if (! $song) {
             return $this->respondNotFound('Song not found');
         }
 
@@ -40,7 +38,7 @@ class CommentsController extends BaseController
                 'prev_page_url' => $comments->previousPageUrl(),
                 'path' => $comments->path(),
                 'total' => $totalCount,
-            ]
+            ],
         ]);
     }
 
@@ -53,11 +51,11 @@ class CommentsController extends BaseController
     {
         $song = $this->findPublishedSong($songSlug);
 
-        if (!$song) {
+        if (! $song) {
             return $this->respondNotFound('Song not found');
         }
 
-        if (!$this->validateCommentData()) {
+        if (! $this->validateCommentData()) {
             return $this->respondValidationError();
         }
 
@@ -75,7 +73,7 @@ class CommentsController extends BaseController
     {
         $song = $this->findPublishedSong($songSlug);
 
-        if (!$song) {
+        if (! $song) {
             return $this->respondNotFound('Song not found');
         }
 
@@ -83,7 +81,7 @@ class CommentsController extends BaseController
             ->where('song_id', $song->id)
             ->first();
 
-        if (!$comment) {
+        if (! $comment) {
             return $this->respondNotFound('Comment not found');
         }
 
@@ -91,14 +89,14 @@ class CommentsController extends BaseController
             return $this->respondUnauthorized('You are not authorized to update this comment');
         }
 
-        if (!$this->validateCommentData()) {
+        if (! $this->validateCommentData()) {
             return $this->respondValidationError();
         }
 
         $content = $this->request->getJSON(true)['content'] ?? $this->request->getPost('content');
 
         $comment->update([
-            'content' => $content
+            'content' => $content,
         ]);
 
         AuditHelper::logUpdated($comment, $comment->getOriginal());
@@ -110,7 +108,7 @@ class CommentsController extends BaseController
     {
         $song = $this->findPublishedSong($songSlug);
 
-        if (!$song) {
+        if (! $song) {
             return $this->respondNotFound('Song not found');
         }
 
@@ -118,7 +116,7 @@ class CommentsController extends BaseController
             ->where('song_id', $song->id)
             ->first();
 
-        if (!$comment) {
+        if (! $comment) {
             return $this->respondNotFound('Comment not found');
         }
 
@@ -146,9 +144,9 @@ class CommentsController extends BaseController
                 'errors' => [
                     'required' => 'Comment content is required.',
                     'min_length' => 'Comment must be at least 3 characters long.',
-                    'max_length' => 'Comment cannot exceed 1000 characters.'
-                ]
-            ]
+                    'max_length' => 'Comment cannot exceed 1000 characters.',
+                ],
+            ],
         ];
 
         return $this->validate($rules);
@@ -160,7 +158,7 @@ class CommentsController extends BaseController
             'content' => $this->request->getJSON(true)['content'] ?? $this->request->getPost('content'),
             'user_id' => auth()->user()->id,
             'song_id' => $song->id,
-            'parent_id' => $this->request->getJSON(true)['parent_id'] ?? $this->request->getPost('parent_id')
+            'parent_id' => $this->request->getJSON(true)['parent_id'] ?? $this->request->getPost('parent_id'),
         ];
 
         $comment = Comments::create($data);
@@ -189,7 +187,7 @@ class CommentsController extends BaseController
                         'can_edit' => auth()->check() ? $this->can('update', $reply) : false,
                         'can_delete' => auth()->check() ? $this->can('delete', $reply) : false,
                     ];
-                })
+                }),
             ];
         });
     }
@@ -203,7 +201,7 @@ class CommentsController extends BaseController
             'user' => $this->formatUserData($comment->user),
             'can_edit' => auth()->check() ? $this->can('update', $comment) : false,
             'can_delete' => auth()->check() ? $this->can('delete', $comment) : false,
-            'replies' => []
+            'replies' => [],
         ];
     }
 
@@ -212,7 +210,7 @@ class CommentsController extends BaseController
         return [
             'id' => $user->id,
             'name' => $user->full_name,
-            'image' => $user->image_path ?? '/placeholder/no-profile.png'
+            'image' => $user->image_path ?? '/placeholder/no-profile.png',
         ];
     }
 
@@ -235,7 +233,7 @@ class CommentsController extends BaseController
     {
         return $this->response->setJSON([
             'success' => false,
-            'message' => $message
+            'message' => $message,
         ])->setStatusCode(404);
     }
 
@@ -243,7 +241,7 @@ class CommentsController extends BaseController
     {
         return $this->response->setJSON([
             'success' => false,
-            'message' => $message
+            'message' => $message,
         ])->setStatusCode(403);
     }
 
@@ -252,7 +250,7 @@ class CommentsController extends BaseController
         return $this->response->setJSON([
             'success' => false,
             'message' => 'Validation failed',
-            'errors' => $this->validator->getErrors()
+            'errors' => $this->validator->getErrors(),
         ])->setStatusCode(400);
     }
 }

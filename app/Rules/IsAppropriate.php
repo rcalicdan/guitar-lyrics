@@ -5,28 +5,26 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Http\Client\RequestException;
-use Throwable;
 use stdClass;
+use Throwable;
 
 class IsAppropriate implements ValidationRule
 {
     /**
      * The threshold score (0.0 to 1.0) above which the validation fails.
-     * @var float
      */
     protected float $threshold;
 
     /**
      * The Perspective API attribute to check (e.g., TOXICITY, SEVERE_TOXICITY, INSULT).
-     * @var string
      */
     protected string $attributeToCheck;
 
     /**
      * Create a new rule instance.
      *
-     * @param float $threshold The threshold score (default: 0.7).
-     * @param string $attributeToCheck The Perspective API attribute (default: TOXICITY).
+     * @param  float  $threshold  The threshold score (default: 0.7).
+     * @param  string  $attributeToCheck  The Perspective API attribute (default: TOXICITY).
      */
     public function __construct(float $threshold = 0.7, string $attributeToCheck = 'TOXICITY')
     {
@@ -37,9 +35,9 @@ class IsAppropriate implements ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param  string  $attribute The attribute name being validated (e.g., 'comment_text').
-     * @param  mixed   $value     The value of the attribute (the text to check).
-     * @param  Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail The failure callback.
+     * @param  string  $attribute  The attribute name being validated (e.g., 'comment_text').
+     * @param  mixed  $value  The value of the attribute (the text to check).
+     * @param  Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail  The failure callback.
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
@@ -50,7 +48,8 @@ class IsAppropriate implements ValidationRule
         $apiKey = $this->getApiKey();
         if (empty($apiKey)) {
             $this->logConfigError();
-            $fail("The :attribute could not be checked due to a server configuration error.");
+            $fail('The :attribute could not be checked due to a server configuration error.');
+
             return;
         }
 
@@ -59,28 +58,30 @@ class IsAppropriate implements ValidationRule
             $requestData = $this->prepareRequestData($value);
             $response = $this->makeApiRequest($apiUrl, $requestData);
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 $this->handleFailedResponse($response, $fail);
+
                 return;
             }
 
             $data = $response->json();
             $score = $this->extractScoreFromResponse($data);
 
-            if ($score === null || !is_numeric($score)) {
+            if ($score === null || ! is_numeric($score)) {
                 $this->logResponseFormatError($response);
-                $fail("The :attribute verification resulted in an unexpected format.");
+                $fail('The :attribute verification resulted in an unexpected format.');
+
                 return;
             }
 
-            $this->validateAgainstThreshold((float)$score, $fail);
-            
+            $this->validateAgainstThreshold((float) $score, $fail);
+
         } catch (RequestException $e) {
             $this->logRequestError($e);
-            $fail("The :attribute could not be verified due to a network issue.");
+            $fail('The :attribute could not be verified due to a network issue.');
         } catch (Throwable $e) {
             $this->logUnexpectedError($e);
-            $fail("An unexpected error occurred while validating the :attribute.");
+            $fail('An unexpected error occurred while validating the :attribute.');
         }
     }
 
@@ -89,7 +90,7 @@ class IsAppropriate implements ValidationRule
      */
     private function shouldSkipValidation(mixed $value): bool
     {
-        return !is_string($value) || trim($value) === '';
+        return ! is_string($value) || trim($value) === '';
     }
 
     /**
@@ -125,9 +126,9 @@ class IsAppropriate implements ValidationRule
             'comment' => ['text' => $value],
             'languages' => ['en'],
             'requestedAttributes' => [
-                $this->attributeToCheck => new stdClass(),
+                $this->attributeToCheck => new stdClass,
             ],
-            'doNotStore' => true
+            'doNotStore' => true,
         ];
     }
 
@@ -150,8 +151,8 @@ class IsAppropriate implements ValidationRule
     {
         $errorBody = $response->json();
         $errorMessage = $errorBody['error']['message'] ?? 'Unknown API error';
-        log_message('error', "[Validation] Perspective API request failed with status {$response->status()}: {$errorMessage}. Body: " . $response->body());
-        $fail("The :attribute could not be verified due to an API issue.");
+        log_message('error', "[Validation] Perspective API request failed with status {$response->status()}: {$errorMessage}. Body: ".$response->body());
+        $fail('The :attribute could not be verified due to an API issue.');
     }
 
     /**
@@ -160,6 +161,7 @@ class IsAppropriate implements ValidationRule
     private function extractScoreFromResponse(array $data)
     {
         $scorePath = "attributeScores.{$this->attributeToCheck}.summaryScore.value";
+
         return $this->arrayGet($data, $scorePath);
     }
 
@@ -168,7 +170,7 @@ class IsAppropriate implements ValidationRule
      */
     private function logResponseFormatError($response): void
     {
-        log_message('error', "[Validation] Perspective API response format error or score not found for attribute '{$this->attributeToCheck}'. Body: " . $response->body());
+        log_message('error', "[Validation] Perspective API response format error or score not found for attribute '{$this->attributeToCheck}'. Body: ".$response->body());
     }
 
     /**
@@ -186,7 +188,7 @@ class IsAppropriate implements ValidationRule
      */
     private function logRequestError(RequestException $e): void
     {
-        log_message('error', '[Validation] Perspective API request error (Illuminate\Http): ' . $e->getMessage());
+        log_message('error', '[Validation] Perspective API request error (Illuminate\Http): '.$e->getMessage());
     }
 
     /**
@@ -194,17 +196,12 @@ class IsAppropriate implements ValidationRule
      */
     private function logUnexpectedError(Throwable $e): void
     {
-        log_message('error', '[Validation] Unexpected error during Perspective API validation: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
+        log_message('error', '[Validation] Unexpected error during Perspective API validation: '.$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine());
     }
 
     /**
      * Helper function to safely get a value from a nested array using dot notation.
      * (Similar to Laravel's data_get helper)
-     *
-     * @param array|null $array
-     * @param string|null $key
-     * @param mixed $default
-     * @return mixed
      */
     private function arrayGet(?array $array, ?string $key, mixed $default = null): mixed
     {

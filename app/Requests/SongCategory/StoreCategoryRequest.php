@@ -2,10 +2,9 @@
 
 namespace App\Requests\SongCategory;
 
-use Rcalicdan\Ci4Larabridge\Validation\FormRequest;
 use App\Rules\IsAppropriate;
-use App\Rules\NoObsceneWord;
 use Illuminate\Validation\Rule;
+use Rcalicdan\Ci4Larabridge\Validation\FormRequest;
 
 class StoreCategoryRequest extends FormRequest
 {
@@ -19,7 +18,7 @@ class StoreCategoryRequest extends FormRequest
     public function messages()
     {
         return [
-            "name." . IsAppropriate::class => 'The category name is inappropriate'
+            'name.'.IsAppropriate::class => 'The category name is inappropriate',
         ];
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Helpers\AuditHelper;
 use App\Models\Artist;
 use App\Requests\Artist\StoreArtistRequest;
@@ -13,12 +12,13 @@ use App\Services\ImageUploadService;
 class ArtistController extends BaseController
 {
     private ImageUploadService $imageUploadService;
+
     private ArtistService $artistService;
 
     public function __construct()
     {
-        $this->imageUploadService = new ImageUploadService();
-        $this->artistService = new ArtistService();
+        $this->imageUploadService = new ImageUploadService;
+        $this->artistService = new ArtistService;
     }
 
     public function index()
@@ -42,7 +42,7 @@ class ArtistController extends BaseController
 
     public function store()
     {
-        $request = new StoreArtistRequest();
+        $request = new StoreArtistRequest;
         $this->authorize('create', Artist::class);
         $this->artistService->store($request, $this->imageUploadService);
 
@@ -74,7 +74,7 @@ class ArtistController extends BaseController
 
     public function update($id)
     {
-        $request = new UpdateArtistRequest();
+        $request = new UpdateArtistRequest;
         $artist = Artist::findOrFail($id);
         $this->authorize('update', $artist);
         $this->artistService->update($artist, $request, $this->imageUploadService);

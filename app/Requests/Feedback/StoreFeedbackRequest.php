@@ -14,12 +14,12 @@ class StoreFeedbackRequest extends FormRequest
     public function rules()
     {
         return [
-            "content" => ["required", "string", "max:1000", "min:10"],
-            "name" => ["required", "string", "max:255", "min:2"],
-            "email" => ["required", "string", "max:255", "min:2"],
+            'content' => ['required', 'string', 'max:1000', 'min:10'],
+            'name' => ['required', 'string', 'max:255', 'min:2'],
+            'email' => ['required', 'string', 'max:255', 'min:2'],
         ];
     }
-    
+
     /**
      * Get custom messages for validator errors.
      *
@@ -31,7 +31,7 @@ class StoreFeedbackRequest extends FormRequest
             // Define your custom messages here (optional)
         ];
     }
-    
+
     /**
      * Get custom attributes for validator errors.
      *

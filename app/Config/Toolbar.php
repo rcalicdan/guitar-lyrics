@@ -42,9 +42,9 @@ class Toolbar extends BaseConfig
         Files::class,
         Routes::class,
         Events::class,
-    
-    \Rcalicdan\Ci4Larabridge\Debug\Collectors\EloquentCollector::class,
-];
+
+        \Rcalicdan\Ci4Larabridge\Debug\Collectors\EloquentCollector::class,
+    ];
 
     /**
      * --------------------------------------------------------------------------
@@ -75,7 +75,7 @@ class Toolbar extends BaseConfig
      * The full path to the the views that are used by the toolbar.
      * This MUST have a trailing slash.
      */
-    public string $viewsPath = SYSTEMPATH . 'Debug/Toolbar/Views/';
+    public string $viewsPath = SYSTEMPATH.'Debug/Toolbar/Views/';
 
     /**
      * --------------------------------------------------------------------------

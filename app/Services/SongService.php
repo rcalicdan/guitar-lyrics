@@ -25,7 +25,7 @@ class SongService
                 'songs.views_count',
                 'songs.is_published',
                 'songs.song_category_id',
-                'songs.artist_id'
+                'songs.artist_id',
             ])
             ->when(get('id'), function ($query, $songId) {
                 $query->where('songs.id', $songId);
@@ -56,11 +56,11 @@ class SongService
             'title' => purify_html($request->title),
             'content' => purify_html($request->content),
             'is_published' => true,
-            'slug' => Str::slug($request->title) . '-' . time(),
+            'slug' => Str::slug($request->title).'-'.time(),
             'song_category_id' => $request->category_id ?: null,
             'artist_id' => $request->artist_id ?: null,
             'user_id' => auth()->user()->id,
-            'image_path' => $imagePath
+            'image_path' => $imagePath,
         ]);
 
         AuditHelper::logCreated($song);
@@ -76,11 +76,11 @@ class SongService
             'title' => purify_html($request->title),
             'content' => purify_html($request->content),
             'is_published' => true,
-            'slug' => Str::slug($request->title) . '-' . time(),
+            'slug' => Str::slug($request->title).'-'.time(),
             'song_category_id' => $request->category_id ?: null,
             'artist_id' => $request->artist_id ?: null,
             'user_id' => auth()->user()->id,
-            'image_path' => $imagePath
+            'image_path' => $imagePath,
         ]);
 
         AuditHelper::logUpdated($song, $song->getOriginal());

@@ -25,18 +25,18 @@ class Filters extends BaseFilters
      * or [filter_name => [classname1, classname2, ...]]
      */
     public array $aliases = [
-        'csrf'          => CSRF::class,
-        'toolbar'       => DebugToolbar::class,
-        'honeypot'      => Honeypot::class,
-        'invalidchars'  => InvalidChars::class,
+        'csrf' => CSRF::class,
+        'toolbar' => DebugToolbar::class,
+        'honeypot' => Honeypot::class,
+        'invalidchars' => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
-        'cors'          => Cors::class,
-        'forcehttps'    => ForceHTTPS::class,
-        'pagecache'     => PageCache::class,
-        'performance'   => PerformanceMetrics::class,
+        'cors' => Cors::class,
+        'forcehttps' => ForceHTTPS::class,
+        'pagecache' => PageCache::class,
+        'performance' => PerformanceMetrics::class,
 
-        'auth'     => \Rcalicdan\Ci4Larabridge\Filters\AuthFilter::class,
-        'guest'    => \Rcalicdan\Ci4Larabridge\Filters\GuestFilter::class,
+        'auth' => \Rcalicdan\Ci4Larabridge\Filters\AuthFilter::class,
+        'guest' => \Rcalicdan\Ci4Larabridge\Filters\GuestFilter::class,
         'email_verified' => \Rcalicdan\Ci4Larabridge\Filters\EmailVerificationFilter::class,
         'rb_context' => \App\Filters\RedirectBackContextFilter::class,
     ];

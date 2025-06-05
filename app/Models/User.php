@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rcalicdan\Ci4Larabridge\Models\Model;
 use Rcalicdan\Ci4Larabridge\Traits\Authentication\HasEmailVerification;
 use Rcalicdan\Ci4Larabridge\Traits\Authentication\HasPasswordReset;
@@ -24,7 +24,7 @@ class User extends Model
         'email',
         'password',
         'email_verified_at',
-        'image_path'
+        'image_path',
     ];
 
     protected $hidden = [

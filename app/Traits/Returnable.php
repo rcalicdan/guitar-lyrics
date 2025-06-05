@@ -11,8 +11,8 @@ trait Returnable
     /**
      * Validates a given URL string or URI object to ensure it's safe for internal redirection.
      *
-     * @param string|URI|null $urlToValidate    The URL (string or URI object) to check.
-     * @param string          $defaultFallbackUrl The URL string to return if validation fails or input is empty.
+     * @param  string|URI|null  $urlToValidate  The URL (string or URI object) to check.
+     * @param  string  $defaultFallbackUrl  The URL string to return if validation fails or input is empty.
      * @return string The sanitized, safe URL string for redirection.
      */
     private function sanitizeRedirectUrl($urlToValidate, string $defaultFallbackUrl): string
@@ -31,22 +31,22 @@ trait Returnable
         $appBaseHost = $currentRequestUri->getHost();
         $appBasePath = '/'; // Default to root path
 
-        if (!empty($rawAppBaseUrl)) {
+        if (! empty($rawAppBaseUrl)) {
             try {
                 // Attempt to parse baseURL as is, it might be fully qualified
                 $tempAppBaseUri = new URI($rawAppBaseUrl);
 
-                if (!empty($tempAppBaseUri->getScheme())) {
+                if (! empty($tempAppBaseUri->getScheme())) {
                     $appBaseScheme = $tempAppBaseUri->getScheme();
                 }
-                if (!empty($tempAppBaseUri->getHost())) {
+                if (! empty($tempAppBaseUri->getHost())) {
                     $appBaseHost = $tempAppBaseUri->getHost();
                 }
                 // Path from baseURL needs careful handling
                 $pathFromConfig = $tempAppBaseUri->getPath();
                 if ($pathFromConfig !== '' && $pathFromConfig !== '/') {
                     // Normalize: ensure leading slash, remove trailing, then add one if not root
-                    $appBasePath = '/' . trim($pathFromConfig, '/');
+                    $appBasePath = '/'.trim($pathFromConfig, '/');
                     if ($appBasePath !== '/') { // Avoid // for root
                         $appBasePath .= '/';
                     }
@@ -57,33 +57,32 @@ trait Returnable
 
             } catch (\Throwable $e) {
                 // If baseURL is malformed, log it and rely on current request's host/scheme and root path
-                log_message('error', "ReturnableTrait: Malformed App baseURL in config: '{$rawAppBaseUrl}'. Error: " . $e->getMessage());
+                log_message('error', "ReturnableTrait: Malformed App baseURL in config: '{$rawAppBaseUrl}'. Error: ".$e->getMessage());
             }
         }
         // Ensure appBasePath is clean (e.g. /subfolder/ or /)
         $appBasePath = preg_replace('#//+#', '/', $appBasePath);
-
 
         // 2. Parse the candidate URL for redirection
         try {
             $candidateUri = ($urlToValidate instanceof URI) ? $urlToValidate : new URI((string) $urlToValidate);
             $candidateUriString = (string) $candidateUri; // For logging or returning if valid
         } catch (\Throwable $e) {
-            log_message('info', "ReturnableTrait: Invalid URL format for redirection candidate: " . (is_string($urlToValidate) ? $urlToValidate : 'URI Object') . ". Error: " . $e->getMessage());
+            log_message('info', 'ReturnableTrait: Invalid URL format for redirection candidate: '.(is_string($urlToValidate) ? $urlToValidate : 'URI Object').'. Error: '.$e->getMessage());
+
             return $defaultFallbackUrl;
         }
 
         $candidateScheme = strtolower($candidateUri->getScheme());
-        $candidateHost   = strtolower($candidateUri->getHost());
+        $candidateHost = strtolower($candidateUri->getHost());
         // $candidateUri->getPath() returns a path where dot segments ('.', '..') have been processed by URI::filterPath
-        $candidatePath   = $candidateUri->getPath();
+        $candidatePath = $candidateUri->getPath();
 
         // Normalize candidatePath for comparison: start with a slash, clean multiple slashes.
         if ($candidatePath === '' || $candidatePath[0] !== '/') {
-            $candidatePath = '/' . $candidatePath;
+            $candidatePath = '/'.$candidatePath;
         }
         $candidatePath = preg_replace('#//+#', '/', $candidatePath);
-
 
         // CASE 1: Relative URI (parsed with no scheme and no host)
         // Examples: "/path/to/page", "path/page?query=1"
@@ -95,30 +94,35 @@ trait Returnable
             // However, if $urlToValidate was like `javascript:`, scheme might be 'javascript'.
             // This check becomes more about ensuring it's a typical path.
             if (str_starts_with(trim($candidateUriString), '//')) {
-                log_message('warning', "ReturnableTrait: Blocked relative-looking URI string that started with '//': " . $candidateUriString);
+                log_message('warning', "ReturnableTrait: Blocked relative-looking URI string that started with '//': ".$candidateUriString);
+
                 return $defaultFallbackUrl;
             }
             // The path from $candidateUri->getPath() is already processed by URI::removeDotSegments.
             // A remaining '..' typically means an attempt to go above root of what was parsed, which filterPath should largely prevent.
             if (strpos($candidatePath, '..') !== false) {
-                log_message('warning', "ReturnableTrait: Blocked relative redirect URL - path still contains '..' segments after URI parsing: '" . $candidateUriString . "' (Normalized path: '" . $candidatePath . "')");
+                log_message('warning', "ReturnableTrait: Blocked relative redirect URL - path still contains '..' segments after URI parsing: '".$candidateUriString."' (Normalized path: '".$candidatePath."')");
+
                 return $defaultFallbackUrl;
             }
+
             // If it's a valid-looking relative path, use site_url to construct full, safe URL.
             return site_url($candidateUriString);
         }
 
         // CASE 2: Absolute URI (parsed with scheme and host)
-        if (!empty($candidateScheme) && !empty($candidateHost)) {
+        if (! empty($candidateScheme) && ! empty($candidateHost)) {
             // Security Check 2.1: Host must match the application's host.
             if ($candidateHost !== strtolower($appBaseHost)) {
                 log_message('warning', "ReturnableTrait: Blocked redirect - host mismatch. Candidate: '{$candidateHost}', App: '{$appBaseHost}'. URL: '{$candidateUriString}'");
+
                 return $defaultFallbackUrl;
             }
 
             // Security Check 2.2: Scheme must match the application's scheme.
             if ($candidateScheme !== strtolower($appBaseScheme)) {
                 log_message('warning', "ReturnableTrait: Blocked redirect - scheme mismatch. Candidate: '{$candidateScheme}', App: '{$appBaseScheme}'. URL: '{$candidateUriString}'");
+
                 return $defaultFallbackUrl;
             }
 
@@ -126,15 +130,17 @@ trait Returnable
             // Example: $appBasePath = "/myapp/", $candidatePath = "/myapp/page" -> OK
             // Example: $appBasePath = "/myapp/", $candidatePath = "/otherapp/page" -> Fail
             // strtolower for case-insensitive path comparison on systems that might be case-sensitive.
-            if (!str_starts_with(strtolower($candidatePath), strtolower($appBasePath))) {
+            if (! str_starts_with(strtolower($candidatePath), strtolower($appBasePath))) {
                 log_message('warning', "ReturnableTrait: Blocked redirect - path not within app base path. Candidate path: '{$candidatePath}', App base: '{$appBasePath}'. URL: '{$candidateUriString}'");
+
                 return $defaultFallbackUrl;
             }
 
             // Security Check 2.4: Final check for '..' in the already validated path (highly unlikely to fail if getPath() is robust).
             // This is a defense-in-depth check. $candidatePath from getPath() should be clean.
             if (strpos($candidatePath, '..') !== false) {
-                log_message('warning', "ReturnableTrait: Blocked absolute redirect URL - path contains '..' segments after URI parsing: '" . $candidateUriString . "' (Normalized path: '" . $candidatePath . "')");
+                log_message('warning', "ReturnableTrait: Blocked absolute redirect URL - path contains '..' segments after URI parsing: '".$candidateUriString."' (Normalized path: '".$candidatePath."')");
+
                 return $defaultFallbackUrl;
             }
 
@@ -144,7 +150,8 @@ trait Returnable
 
         // If it's neither clearly relative (no scheme/host after parsing) nor a valid absolute URI for this app.
         // This could catch unsupported schemes (e.g., "javascript:", "ftp:") or malformed inputs.
-        log_message('warning', "ReturnableTrait: Blocked redirect URL - ambiguous, non-HTTP/S, or non-compliant structure: " . $candidateUriString);
+        log_message('warning', 'ReturnableTrait: Blocked redirect URL - ambiguous, non-HTTP/S, or non-compliant structure: '.$candidateUriString);
+
         return $defaultFallbackUrl;
     }
 
@@ -189,7 +196,7 @@ trait Returnable
                 // Sanitize this session-retrieved URL.
                 // If it's invalid, sanitizeRedirectUrl will return $ultimateFallbackUrl
                 $sanitizedPrevUrl = $this->sanitizeRedirectUrl($prevUrlObject, $ultimateFallbackUrl);
-                if ($sanitizedPrevUrl !== $ultimateFallbackUrl || (string)$prevUrlObject === $ultimateFallbackUrl) {
+                if ($sanitizedPrevUrl !== $ultimateFallbackUrl || (string) $prevUrlObject === $ultimateFallbackUrl) {
                     return $sanitizedPrevUrl;
                 }
             }

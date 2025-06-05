@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Helpers\AuditHelper;
 use App\Models\Song;
 use App\Models\SongCategory;
@@ -16,7 +15,7 @@ class SongController extends BaseController
 
     public function __construct()
     {
-        $this->songService = new SongService();
+        $this->songService = new SongService;
     }
 
     public function index()
@@ -48,7 +47,7 @@ class SongController extends BaseController
 
     public function store()
     {
-        $request = new StoreSongRequest();
+        $request = new StoreSongRequest;
         $this->songService->store($request);
 
         return redirect()->route('songs.index')->with('success', 'Song created successfully');
@@ -71,7 +70,7 @@ class SongController extends BaseController
 
     public function update(string $slug)
     {
-        $request = new UpdateSongRequest();
+        $request = new UpdateSongRequest;
         $this->songService->update($request, $slug);
 
         return redirect()->route('songs.index')->with('success', 'Song updated successfully');

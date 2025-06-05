@@ -5,8 +5,11 @@ namespace App\Libraries;
 class ViteAssetManager
 {
     private static ?string $cachedBaseUrl = null;
+
     private string $devServerBaseUrl;
+
     private string $manifestPath;
+
     private string $distPath;
 
     public function __construct(
@@ -15,7 +18,7 @@ class ViteAssetManager
         string $distPath = 'dist'
     ) {
         $this->devServerBaseUrl = $devServerBaseUrl ?? env('VITE_DEV_SERVER', 'http://localhost:3000');
-        $this->manifestPath = $manifestPath ?? FCPATH . 'dist/.vite/manifest.json'; 
+        $this->manifestPath = $manifestPath ?? FCPATH.'dist/.vite/manifest.json';
         $this->distPath = $distPath;
     }
 
@@ -25,19 +28,19 @@ class ViteAssetManager
     public function generateAssets($entrypoints, bool $includeViteClient = true): string
     {
         $startTime = microtime(true);
-        
+
         $entrypoints = $this->normalizeEntrypoints($entrypoints);
 
         $result = ENVIRONMENT === 'development'
             ? $this->buildDevelopmentAssets($entrypoints, $includeViteClient)
             : $this->buildProductionAssets($entrypoints);
-        
+
         $endTime = microtime(true);
         $executionTime = $endTime - $startTime;
-        
+
         if ($executionTime > 0.1) { // Log if takes more than 100ms
             log_message('debug', sprintf(
-                "ViteAssetManager: Total execution time=%.3fs for %d entrypoints",
+                'ViteAssetManager: Total execution time=%.3fs for %d entrypoints',
                 $executionTime,
                 count($entrypoints)
             ));
@@ -81,8 +84,9 @@ class ViteAssetManager
         $preloads = [];
 
         foreach ($entrypoints as $entry) {
-            if (!isset($manifest[$entry])) {
+            if (! isset($manifest[$entry])) {
                 $this->logWarning("Vite entry point '{$entry}' not found in manifest.");
+
                 continue;
             }
 
@@ -92,15 +96,15 @@ class ViteAssetManager
                 $stylesheets[] = $manifestEntry['file'];
             } else {
                 // Add CSS files associated with this JS entry
-                if (!empty($manifestEntry['css'])) {
+                if (! empty($manifestEntry['css'])) {
                     $stylesheets = array_merge($stylesheets, $manifestEntry['css']);
                 }
-                
+
                 // Add the main script
                 $scripts[] = $manifestEntry['file'];
-                
+
                 // Add imports for preloading
-                if (!empty($manifestEntry['imports'])) {
+                if (! empty($manifestEntry['imports'])) {
                     foreach ($manifestEntry['imports'] as $importName) {
                         if (isset($manifest[$importName]['file'])) {
                             $preloads[] = $manifest[$importName]['file'];
@@ -148,8 +152,8 @@ class ViteAssetManager
     {
         // Use CodeIgniter's cache system for persistent caching
         $cache = \Config\Services::cache();
-        $cacheKey = 'vite_manifest_' . md5($this->manifestPath);
-        
+        $cacheKey = 'vite_manifest_'.md5($this->manifestPath);
+
         // Try to get from cache first
         $manifest = $cache->get($cacheKey);
         if ($manifest !== null) {
@@ -157,10 +161,11 @@ class ViteAssetManager
         }
 
         // Check if manifest file exists
-        if (!file_exists($this->manifestPath)) {
+        if (! file_exists($this->manifestPath)) {
             $this->logError("Vite manifest not found at: {$this->manifestPath}");
             // Cache the null result for a short time to avoid repeated file checks
             $cache->save($cacheKey, null, 60);
+
             return null;
         }
 
@@ -169,21 +174,23 @@ class ViteAssetManager
         if ($manifestContent === false) {
             $this->logError("Could not read Vite manifest at: {$this->manifestPath}");
             $cache->save($cacheKey, null, 60);
+
             return null;
         }
 
         $manifest = json_decode($manifestContent, true);
 
         if ($manifest === null) {
-            $this->logError("Vite manifest could not be parsed: " . json_last_error_msg());
+            $this->logError('Vite manifest could not be parsed: '.json_last_error_msg());
             $cache->save($cacheKey, null, 60);
+
             return null;
         }
 
         // Cache the manifest for 1 hour in production, 5 minutes in development
         $cacheTime = ENVIRONMENT === 'production' ? 3600 : 300;
         $cache->save($cacheKey, $manifest, $cacheTime);
-        
+
         return $manifest;
     }
 
@@ -195,6 +202,7 @@ class ViteAssetManager
         if (self::$cachedBaseUrl === null) {
             self::$cachedBaseUrl = rtrim(base_url(), '/');
         }
+
         return self::$cachedBaseUrl;
     }
 
@@ -261,6 +269,7 @@ class ViteAssetManager
     public static function clearCache(): bool
     {
         $cache = \Config\Services::cache();
+
         return $cache->deleteMatching('vite_manifest_*');
     }
 }

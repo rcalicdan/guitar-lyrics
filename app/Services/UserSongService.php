@@ -3,11 +3,8 @@
 namespace App\Services;
 
 use App\Models\Song;
-use App\Requests\Song\StoreSongRequest;
-use App\Requests\Song\UpdateSongRequest;
 use App\Traits\ModelFileUpload;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 use Rcalicdan\Ci4Larabridge\Traits\RedirectIfNotFoundTrait;
 
 class UserSongService
@@ -25,9 +22,9 @@ class UserSongService
                 'songs.views_count',
                 'songs.is_published',
                 'songs.song_category_id',
-                'songs.artist_id'
+                'songs.artist_id',
             ])
-            ->where('songs.user_id', auth()->user()->id) 
+            ->where('songs.user_id', auth()->user()->id)
             ->when(get('id'), function ($query, $songId) {
                 $query->where('songs.id', $songId);
             })

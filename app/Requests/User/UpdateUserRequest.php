@@ -2,14 +2,15 @@
 
 namespace App\Requests\User;
 
-use Rcalicdan\Ci4Larabridge\Validation\FormRequest;
 use Illuminate\Validation\Rule;
+use Rcalicdan\Ci4Larabridge\Validation\FormRequest;
 
 class UpdateUserRequest extends FormRequest
 {
     public function rules()
     {
         $userId = service('uri')->getSegment(3);
+
         return [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -27,7 +28,6 @@ class UpdateUserRequest extends FormRequest
 
         $this->setData($data);
     }
-
 
     public function messages()
     {

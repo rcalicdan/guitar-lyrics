@@ -8,7 +8,7 @@ class SongCategory extends Model
 {
     /**
      * The table associated with the model
-     * 
+     *
      * @var string
      */
     protected $table = 'song_categories';
@@ -19,6 +19,6 @@ class SongCategory extends Model
 
     public function songs()
     {
-        return $this->hasMany(Song::class); 
+        return $this->hasMany(Song::class);
     }
 }

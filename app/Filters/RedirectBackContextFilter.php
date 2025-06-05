@@ -2,9 +2,9 @@
 
 namespace App\Filters;
 
+use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Filters\FilterInterface;
 use Config\Services;
 
 class RedirectBackContextFilter implements FilterInterface
@@ -12,12 +12,11 @@ class RedirectBackContextFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = Services::session();
-        $logger  = Services::logger(); // Or your get_logger() helper
+        $logger = Services::logger(); // Or your get_logger() helper
 
         // Session keys defined in your helper or constants file
         $pendingTokenKey = '_rb_pending_token_for_next_hop'; // Or use defined(RB_PENDING_TOKEN_KEY) ? RB_PENDING_TOKEN_KEY : '...'
-        $activeTokenKey  = '_rb_active_token_for_current_context'; // Or use defined(RB_ACTIVE_TOKEN_KEY) ? RB_ACTIVE_TOKEN_KEY : '...'
-
+        $activeTokenKey = '_rb_active_token_for_current_context'; // Or use defined(RB_ACTIVE_TOKEN_KEY) ? RB_ACTIVE_TOKEN_KEY : '...'
 
         if ($session->has($pendingTokenKey)) {
             $pendingToken = $session->get($pendingTokenKey);
@@ -30,11 +29,12 @@ class RedirectBackContextFilter implements FilterInterface
             // Clear any old active token to ensure a clean state for fallbacks.
             if ($session->has($activeTokenKey)) {
                 $session->remove($activeTokenKey);
-                $logger->debug("[RB_FILTER] No new pending token. Cleared previous active redirect-back token.");
+                $logger->debug('[RB_FILTER] No new pending token. Cleared previous active redirect-back token.');
             } else {
-                 $logger->debug("[RB_FILTER] No new pending token and no active token to clear.");
+                $logger->debug('[RB_FILTER] No new pending token and no active token to clear.');
             }
         }
+
         return $request; // Must return the request object
     }
 

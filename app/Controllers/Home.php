@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Models\Song;
 use App\Models\Artist;
+use App\Models\Song;
 use App\Models\User;
 
 class Home extends BaseController
@@ -20,7 +20,7 @@ class Home extends BaseController
                     'title' => $song->title,
                     'artist' => $song->artist_name,
                     'slug' => $song->slug,
-                    'image' => $song->image_path ?? '/placeholder/no-image.png'
+                    'image' => $song->image_path ?? '/placeholder/no-image.png',
                 ];
             })
             ->toArray();
@@ -43,9 +43,9 @@ class Home extends BaseController
     private function formatCount(int $count): string
     {
         if ($count >= 1000000) {
-            return number_format($count / 1000000, 1) . 'M+';
+            return number_format($count / 1000000, 1).'M+';
         } elseif ($count >= 1000) {
-            return number_format($count / 1000, 1) . 'K+';
+            return number_format($count / 1000, 1).'K+';
         }
 
         return (string) $count;

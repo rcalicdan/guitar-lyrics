@@ -12,7 +12,7 @@ class ArtistOptionSearchController extends BaseController
         $term = $this->request->getGet('term');
         $query = Artist::select(['id', 'name']);
 
-        if (!empty($term)) {
+        if (! empty($term)) {
             $query->where('name', 'LIKE', "%{$term}%");
         }
 

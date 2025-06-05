@@ -12,6 +12,7 @@ class ImageUploadService
         $image->move($uploadPath, $newImageName);
 
         $relativePath = "/{$filePath}/{$newImageName}";
+
         return $relativePath;
     }
 
@@ -22,13 +23,14 @@ class ImageUploadService
         $image->move($uploadPath, $newImageName);
 
         $relativePath = "/{$filePath}/{$newImageName}";
+
         return $relativePath;
     }
 
     public function deleteIfExists(string $filePath)
     {
-        if (!empty($filePath) && file_exists(FCPATH. $filePath)) {
-            unlink(FCPATH. $filePath); 
+        if (! empty($filePath) && file_exists(FCPATH.$filePath)) {
+            unlink(FCPATH.$filePath);
         }
     }
 
@@ -36,16 +38,16 @@ class ImageUploadService
     {
         $user = auth()->user();
 
-        if (!empty($user->image_path) && file_exists(FCPATH . $user->image_path)) {
-            unlink(FCPATH . $user->image_path);
+        if (! empty($user->image_path) && file_exists(FCPATH.$user->image_path)) {
+            unlink(FCPATH.$user->image_path);
         }
     }
 
     private function createUploadPath($filePath): string
     {
-        $uploadPath = FCPATH . $filePath;
+        $uploadPath = FCPATH.$filePath;
 
-        if (!is_dir($uploadPath)) {
+        if (! is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
         }
 

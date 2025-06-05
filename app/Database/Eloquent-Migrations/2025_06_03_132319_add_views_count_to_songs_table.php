@@ -15,7 +15,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::table('songs', function (Blueprint $table) {
+        Schema::table('songs', function (Blueprint $table) {
             $table->integer('views_count')->default(0)->after('is_published');
         });
     }

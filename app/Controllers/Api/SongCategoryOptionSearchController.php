@@ -12,7 +12,7 @@ class SongCategoryOptionSearchController extends BaseController
         $term = $this->request->getGet('term');
         $query = SongCategory::select(['id', 'name']);
 
-        if (!empty($term)) {
+        if (! empty($term)) {
             $query->where('name', 'LIKE', "%{$term}%");
         }
 

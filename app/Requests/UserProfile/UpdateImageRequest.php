@@ -16,7 +16,7 @@ class UpdateImageRequest extends FormRequest
     public function messages()
     {
         return [
-            'profile_image.ci_file_size' => 'The uploaded file must be not exceed 5 megabytes'
+            'profile_image.ci_file_size' => 'The uploaded file must be not exceed 5 megabytes',
         ];
     }
 

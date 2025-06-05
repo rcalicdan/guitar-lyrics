@@ -2,11 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
-use App\Models\Song;
-use App\Models\SongCategory;
-use App\Requests\Song\StoreSongRequest;
-use App\Requests\Song\UpdateSongRequest;
 use App\Services\UserSongService;
 
 class UserSongController extends BaseController
@@ -15,7 +10,7 @@ class UserSongController extends BaseController
 
     public function __construct()
     {
-        $this->songService = new UserSongService();
+        $this->songService = new UserSongService;
     }
 
     public function index()

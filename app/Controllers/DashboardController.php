@@ -2,12 +2,11 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
-use App\Models\Song;
 use App\Models\Artist;
-use App\Models\User;
 use App\Models\Comments;
+use App\Models\Song;
 use App\Models\SongCategory;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 
 class DashboardController extends BaseController
@@ -28,7 +27,7 @@ class DashboardController extends BaseController
             'songsByCategory' => $this->getSongsByCategory(),
             'monthlySongs' => $this->getMonthlySongStats(),
             'topArtists' => $this->getTopArtistsByCount(),
-            'recentComments' => $this->getRecentComments()
+            'recentComments' => $this->getRecentComments(),
         ];
 
         return blade_view('contents.dashboard.index', $dashboardData);
@@ -36,8 +35,7 @@ class DashboardController extends BaseController
 
     /**
      * Get popular songs ordered by views
-     * 
-     * @param int $limit
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     private function getPopularSongs(int $limit = 10)
@@ -50,7 +48,7 @@ class DashboardController extends BaseController
 
     /**
      * Get songs grouped by category for pie chart
-     * 
+     *
      * @return \Illuminate\Support\Collection
      */
     private function getSongsByCategory()
@@ -66,8 +64,7 @@ class DashboardController extends BaseController
 
     /**
      * Get monthly song creation statistics
-     * 
-     * @param int $months
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     private function getMonthlySongStats(int $months = 6)
@@ -82,8 +79,7 @@ class DashboardController extends BaseController
 
     /**
      * Get top artists by song count
-     * 
-     * @param int $limit
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     private function getTopArtistsByCount(int $limit = 5)
@@ -96,8 +92,7 @@ class DashboardController extends BaseController
 
     /**
      * Get recent comments with related user and song data
-     * 
-     * @param int $limit
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     private function getRecentComments(int $limit = 5)

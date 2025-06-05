@@ -2,8 +2,8 @@
 
 namespace App\Requests\Auth;
 
-use Rcalicdan\Ci4Larabridge\Validation\FormRequest;
 use Illuminate\Validation\Rule;
+use Rcalicdan\Ci4Larabridge\Validation\FormRequest;
 
 class RegisterRequest extends FormRequest
 {

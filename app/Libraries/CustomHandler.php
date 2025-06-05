@@ -3,8 +3,8 @@
 namespace App\Libraries;
 
 // Import necessary classes
-use CodeIgniter\Debug\ExceptionHandlerInterface;
-use CodeIgniter\Debug\ExceptionHandler as DefaultHandler; // Alias the default handler
+use CodeIgniter\Debug\ExceptionHandler as DefaultHandler;
+use CodeIgniter\Debug\ExceptionHandlerInterface; // Alias the default handler
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;

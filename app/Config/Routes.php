@@ -1,21 +1,21 @@
 <?php
 
-use App\Controllers\ArtistController;
-use App\Controllers\AuthController;
-use App\Controllers\DashboardController;
-use App\Controllers\Home;
 use App\Controllers\Api\ArtistOptionSearchController;
 use App\Controllers\Api\CommentsController;
 use App\Controllers\Api\SongCategoryOptionSearchController;
+use App\Controllers\ArtistController;
+use App\Controllers\AuditLogController;
+use App\Controllers\AuthController;
+use App\Controllers\DashboardController;
 use App\Controllers\FeedbackController as ControllersFeedbackController;
+use App\Controllers\Home;
 use App\Controllers\Homepage\FeedbackController;
+use App\Controllers\Homepage\SongController as HomepageSongController;
 use App\Controllers\SongCategoryController;
 use App\Controllers\SongController;
-use App\Controllers\Homepage\SongController as HomepageSongController;
 use App\Controllers\UserProfileController;
 use App\Controllers\UsersController;
 use App\Controllers\UserSongController;
-use App\Controllers\AuditLogController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -35,14 +35,13 @@ $routes->group('', ['filter' => 'guest'], function (RouteCollection $routes) {
 
 $routes->post('logout', [AuthController::class, 'logout'], ['as' => 'logout.post']);
 
-//Homepage routes
+// Homepage routes
 $routes->get('songs', [HomepageSongController::class, 'index'], ['as' => 'home.songs.index']);
 $routes->get('songs/(:segment)', [HomepageSongController::class, 'show'], ['as' => 'home.songs.show']);
 $routes->get('feedback', [FeedbackController::class, 'index'], ['as' => 'feedback']);
 $routes->post('feedback', [FeedbackController::class, 'store'], ['as' => 'feedback.post']);
-$routes->get('terms-of-service', fn() => blade_view('contents.homepage.terms'), ['as' => 'terms-of-service']);
-$routes->get('privacy-policy', fn() => blade_view('contents.homepage.policies'), ['as' => 'privacy-policy']);
-
+$routes->get('terms-of-service', fn () => blade_view('contents.homepage.terms'), ['as' => 'terms-of-service']);
+$routes->get('privacy-policy', fn () => blade_view('contents.homepage.policies'), ['as' => 'privacy-policy']);
 
 $routes->get('/dashboard', [DashboardController::class, 'index'], ['as' => 'dashboard', 'filter' => 'auth']);
 
@@ -107,8 +106,7 @@ $routes->group('audit-logs', ['filter' => 'auth'], function (RouteCollection $ro
     $routes->get('show/(:num)', [AuditLogController::class, 'show'], ['as' => 'audit-logs.show']);
 });
 
-
-//Api routes
+// Api routes
 $routes->group('api/', function (RouteCollection $routes) {
     $routes->get('songs/artists/search', [ArtistOptionSearchController::class, 'search'], ['as' => 'songs.artists.search']);
     $routes->get('songs/categories/search', [SongCategoryOptionSearchController::class, 'search'], ['as' => 'songs.categories.search']);

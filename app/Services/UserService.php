@@ -4,14 +4,13 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserService
 {
     public function getUsers(): Builder
     {
-        $searchId    = request()->getGet('id');
-        $searchName  = trim(request()->getGet('name')  ?? '');
+        $searchId = request()->getGet('id');
+        $searchName = trim(request()->getGet('name') ?? '');
         $searchEmail = trim(request()->getGet('email') ?? '');
 
         $users = User::query()

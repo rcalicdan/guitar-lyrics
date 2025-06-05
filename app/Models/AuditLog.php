@@ -1,4 +1,5 @@
 <?php
+
 // app/Models/AuditLog.php
 
 namespace App\Models;
@@ -8,16 +9,16 @@ use Rcalicdan\Ci4Larabridge\Models\Model;
 class AuditLog extends Model
 {
     protected $table = 'audit_logs';
-    
+
     protected $fillable = [
         'auditable_type',
-        'auditable_id', 
+        'auditable_id',
         'event',
         'old_values',
         'new_values',
         'user_id',
         'ip_address',
-        'user_agent'
+        'user_agent',
     ];
 
     protected $casts = [

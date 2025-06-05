@@ -11,9 +11,10 @@ class ViewTrackingService
     {
         $sessionKey = "viewed_song_{$song->id}";
 
-        if (!session($sessionKey)) {
+        if (! session($sessionKey)) {
             $song->incrementViews();
             session()->set($sessionKey, true);
+
             return true;
         }
 
@@ -24,7 +25,7 @@ class ViewTrackingService
     {
         return [
             'views_count' => $song->views_count,
-            'formatted_views' => $song->formatted_views
+            'formatted_views' => $song->formatted_views,
         ];
     }
 }

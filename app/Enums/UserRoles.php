@@ -14,6 +14,7 @@ enum UserRoles: string
         foreach (self::cases() as $role) {
             $roles[] = $role->value;
         }
+
         return $roles;
     }
 
@@ -21,10 +22,11 @@ enum UserRoles: string
     {
         $roles = [];
         foreach (self::cases() as $role) {
-            if (!in_array($role->value, $exclude)) {
+            if (! in_array($role->value, $exclude)) {
                 $roles[] = $role->value;
             }
         }
+
         return $roles;
     }
 }

@@ -50,7 +50,7 @@
                                 <td>{{ $auditLog->user->id ?? 'System' }}</td>
                             </tr>
                             <tr>
-                                <th>User Id:</th>
+                                <th>User Name:</th>
                                 <td>{{ $auditLog->user->full_name ?? 'System' }}</td>
                             </tr>
                             <tr>

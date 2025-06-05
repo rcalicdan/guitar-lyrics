@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Enums\UserRoles;
 use App\Helpers\AuditHelper;
 use App\Models\User;
@@ -16,7 +15,7 @@ class UsersController extends BaseController
 
     public function __construct()
     {
-        $this->userService = new UserService();
+        $this->userService = new UserService;
     }
 
     public function index()
@@ -24,7 +23,7 @@ class UsersController extends BaseController
         $this->authorizeOrNotFound('viewAny', User::class);
         $users = $this->userService->getUsers()->paginateWithQueryString(20);
 
-        return blade_view('contents.user.index', ['users' => $users,]);
+        return blade_view('contents.user.index', ['users' => $users]);
     }
 
     public function editPage($id)
@@ -58,7 +57,6 @@ class UsersController extends BaseController
             'validRoles' => $validRoles,
         ]);
     }
-
 
     public function store()
     {

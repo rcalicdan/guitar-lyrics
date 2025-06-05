@@ -9,8 +9,8 @@ class HasNumber implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!preg_match('/\d/', $value)) {
-            $fail("The :attribute must contain at least one number.");
+        if (! preg_match('/\d/', $value)) {
+            $fail('The :attribute must contain at least one number.');
         }
     }
 }

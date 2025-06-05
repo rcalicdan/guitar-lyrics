@@ -2,11 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
 use App\Helpers\AuditHelper;
 use App\Models\Feedback;
 use App\Services\FeedbackService;
-use CodeIgniter\HTTP\ResponseInterface;
 
 class FeedbackController extends BaseController
 {
@@ -14,7 +12,7 @@ class FeedbackController extends BaseController
 
     public function __construct()
     {
-        $this->feedbackService = new FeedbackService();
+        $this->feedbackService = new FeedbackService;
     }
 
     public function index()
@@ -31,7 +29,7 @@ class FeedbackController extends BaseController
             'filters' => $filters,
             'stats' => $stats,
             'sortOptions' => $sortOptions,
-            'hasActiveFilters' => $this->feedbackService->hasActiveFilters($filters)
+            'hasActiveFilters' => $this->feedbackService->hasActiveFilters($filters),
         ]);
     }
 
@@ -57,7 +55,6 @@ class FeedbackController extends BaseController
         return redirect()->back()->with('error', 'Failed to delete feedback.');
     }
 
-
     public function export()
     {
         $this->authorizeOrNotFound('export', Feedback::class);
@@ -67,7 +64,7 @@ class FeedbackController extends BaseController
 
         return $this->response
             ->setHeader('Content-Type', 'text/csv')
-            ->setHeader('Content-Disposition', 'attachment; filename="feedbacks_' . date('Y-m-d') . '.csv"')
+            ->setHeader('Content-Disposition', 'attachment; filename="feedbacks_'.date('Y-m-d').'.csv"')
             ->setBody($this->generateCsv($feedbacks));
     }
 

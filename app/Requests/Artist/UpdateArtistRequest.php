@@ -17,9 +17,9 @@ class UpdateArtistRequest extends FormRequest
         $artistId = service('uri')->getSegment(4);
 
         return [
-            "name" => ["required", "string", "max:50", Rule::unique('artists', 'name')->ignore($artistId)],
-            "about" => ["nullable", "string", "min:10", "max:500",],
-            "image" => ["nullable", "ci_image", "ci_file_size:2048"],
+            'name' => ['required', 'string', 'max:50', Rule::unique('artists', 'name')->ignore($artistId)],
+            'about' => ['nullable', 'string', 'min:10', 'max:500'],
+            'image' => ['nullable', 'ci_image', 'ci_file_size:2048'],
         ];
     }
 

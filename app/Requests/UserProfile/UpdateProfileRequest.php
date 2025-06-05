@@ -2,8 +2,8 @@
 
 namespace App\Requests\UserProfile;
 
-use Rcalicdan\Ci4Larabridge\Validation\FormRequest;
 use Illuminate\Validation\Rule;
+use Rcalicdan\Ci4Larabridge\Validation\FormRequest;
 
 class UpdateProfileRequest extends FormRequest
 {
@@ -12,7 +12,7 @@ class UpdateProfileRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:100', Rule::unique('users')->ignore(auth()->user()->id)]
+            'email' => ['required', 'email', 'max:100', Rule::unique('users')->ignore(auth()->user()->id)],
         ];
     }
 

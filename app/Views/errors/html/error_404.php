@@ -196,11 +196,11 @@
         </div>
         
         <p class="error-message">
-            <?php if (ENVIRONMENT !== 'production') : ?>
+            <?php if (ENVIRONMENT !== 'production') { ?>
                 <?= nl2br(esc($message)) ?>
-            <?php else : ?>
+            <?php } else { ?>
                 The page you're looking for doesn't exist. It might have been moved, deleted, or you entered the wrong URL.
-            <?php endif; ?>
+            <?php } ?>
         </p>
         
         <div class="button-group">

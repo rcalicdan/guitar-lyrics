@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
-use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
@@ -25,6 +24,7 @@ use Rcalicdan\Ci4Larabridge\Traits\RedirectIfNotFoundTrait;
 abstract class BaseController extends Controller
 {
     use AuthorizationTrait, RedirectIfNotFoundTrait;
+
     /**
      * Instance of the main Request object.
      *

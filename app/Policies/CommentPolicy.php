@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRoles;
 use App\Models\Comments;
 use App\Models\User;
-use App\Enums\UserRoles;
 
 class CommentPolicy
 {

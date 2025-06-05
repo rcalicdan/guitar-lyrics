@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Song;
 use App\Models\Artist;
+use App\Models\Song;
 use App\Models\SongCategory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -25,7 +25,7 @@ class HomepageSongService
     {
         return [
             'artists' => Artist::orderBy('name')->get(),
-            'categories' => SongCategory::orderBy('name')->get()
+            'categories' => SongCategory::orderBy('name')->get(),
         ];
     }
 
@@ -62,7 +62,7 @@ class HomepageSongService
     private function applyFilters($query, array $filters): void
     {
         $query
-            ->when(!empty($filters['search']), function ($q) use ($filters) {
+            ->when(! empty($filters['search']), function ($q) use ($filters) {
                 $search = $filters['search'];
                 $q->where(function ($subQuery) use ($search) {
                     $subQuery->where('title', 'like', "%{$search}%")
@@ -71,10 +71,10 @@ class HomepageSongService
                         });
                 });
             })
-            ->when(!empty($filters['artist']), function ($q) use ($filters) {
+            ->when(! empty($filters['artist']), function ($q) use ($filters) {
                 $q->where('artist_id', $filters['artist']);
             })
-            ->when(!empty($filters['category']), function ($q) use ($filters) {
+            ->when(! empty($filters['category']), function ($q) use ($filters) {
                 $q->where('song_category_id', $filters['category']);
             });
     }
