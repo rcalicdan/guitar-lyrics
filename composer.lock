@@ -1051,7 +1051,7 @@
         },
         {
             "name": "illuminate/bus",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/bus.git",
@@ -1104,7 +1104,7 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
@@ -1160,7 +1160,7 @@
         },
         {
             "name": "illuminate/conditionable",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/conditionable.git",
@@ -1206,7 +1206,7 @@
         },
         {
             "name": "illuminate/config",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/config.git",
@@ -1254,7 +1254,7 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -1305,7 +1305,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -1353,7 +1353,7 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
@@ -1422,7 +1422,7 @@
         },
         {
             "name": "illuminate/events",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
@@ -1477,7 +1477,7 @@
         },
         {
             "name": "illuminate/filesystem",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/filesystem.git",
@@ -1544,7 +1544,7 @@
         },
         {
             "name": "illuminate/hashing",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/hashing.git",
@@ -1592,7 +1592,7 @@
         },
         {
             "name": "illuminate/http",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/http.git",
@@ -1653,7 +1653,7 @@
         },
         {
             "name": "illuminate/macroable",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -1699,7 +1699,7 @@
         },
         {
             "name": "illuminate/pagination",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
@@ -1749,7 +1749,7 @@
         },
         {
             "name": "illuminate/pipeline",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pipeline.git",
@@ -1797,7 +1797,7 @@
         },
         {
             "name": "illuminate/session",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/session.git",
@@ -1854,7 +1854,7 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
@@ -1931,7 +1931,7 @@
         },
         {
             "name": "illuminate/translation",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/translation.git",
@@ -1982,7 +1982,7 @@
         },
         {
             "name": "illuminate/validation",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/validation.git",
@@ -2043,7 +2043,7 @@
         },
         {
             "name": "illuminate/view",
-            "version": "v11.45.0",
+            "version": "v11.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/view.git",
@@ -2989,12 +2989,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rcalicdan/ci4-larabridge.git",
-                "reference": "8c7f3c5b476852361cf828fae0fd3c5c657e3dfa"
+                "reference": "ee99df5fd84d2396ae87b4b8046de847adc1fc16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rcalicdan/ci4-larabridge/zipball/8c7f3c5b476852361cf828fae0fd3c5c657e3dfa",
-                "reference": "8c7f3c5b476852361cf828fae0fd3c5c657e3dfa",
+                "url": "https://api.github.com/repos/rcalicdan/ci4-larabridge/zipball/ee99df5fd84d2396ae87b4b8046de847adc1fc16",
+                "reference": "ee99df5fd84d2396ae87b4b8046de847adc1fc16",
                 "shasum": ""
             },
             "require": {
@@ -3056,7 +3056,7 @@
                 "issues": "https://github.com/rcalicdan/ci4-larabridge/issues",
                 "source": "https://github.com/rcalicdan/ci4-larabridge"
             },
-            "time": "2025-06-02T04:29:59+00:00"
+            "time": "2025-06-08T14:36:09+00:00"
         },
         {
             "name": "symfony/clock",

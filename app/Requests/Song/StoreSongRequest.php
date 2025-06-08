@@ -16,7 +16,7 @@ class StoreSongRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:50'],
-            'content' => ['required', 'string', 'max:5000'],
+            'content' => ['required', 'string', 'max:10000'],
             'is_published' => ['boolean'],
             'image' => ['nullable', 'ci_image', 'ci_file_size:2048'],
             'category_id' => ['nullable', 'integer', Rule::exists('song_categories', 'id')],
