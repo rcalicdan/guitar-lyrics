@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\Throttle;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -38,7 +39,7 @@ class Filters extends BaseFilters
         'auth' => \Rcalicdan\Ci4Larabridge\Filters\AuthFilter::class,
         'guest' => \Rcalicdan\Ci4Larabridge\Filters\GuestFilter::class,
         'email_verified' => \Rcalicdan\Ci4Larabridge\Filters\EmailVerificationFilter::class,
-        'trottle' => \Rcalicdan\Ci4Larabridge\Filters\ThrottleFilter::class,
+        'throttle' => \Rcalicdan\Ci4Larabridge\Filters\ThrottleFilter::class,
         'rb_context' => \App\Filters\RedirectBackContextFilter::class,
     ];
 

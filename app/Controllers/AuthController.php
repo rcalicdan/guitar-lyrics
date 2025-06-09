@@ -27,6 +27,13 @@ class AuthController extends BaseController
 
     public function register()
     {
+        $throttler = service('throttler');
+        $ip = $this->request->getIPAddress();
+        if ($throttler->check(md5($ip . '_login'), 5, MINUTE) === false) {
+            $waitTime = $throttler->getTokentime();
+            return redirect()->back()
+                ->with('error', "Too many login attempts. Try again in {$waitTime} seconds.");
+        }
         $user = User::create(RegisterRequest::validateRequest());
         AuditHelper::log($user, 'user-registered', newValues: $user->toArray());
 
@@ -35,6 +42,13 @@ class AuthController extends BaseController
 
     public function login()
     {
+        $throttler = service('throttler');
+        $ip = $this->request->getIPAddress();
+        if ($throttler->check(md5($ip . '_login'), 5, MINUTE) === false) {
+            $waitTime = $throttler->getTokentime();
+            return redirect()->back()
+                ->with('error', "Too many login attempts. Try again in {$waitTime} seconds.");
+        }
         $credentials = LoginRequest::validateRequest();
 
         if (Auth::attempt($credentials)) {
