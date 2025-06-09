@@ -27,8 +27,8 @@ $routes->get('/about-us', [Home::class, 'showAboutUsPage'], ['as' => 'about-us']
 $routes->group('', ['filter' => 'guest'], function (RouteCollection $routes) {
     $routes->get('login', [AuthController::class, 'showLoginPage'], ['as' => 'login']);
     $routes->get('login/comment/(:segment)', [AuthController::class, 'showLoginCommentPage'], ['as' => 'login.comment']);
-    $routes->post('login/comment/(:segment)', [AuthController::class, 'loginComment'], ['as' => 'login.comment.post', 'throttle:5,1']);
-    $routes->post('login', [AuthController::class, 'login'], ['as' => 'login.post', 'filter' => 'throttle:5,1']);
+    $routes->post('login/comment/(:segment)', [AuthController::class, 'loginComment'], ['as' => 'login.comment.post', 'throttle:20,1']);
+    $routes->post('login', [AuthController::class, 'login'], ['as' => 'login.post', 'filter' => 'throttle:20,1']);
     $routes->get('register', [AuthController::class, 'showRegisterPage'], ['as' => 'register']);
     $routes->post('register', [AuthController::class, 'register'], ['as' => 'register.post']);
 });
@@ -40,8 +40,8 @@ $routes->get('songs', [HomepageSongController::class, 'index'], ['as' => 'home.s
 $routes->get('songs/(:segment)', [HomepageSongController::class, 'show'], ['as' => 'home.songs.show']);
 $routes->get('feedback', [FeedbackController::class, 'index'], ['as' => 'feedback']);
 $routes->post('feedback', [FeedbackController::class, 'store'], ['as' => 'feedback.post']);
-$routes->get('terms-of-service', fn () => blade_view('contents.homepage.terms'), ['as' => 'terms-of-service']);
-$routes->get('privacy-policy', fn () => blade_view('contents.homepage.policies'), ['as' => 'privacy-policy']);
+$routes->get('terms-of-service', fn() => blade_view('contents.homepage.terms'), ['as' => 'terms-of-service']);
+$routes->get('privacy-policy', fn() => blade_view('contents.homepage.policies'), ['as' => 'privacy-policy']);
 
 $routes->get('/dashboard', [DashboardController::class, 'index'], ['as' => 'dashboard', 'filter' => 'auth']);
 
