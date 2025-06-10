@@ -36,8 +36,9 @@ class AuthController extends BaseController
     public function login()
     {
         $credentials = LoginRequest::validateRequest();
+        $remember = $this->request->getPost('remember') ? true : false;
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember)) {
             return redirect()->to('/');
         }
 

@@ -24,6 +24,9 @@ class User extends Model
         'email',
         'password',
         'email_verified_at',
+        'remember_token',
+        'email_verification_token',
+        'password_reset_token',
         'image_path',
     ];
 

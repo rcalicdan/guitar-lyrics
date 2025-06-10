@@ -99,8 +99,11 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                    <input type="checkbox" class="form-check-input" id="remember" name="remember" value="1">
                                     <label class="form-check-label" for="remember">Remember me</label>
+                                    @error('remember')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-custom">Login</button>

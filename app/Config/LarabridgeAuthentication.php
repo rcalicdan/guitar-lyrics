@@ -61,7 +61,7 @@ class LarabridgeAuthentication extends BaseConfig
         'enabled' => true,
         'tokenExpiry' => 2592000,
         'cookieName' => 'remember_token',
-        'cookieSecure' => true,
+        'cookieSecure' => false,
         'cookieHttpOnly' => true,
         'customHandler' => null,
     ];
@@ -70,7 +70,7 @@ class LarabridgeAuthentication extends BaseConfig
      * Session settings
      */
     public array $session = [
-        'regenerateOnLogin' => true,
+        'regenerateOnLogin' => false,
         'regenerateOnLogout' => true,
     ];
 
