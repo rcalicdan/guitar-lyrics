@@ -40,8 +40,8 @@ $routes->get('songs', [HomepageSongController::class, 'index'], ['as' => 'home.s
 $routes->get('songs/(:segment)', [HomepageSongController::class, 'show'], ['as' => 'home.songs.show']);
 $routes->get('feedback', [FeedbackController::class, 'index'], ['as' => 'feedback']);
 $routes->post('feedback', [FeedbackController::class, 'store'], ['as' => 'feedback.post']);
-$routes->get('terms-of-service', fn() => blade_view('contents.homepage.terms'), ['as' => 'terms-of-service']);
-$routes->get('privacy-policy', fn() => blade_view('contents.homepage.policies'), ['as' => 'privacy-policy']);
+$routes->get('terms-of-service', fn () => blade_view('contents.homepage.terms'), ['as' => 'terms-of-service']);
+$routes->get('privacy-policy', fn () => blade_view('contents.homepage.policies'), ['as' => 'privacy-policy']);
 
 $routes->get('/dashboard', [DashboardController::class, 'index'], ['as' => 'dashboard', 'filter' => 'auth']);
 
