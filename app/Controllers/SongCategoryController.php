@@ -40,8 +40,6 @@ class SongCategoryController extends BaseController
         $this->authorize('create', SongCategory::class);
         $category = SongCategory::create(StoreCategoryRequest::validateRequest());
 
-        AuditHelper::logCreated($category);
-
         return redirect()->route('songs.categories.index')->with('success', 'Song Category created successfully.');
     }
 

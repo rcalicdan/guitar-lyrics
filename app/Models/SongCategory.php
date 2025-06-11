@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Rcalicdan\Ci4Larabridge\Models\Model;
 
-class SongCategory extends Model
+class SongCategory extends BaseModel
 {
     /**
      * The table associated with the model
