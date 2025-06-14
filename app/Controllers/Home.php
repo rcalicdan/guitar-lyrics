@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Artist;
 use App\Models\Song;
 use App\Models\User;
+use Rcalicdan\Ci4Larabridge\Database\EloquentDatabase;
 
 class Home extends BaseController
 {
@@ -28,6 +29,8 @@ class Home extends BaseController
         $songsCount = $this->formatCount(Song::where('is_published', true)->count());
         $artistsCount = $this->formatCount(Artist::count());
         $usersCount = $this->formatCount(User::count());
+
+        log_message('error', json_encode(EloquentDatabase::getCacheStatus()));
 
         return blade_view('welcome', compact('featuredSongs', 'songsCount', 'artistsCount', 'usersCount'));
     }

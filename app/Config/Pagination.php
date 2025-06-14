@@ -3,6 +3,7 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
+use Rcalicdan\Ci4Larabridge\Config\Pagination as BasePagination;
 
 /**
  * Configuration class for pagination settings in the Ci4Larabridge module.

@@ -18,18 +18,18 @@ class Observers extends BaseConfig
      * Enable attribute-based observer registration
      * If true, will scan models for #[ObservedBy] attributes
      */
-    public bool $useAttributes = true;
+    public bool $useAttributes = false;
 
     /**
      * Manual observer registration
      * Register your observers here following Laravel's convention:
-     * 
+     *
      * Example:
      * User::observe(UserObserver::class);
      * Post::observe(PostObserver::class);
      */
     public function boot(): void
     {
-      //
+        //
     }
 }

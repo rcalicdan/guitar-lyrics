@@ -43,16 +43,6 @@ class Blade extends BaseConfig
     public $componentPath = APPPATH.'Views/components';
 
     /**
-     * Determines whether to check for template recompilation in production.
-     *
-     * When set to false, templates are not recompiled on change, and the cache does
-     * not expire, improving performance in production environments.
-     *
-     * @var bool
-     */
-    public $checksCompilationInProduction = false;
-
-    /**
      * Registers custom Blade directives.
      *
      * Allows developers to define custom directives for the Blade templating engine.
@@ -61,9 +51,6 @@ class Blade extends BaseConfig
      */
     public function registerCustomDirectives(BladeDirective $blade): void
     {
-        $blade->directive(
-            'switch',
-            fn ($expression) => "<?php switch ($expression): ?>"
-        );
+        //
     }
 }
