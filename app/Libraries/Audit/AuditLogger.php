@@ -109,7 +109,7 @@ class AuditLogger
 
     protected static function getCurrentUserId(): ?int
     {
-        return session()->get('auth_user_id');
+        return auth()->user()->id;
     }
 
     protected static function getClientIpAddress(): ?string
