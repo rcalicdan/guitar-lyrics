@@ -38,9 +38,7 @@ class SongCategoryController extends BaseController
     public function store()
     {
         $this->authorize('create', SongCategory::class);
-        $category = SongCategory::create(StoreCategoryRequest::validateRequest());
-        AuditHelper::logCreated($category);
-        log_message('error', 'Song Category created: ' . $category->id);
+        SongCategory::create(StoreCategoryRequest::validateRequest());
 
         return redirect()->route('songs.categories.index')->with('success', 'Song Category created successfully.');
     }
@@ -59,7 +57,6 @@ class SongCategoryController extends BaseController
         $songCategory = SongCategory::findOrFail($id);
         $this->authorize('update', $songCategory);
         $songCategory->update(UpdateCategoryRequest::validateRequest());
-        AuditHelper::logUpdated($songCategory, $songCategory->getOriginal());
 
         return redirect()->back()->with('success', 'Song Category updated successfully.');
     }
@@ -69,7 +66,6 @@ class SongCategoryController extends BaseController
         $songCategory = SongCategory::findOrFail($id);
         $this->authorize('delete', $songCategory);
         $songCategory->delete();
-        AuditHelper::logDeleted($songCategory);
 
         return redirect()->back()->with('success', 'Song Category deleted successfully.');
     }

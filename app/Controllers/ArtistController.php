@@ -23,7 +23,7 @@ class ArtistController extends BaseController
 
     public function index()
     {
-        $artists = $this->artistService->getArtist()->paginateWithQueryString(20);
+        $artists = $this->artistService->getArtist()->paginateWithQueryString(15);
 
         return blade_view('contents.artist.index', [
             'artists' => $artists,
