@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Libraries\Audit\Auditable as AuditAuditable;
 use App\Traits\Auditable;
 use Rcalicdan\Ci4Larabridge\Models\Model;
 
 abstract class BaseModel extends Model
 {
-    use Auditable;
+    use AuditAuditable;
 
     /**
      * Attributes that should not be audited

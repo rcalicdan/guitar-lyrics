@@ -37,7 +37,6 @@ class Filters extends BaseFilters
 
         'auth' => \Rcalicdan\Ci4Larabridge\Filters\AuthFilter::class,
         'guest' => \Rcalicdan\Ci4Larabridge\Filters\GuestFilter::class,
-        'email_verified' => \Rcalicdan\Ci4Larabridge\Filters\EmailVerificationFilter::class,
         'throttle' => \Rcalicdan\Ci4Larabridge\Filters\ThrottleFilter::class,
         'rb_context' => \App\Filters\RedirectBackContextFilter::class,
     ];

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 trait Auditable
 {
     protected static function bootAuditable(): void
-    {
+    {  
         static::created(function ($model) {
             AuditLogger::created($model);
         });
@@ -27,13 +27,13 @@ trait Auditable
     public function attach($id, array $attributes = [], $touch = true)
     {
         $relation = $this->getRelationFromBacktrace();
-        
+
         if ($relation) {
             $result = parent::attach($id, $attributes, $touch);
             AuditLogger::attached($this, $relation, $id, $attributes);
             return $result;
         }
-        
+
         return parent::attach($id, $attributes, $touch);
     }
 
@@ -43,13 +43,13 @@ trait Auditable
     public function detach($ids = null, $touch = true)
     {
         $relation = $this->getRelationFromBacktrace();
-        
+
         if ($relation) {
             $result = parent::detach($ids, $touch);
             AuditLogger::detached($this, $relation, $ids);
             return $result;
         }
-        
+
         return parent::detach($ids, $touch);
     }
 
@@ -59,13 +59,13 @@ trait Auditable
     public function sync($ids, $detaching = true)
     {
         $relation = $this->getRelationFromBacktrace();
-        
+
         if ($relation) {
             $changes = parent::sync($ids, $detaching);
             AuditLogger::synced($this, $relation, $changes);
             return $changes;
         }
-        
+
         return parent::sync($ids, $detaching);
     }
 
@@ -75,13 +75,13 @@ trait Auditable
     protected function getRelationFromBacktrace(): ?string
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10);
-        
+
         foreach ($trace as $frame) {
             if (isset($frame['object']) && $frame['object'] instanceof BelongsToMany) {
                 return $frame['function'];
             }
         }
-        
+
         return null;
     }
 
@@ -91,7 +91,7 @@ trait Auditable
     public function withoutAuditing(\Closure $callback)
     {
         static::flushEventListeners();
-        
+
         try {
             return $callback();
         } finally {

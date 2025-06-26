@@ -18,7 +18,7 @@ class Pagination extends BaseConfig
      *
      * @var string
      */
-    public $defaultView = 'pagination::tailwind';
+    public $defaultView = 'pagination::bootstrap';
 
     /**
      * The default view for simple pagination rendering.
