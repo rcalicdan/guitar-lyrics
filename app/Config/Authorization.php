@@ -60,7 +60,7 @@ class Authorization extends BaseConfig
      */
     public function gates()
     {
-        gate()->define('view-dashboard', function ($user) {
+        gate()->define('view-dashboard', function ($user): bool {
             return $user->isAdmin() || $user->isModerator();
         });
     }
