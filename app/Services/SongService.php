@@ -62,8 +62,6 @@ class SongService
             'user_id' => auth()->user()->id,
             'image_path' => $imagePath,
         ]);
-
-        AuditHelper::logCreated($song);
     }
 
     public function update(UpdateSongRequest $request, string $slug)
@@ -82,7 +80,5 @@ class SongService
             'user_id' => auth()->user()->id,
             'image_path' => $imagePath,
         ]);
-
-        AuditHelper::logUpdated($song, $song->getOriginal());
     }
 }

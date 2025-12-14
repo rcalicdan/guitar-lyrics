@@ -80,7 +80,6 @@ class SongController extends BaseController
     {
         $song = Song::where('slug', $slug)->firstOrFail();
         $song->delete();
-        AuditHelper::logDeleted($song);
 
         return redirect()->route('songs.index')->with('success', 'Song deleted successfully');
     }

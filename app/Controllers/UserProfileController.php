@@ -110,6 +110,6 @@ class UserProfileController extends BaseController
 
         AuditHelper::logUpdated($user, $originalData);
 
-        return redirect()->back()->with('success', 'Profile image updated successfully.');
+        return redirect()->route('profile.update-profile-image')->with('success', 'Profile image updated successfully.');
     }
 }

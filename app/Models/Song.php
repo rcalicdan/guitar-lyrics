@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Rcalicdan\Ci4Larabridge\Models\Model;
 
-class Song extends Model
+class Song extends BaseModel
 {
-    use Auditable;
-
     protected $table = 'songs';
 
     protected $fillable = ['title', 'content', 'song_category_id', 'artist_id', 'user_id', 'slug', 'image_path', 'is_published'];
@@ -18,7 +15,6 @@ class Song extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->initializeAuditable();
     }
 
     public function user(): BelongsTo
